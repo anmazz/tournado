@@ -1,17 +1,28 @@
 <resources>
     <string name="app_name">CMSC436Final</string>
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="account_login_string">Account login</string>
+    <string name="email_hint_string">Email</string>
+    <string name="password_hint_string">Password</string>
+    <string name="password_confirm_hint_string">Confirm Password</string>
+    <string name="login_string">Login</string>
+    <string name="register_string">Register</string>
+    <!-- Strings related to navigation bar -->
+    <string name="title_home">Home</string>
+    <string name="title_search_tour">Search Tour</string>
+    <string name="title_add_tour">Add Tour</string>
+    <string name="title_user_profile">Profile</string>
+    <!-- UserProfile Strings-->
+    <string name="user_profile_pic">*Username*</string>
+    <string name="tours_created">Tours Created</string>
+    <string name="tours_traveld">Tours Traveled</string>
+    <string name="distance_toured">Distance Toured</string>
+    <string name="rating">Rating</string>
+    <string name="unfinished_tours">Unfinished Tours</string>
+
+
+    <!-- Others-->
     <string name="title_activity_home">Home</string>
     <string name="title_activity_search">SearchActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
 </resources>

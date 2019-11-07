@@ -1,4 +1,4 @@
-package com.example.android.cmsc436final.ui.notifications
+package com.example.android.cmsc436final.ui.addTour
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.cmsc436final.R
 
-class NotificationsFragment : Fragment() {
+class AddTourFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var addTourViewModel: AddTourViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-            ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(this, Observer {
+        addTourViewModel =
+            ViewModelProviders.of(this).get(AddTourViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_add_tour, container, false)
+        val textView: TextView = root.findViewById(R.id.text_add_tour)
+        addTourViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root

@@ -1,4 +1,4 @@
-package com.example.android.cmsc436final.ui.dashboard
+package com.example.android.cmsc436final.ui.userProfile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.cmsc436final.R
 
-class DashboardFragment : Fragment() {
+class UserProfileFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var userProfileViewModel: UserProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProviders.of(this).get(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(this, Observer {
+        userProfileViewModel =
+            ViewModelProviders.of(this).get(UserProfileViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_user_profile, container, false)
+        val textView: TextView = root.findViewById(R.id.ratingText)
+        userProfileViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root

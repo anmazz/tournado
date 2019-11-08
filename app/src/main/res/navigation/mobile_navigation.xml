@@ -6,20 +6,26 @@
     app:startDestination="@+id/navigation_home">
 
     <fragment
+        android:id="@+id/navigation_search_tour"
+        android:name="com.example.android.cmsc436final.ui.searchTour.SearchTourFragment"
+        android:label="@string/title_search_tour"
+        tools:layout="@layout/fragment_search_tour" />
+
+    <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.android.cmsc436final.ui.home.HomeFragment"
+        android:name="com.example.locationbasedtourguide.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.android.cmsc436final.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_add_tour"
+        android:name="com.example.android.cmsc436final.ui.addTour.AddTourFragment"
+        android:label="@string/title_add_tour"
+        tools:layout="@layout/fragment_add_tour" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.android.cmsc436final.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_user_profile"
+        android:name="com.example.android.cmsc436final.ui.userProfile.UserProfileFragment"
+        android:label="@string/title_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
 </navigation>

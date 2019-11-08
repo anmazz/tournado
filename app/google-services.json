@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "735173214024",
+    "firebase_url": "https://grounded-plane-257921.firebaseio.com",
+    "project_id": "grounded-plane-257921",
+    "storage_bucket": "grounded-plane-257921.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735173214024:android:7ff7d7f7ef6040897a3d7d",
+        "android_client_info": {
+          "package_name": "com.example.android.cmsc436final"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735173214024-pi999au6ke7hj6aq3t0uqik6skh8krdn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0RGVR79JFj8zh9KPY-PoMBawbbUZBa3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735173214024-pi999au6ke7hj6aq3t0uqik6skh8krdn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

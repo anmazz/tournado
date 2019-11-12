@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.android.cmsc436final.R
@@ -25,17 +26,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     companion object{
         private lateinit var homeViewModel: HomeViewModel
-        private const val UPDATE_INTERVAL = (3000).toLong()
+        private const val UPDATE_INTERVAL = (5000).toLong()
         private const val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
         private const val REQUEST_CODE = 1
 
         private var latitude = -35.0
         private var longitude = 149.0
-        private lateinit var mGoogleMap: GoogleMap
+
         private lateinit var mapView: MapView
         private var mLocationRequest: LocationRequest? = null
         private const val TAG = "HomeFragment"
     }
+
+    private lateinit var mGoogleMap: GoogleMap
 
     override fun onStart() {
         super.onStart()
@@ -114,21 +117,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     fun onLocationChanged(location: Location) {
         Log.i(TAG, "In on location changed. Loc lat: ${location.latitude}, loc long: ${location.longitude}")
-//        val loc = LatLng(location.latitude, location.longitude)
+        val loc = LatLng(location.latitude, location.longitude)
 //        latitude = location.latitude
 //        longitude = location.longitude
 
         mGoogleMap.clear()
-//        mGoogleMap.clear()
-//        mGoogleMap.addMarker(MarkerOptions().position(loc).title("Current Location"))
-//        mGoogleMap.animateCamera(
-//            CameraUpdateFactory.newLatLngZoom(
-//                LatLng(
-//                    loc.latitude,
-//                    loc.longitude
-//                ), 13.0f
-//            ), 4000, null
-//        )
+        mGoogleMap.addMarker(MarkerOptions().position(loc).title("Current Location"))
+        mGoogleMap.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                    loc.latitude,
+                    loc.longitude
+                ), 13.0f
+            )
+        )
 
 
     }
@@ -148,7 +150,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun requestPermissions() {
-       requestPermissions(arrayOf("Manifest.permission.ACCESS_FINE_LOCATION"), REQUEST_CODE)
+       ActivityCompat.requestPermissions(activity!!,
+           arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE)
     }
 
     override fun onRequestPermissionsResult(

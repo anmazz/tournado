@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -46,7 +47,7 @@ class LoginActivity : Activity() {
                 val helloAndroidIntent = Intent(
                     this@LoginActivity,
                     SearchActivity::class.java
-                    //HomeActivity::class.java USE THIS TO SEE THE MAP
+                    //MainActivity::class.java USE THIS TO SEE THE MAP
                 )
                 Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                     .show()
@@ -67,6 +68,8 @@ class LoginActivity : Activity() {
 
     private fun checkPassword(uname: Editable, passwd: Editable): Boolean {
         // Just pretending to extract text and check password
+        Log.i("Hi", uname.toString())
+        Log.i("Hi", passwd.toString())
         return true
     }
 }

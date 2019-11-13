@@ -26,12 +26,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     companion object{
         private lateinit var homeViewModel: HomeViewModel
-        private const val UPDATE_INTERVAL = (5000).toLong()
+        private const val UPDATE_INTERVAL = (5 * 1000).toLong()
         private const val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
         private const val REQUEST_CODE = 1
 
-        private var latitude = -35.0
-        private var longitude = 149.0
+        private var latitude = 0.0
+        private var longitude = 0.0
 
         private lateinit var mapView: MapView
         private var mLocationRequest: LocationRequest? = null
@@ -53,8 +53,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mapView = view.findViewById(R.id.map) as MapView
         mapView.onCreate(savedInstanceState)
@@ -67,10 +65,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
         Log.i(TAG, "IN ON MAP READY")
-        // Add a marker in Sydney and move the camera
-//        val sydney = LatLng(-34.0, 151.0)
-//        mGoogleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
         mGoogleMap = googleMap
         mGoogleMap.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title("Current Location"))
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)))
@@ -117,8 +112,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     fun onLocationChanged(location: Location) {
         Log.i(TAG, "In on location changed. Loc lat: ${location.latitude}, loc long: ${location.longitude}")
         val loc = LatLng(location.latitude, location.longitude)
-//        latitude = location.latitude
-//        longitude = location.longitude
 
         mGoogleMap.clear()
         mGoogleMap.addMarker(MarkerOptions().position(loc).title("Current Location"))
@@ -130,13 +123,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 ), 13.0f
             )
         )
-
-
     }
 
-    fun clearMap(){
-        mGoogleMap.clear()
-    }
 
     private fun checkPermission(): Boolean {
         if (ContextCompat.checkSelfPermission(context!!,

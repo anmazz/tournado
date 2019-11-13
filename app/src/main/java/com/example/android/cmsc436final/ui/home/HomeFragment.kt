@@ -61,7 +61,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         mapView.onResume()
         mapView.getMapAsync(this)
 
-
         super.onViewCreated(view, savedInstanceState)
     }
 

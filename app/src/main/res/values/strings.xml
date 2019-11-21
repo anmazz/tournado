@@ -2,6 +2,9 @@
     <string name="app_name">CMSC436Final</string>
     <!-- Strings related to login -->
     <string name="account_login_string">Account login</string>
+    <string name="registration_title_string">Registration</string>
+    <string name="choose_photo">Choose Photo</string>
+    <string name="name_hint_string">Name</string>
     <string name="email_hint_string">Email</string>
     <string name="password_hint_string">Password</string>
     <string name="password_confirm_hint_string">Confirm Password</string>

@@ -6,7 +6,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.location.*
+
 
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         private var latitude = 0.0
         private var longitude = 0.0
         private lateinit var mGoogleMap: GoogleMap
-        private var mLocationRequest: LocationRequest? = null
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

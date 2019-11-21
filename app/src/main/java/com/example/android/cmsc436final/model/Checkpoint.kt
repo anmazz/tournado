@@ -1,7 +1,11 @@
 package com.example.android.cmsc436final.model
 
-class Checkpoint {
-    public var name: String = ""
-    public var media: Array<String> = arrayOf()
-    public var description:  String = ""
-}
+import com.google.firebase.firestore.GeoPoint
+
+data class Checkpoint (
+    var name: String = "",
+//    TODO: get current location
+    var location: GeoPoint = GeoPoint(0.0,0.0),
+    var media: ArrayList<String> = arrayListOf(),
+    var description:  String = ""
+)

@@ -27,6 +27,7 @@ class LoginActivity : Activity() {
 
 
     public override fun onCreate(savedInstanceState: Bundle?) {
+        //request permissions to everything somewhere here
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         auth = FirebaseAuth.getInstance()
@@ -78,9 +79,26 @@ class LoginActivity : Activity() {
                         this@LoginActivity,
                         SearchActivity::class.java))
                     //MainActivity::class.java USE THIS TO SEE THE MAP)
+                    //for filling in data
+//                    val user = FirebaseAuth.getInstance().currentUser
+//                    user?.let {
+//                        for (profile in it.providerData) {
+//                            // Id of the provider (ex: google.com)
+//                            val providerId = profile.providerId
+//
+//                            // UID specific to the provider
+//                            val uid = profile.uid
+//
+//                            // Name, email address, and profile photo Url
+//                            val name = profile.displayName
+//                            val email = profile.email
+//                            val photoUrl = profile.photoUrl
+//                        }
+//                    }
+
                 } else {
                     Log.w(TAG, "signInUserWithEmail:failure", task.exception)
-                    Toast.makeText(applicationContext, "Login failed! Please try again", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Login failed!" + task.exception + "Please try again", Toast.LENGTH_LONG).show()
                     uname.text.clear()
                     passwd.text.clear()
                 }

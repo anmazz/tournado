@@ -22,10 +22,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 
 
+
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
     companion object{
-        private lateinit var homeViewModel: HomeViewModel
         private const val UPDATE_INTERVAL = (5 * 1000).toLong()
         private const val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
         private const val REQUEST_CODE = 1
@@ -36,9 +36,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         private lateinit var mapView: MapView
         private var mLocationRequest: LocationRequest? = null
         private const val TAG = "HomeFragment"
+
     }
 
     private lateinit var mGoogleMap: GoogleMap
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if(savedInstanceState!=null){
+            latitude = savedInstanceState.getDouble("lat")
+            longitude = savedInstanceState.getDouble("long")
+            Log.i(TAG, "In onActivity Created")
+        }
+    }
 
     override fun onStart() {
         super.onStart()
@@ -61,6 +72,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         super.onViewCreated(view, savedInstanceState)
     }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
@@ -152,6 +164,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 registerLocationListener()
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putDouble("lat", latitude)
+        outState.putDouble("long", longitude)
     }
 
 }

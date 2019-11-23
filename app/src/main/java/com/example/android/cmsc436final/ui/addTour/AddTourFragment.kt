@@ -22,10 +22,7 @@ class AddTourFragment : Fragment() {
         addTourViewModel =
             ViewModelProviders.of(this).get(AddTourViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_add_tour, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_add_tour)
-//        addTourViewModel.text.observe(this, Observer {
-//            textView.text = it
-//        })
+
         return root
     }
 }

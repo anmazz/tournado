@@ -51,7 +51,7 @@ class AddTourFragment : Fragment() {
         tourDescrip = findViewById<View>(R.id.editText2) as EditText
 //        buttonAddCheckpoint = findViewById<View>(R.id.listViewAuthors) as Button
 //        buttonAddTour = findViewById<View>(R.id.buttonAddAuthor) as Button
-        
+
         return root
     }
 }

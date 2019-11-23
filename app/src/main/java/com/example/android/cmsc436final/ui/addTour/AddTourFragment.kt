@@ -20,8 +20,11 @@ class AddTourFragment : Fragment() {
     private lateinit var addTourViewModel: AddTourViewModel
     internal lateinit var tourName: EditText
     internal lateinit var tourDescrip: EditText
+    internal lateinit var checkptName: EditText
+    internal lateinit var checkptDesc: EditText
     internal lateinit var buttonAddCheckpoint: Button
     internal lateinit var buttonAddTour: Button
+    internal lateinit var buttonAddLocation: Button
 
     internal lateinit var db: FirebaseFirestore
     private var dbTours: Query? = null
@@ -47,10 +50,14 @@ class AddTourFragment : Fragment() {
         dbUsers = db.collection("users")
 
         // Get UI elements
-        tourName = findViewById<View>(R.id.editText) as EditText
-        tourDescrip = findViewById<View>(R.id.editText2) as EditText
-//        buttonAddCheckpoint = findViewById<View>(R.id.listViewAuthors) as Button
-//        buttonAddTour = findViewById<View>(R.id.buttonAddAuthor) as Button
+        tourName = root.findViewById<View>(R.id.tour_name_et) as EditText
+        tourDescrip = root.findViewById<View>(R.id.tour_description_et) as EditText
+        checkptName = root.findViewById<View>(R.id.checkpoint_name_et) as EditText
+        checkptDesc = root.findViewById<View>(R.id.checkpoint_desc) as EditText
+
+        buttonAddCheckpoint = root.findViewById<View>(R.id.addCheckpoint) as Button
+        buttonAddLocation = root.findViewById<View>(R.id.addLocation) as Button
+        buttonAddTour = root.findViewById<View>(R.id.addTourButton) as Button
 
         return root
     }

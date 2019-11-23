@@ -24,8 +24,13 @@
     <string name="sign_out">Sign Out</string>
     <string name="rating">Rating</string>
     <string name="unfinished_tours">Unfinished Tours</string>
-
-
+    <!-- Add tour strings -->
+    <string name="add_tour_description">Tour description</string>
+    <string name="add_tour_name">Tour name</string>
+    <string name="checkpoint_tv">Checkpoint</string>
+    <string name="add_checkpoint_name">Checkpoint name</string>
+    <string name="add_checkpoint_description">Checkpoint description</string>
+    <string name="add_location">Add location</string>
     <!-- Others-->
     <string name="title_activity_home">Home</string>
     <string name="title_activity_search">SearchActivity</string>

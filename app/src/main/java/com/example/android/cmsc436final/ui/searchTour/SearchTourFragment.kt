@@ -25,9 +25,8 @@ class SearchTourFragment : Fragment() {
         searchTourViewModel =
             ViewModelProviders.of(this).get(SearchTourViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_search_tour, container, false)
-        val textView: TextView = root.findViewById(R.id.text_search)
         searchTourViewModel.text.observe(this, Observer {
-            textView.text = it
+
         })
 
 

@@ -35,6 +35,7 @@ class AddTourFragment : Fragment() {
         addTourViewModel =
             ViewModelProviders.of(this).get(AddTourViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_add_tour, container, false)
+
 //        val textView: TextView = root.findViewById(R.id.text_add_tour)
 //        addTourViewModel.text.observe(this, Observer {
 //            textView.text = it
@@ -50,9 +51,7 @@ class AddTourFragment : Fragment() {
         tourDescrip = findViewById<View>(R.id.editText2) as EditText
 //        buttonAddCheckpoint = findViewById<View>(R.id.listViewAuthors) as Button
 //        buttonAddTour = findViewById<View>(R.id.buttonAddAuthor) as Button
-
-
-
+        
         return root
     }
 }

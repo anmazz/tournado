@@ -34,6 +34,10 @@ class AddTourFragment : Fragment() {
     internal lateinit var buttonAddTour: Button
     internal lateinit var buttonAddLocation: Button
     internal lateinit var buttonAddMedia: Button
+    internal lateinit var listviewCP: ListView
+
+
+
 
     internal lateinit var db: FirebaseFirestore
     // reference to tours collection
@@ -77,18 +81,19 @@ class AddTourFragment : Fragment() {
         buttonAddLocation = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_location_button) as Button
         buttonAddTour = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_tour_button) as Button
         buttonAddMedia = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_media_button) as Button
-
+        listviewCP = root.findViewById<View>(com.example.android.cmsc436final.R.id.listViewCheckpoints) as ListView
 
         // OnClickListener for addTour Button
         buttonAddTour.setOnClickListener {
             addTour()
         }
 
+        buttonAddCheckpoint.setOnClickListener {
+            addCheckpoint()
+        }
 
         //list of checkpoints for the listview
         checkpoints = ArrayList()
-
-        // TODO add listView stuff
 
         // TODO add tags support
 //        TODO fill in dummy values
@@ -97,30 +102,44 @@ class AddTourFragment : Fragment() {
         return root
     }
 
+    private fun addCheckpoint() {
+        val name = checkptName.text.toString()
+//        TODO get location
+        val description = checkptDesc.text.toString()
+//        TODO figure out how to save media
+//        images = arr
+//        audio:  MutableList<String>
+//        video: MutableList<String>
+        val newCP = Checkpoint(name, location, description, null, null, null)
 
-
-    private fun addCheckpoint(name: String, location: GeoPoint, description: String,
-                              images: MutableList<String>, audio:  MutableList<String> , video: MutableList<String>) {
-        val newCP = Checkpoint(name, location, description, images, audio, video)
         // need to add this checkpoint to tour arrayList
         checkpoints.add(newCP)
+
+        // TO display added checkpoints
+        //creating adapter using CheckPointList
+        val lvCheckpoint = CheckPointList(activity!!, checkpoints)
+        //attaching adapter to the listview
+        listviewCP.adapter = lvCheckpoint
+
+        checkptName.setText("")
+        checkptDesc.setText("")
     }
 
     // Method for adding Tour to databases
     private fun addTour() {
         //getting the values to save
-        val tourName = tourName.text.toString().trim { it <= ' ' }
-        val tourDescrip = tourDescrip.toString()
+        val tourNameStr = tourName.text.toString().trim { it <= ' ' }
+        val tourDescripStr = tourDescrip.text.toString()
 
         //checking if the value is provided
-        if (!TextUtils.isEmpty(tourName) && !TextUtils.isEmpty(tourDescrip) &&
+        if (!TextUtils.isEmpty(tourNameStr) && !TextUtils.isEmpty(tourDescripStr) &&
             checkpoints.isNotEmpty()) {
 
             // Create an ID key for our new Tour Document
             val id = db.collection("tours").document().id
 
             //creating a Tour Object
-            val newTour = Tour(id, tourName, 0, tourDescrip, checkpoints, dummyTags)
+            val newTour = Tour(id, tourNameStr, 0, tourDescripStr, checkpoints, dummyTags)
 
             // Add newTour obj to the database in the tours collection
             dbTours!!.document(id).set(newTour)
@@ -128,8 +147,8 @@ class AddTourFragment : Fragment() {
             dbUser!!.update("toursCreated", FieldValue.arrayUnion(newTour))
 
 
-            //setting edittext to blank again
-            tour_name_et.setText("")
+            tourName.setText("")
+            tourDescrip.setText("")
 
             //displaying a success toast
             Toast.makeText(activity, "Tour created!", Toast.LENGTH_LONG).show()

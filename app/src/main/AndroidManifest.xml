@@ -18,8 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 <!--        <activity android:name=".HomeActivity"></activity>-->
+<!--        android:windowSoftInputMode="adjustResize"-->
         <activity
             android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".RegistrationActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +43,7 @@
         </activity>
         <activity
             android:name=".SearchActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_search" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

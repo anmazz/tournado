@@ -18,10 +18,10 @@ class CheckPointList(private val context: Activity, internal var checkpoints: Li
         val inflater = context.layoutInflater
         val listViewItem = inflater.inflate(R.layout.checkpoint_list, null, true)
 
-        val textViewName = listViewItem.findViewById<View>(R.id.textViewName) as TextView
+        val checkPointNameView = listViewItem.findViewById<View>(R.id.CheckPointName) as TextView
 
         val cp = checkpoints[position]
-        textViewName.text = cp.name
+        checkPointNameView.text = cp.name
 
         return listViewItem
     }

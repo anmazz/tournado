@@ -1,6 +1,7 @@
 package com.example.android.cmsc436final.model
 
 data class User (
+    var id: String = "",
     var name: String = "",
     var email: String = "",
     var description:  String = "",

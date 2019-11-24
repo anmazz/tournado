@@ -15,8 +15,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
-
-
+import com.google.firebase.storage.UploadTask
+import com.google.android.gms.tasks.OnSuccessListener
+import java.net.URI
 
 
 class RegistrationActivity : Activity() {
@@ -69,20 +70,36 @@ class RegistrationActivity : Activity() {
         }
     }
 
-    private fun uploadUserPic(): String {
+    private fun uploadUserPic():String {
         Log.i(TAG, "about to upload to firebase")
         val storageRef = storage.reference
-        val userRef = storageRef.child(auth.currentUser.toString())
-        val userImagesRef = storageRef.child("userProfilePics/" + auth.currentUser.toString())
-
+        val userRef = storageRef.child(auth.uid as String + ".jpg")
+        //val userImagesRef = storageRef.child("/userProfilePics"+ auth.uid as String + ".jpg")
         val imageBitmap = (userPic.drawable as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
-        userRef.putBytes(data)
+        val uploadTask = userRef.putBytes(data)
 
-        return userImagesRef.downloadUrl.toString()
-
+        val urlTask = uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
+                }
+            }
+            Log.i(TAG, "download url is:" + userRef.downloadUrl)
+            userRef.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.i(TAG, "task result is:" + task.result.toString())
+                 val uri = task.result.toString()
+            } else {
+                // Handle failures
+                // ...
+            }
+        }
+        //does not work. Need to wait until urlTask finishes uploading
+        return userRef.downloadUrl.toString()
     }
 
 
@@ -136,20 +153,20 @@ class RegistrationActivity : Activity() {
                 if (task.isSuccessful) {
 
                     val db = FirebaseFirestore.getInstance()
-                    val profilePicUrl = uploadUserPic()
+                    val picUrl = uploadUserPic()
                     Log.i(TAG, "uploaded to firebase")
                     val newUserInfo = hashMapOf(
                         "name" to name,
-                        "profilePic" to profilePicUrl
+                        "profilePic" to picUrl
                     )
-                    db.collection("users").document(auth.currentUser.toString()).set(newUserInfo)
+                    db.collection("users").document(auth.uid as String).set(newUserInfo)
                     Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
                     startActivity(Intent(this@RegistrationActivity, SearchActivity::class.java))
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
                         applicationContext,
-                        "Login failed! Please try again",
+                        "Registration failed!" + task.exception + "Please try again",
                         Toast.LENGTH_LONG
                     ).show()
                     uEmail.text.clear()

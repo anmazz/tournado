@@ -4,6 +4,6 @@ data class User (
     var name: String = "",
     var email: String = "",
     var description:  String = "",
-    var toursCreated: ArrayList<Tour> = arrayListOf(),
-    var toursCompleted: ArrayList<Tour> = arrayListOf()
+    var toursCreated: List<Tour>? = null,
+    var toursCompleted: List<Tour>? = null
 )

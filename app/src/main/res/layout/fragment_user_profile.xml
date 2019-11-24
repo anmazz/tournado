@@ -2,134 +2,159 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_horizontal_margin">
 
 
-    <EditText
+    <TextView
+        android:id="@+id/ratingText"
+        android:layout_width="84dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="220dp"
+        android:clickable="false"
+        android:ems="10"
+        android:text="@string/rating"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/distanceTraveledText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/toursCreatedText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/distanceTouredText"
+        android:layout_width="84dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="220dp"
+        android:clickable="false"
+        android:ems="10"
+        android:text="@string/distance_toured"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/distanceTraveledText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/distanceTraveledText"
+        android:layout_width="84dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="220dp"
+        android:clickable="false"
+        android:ems="10"
+        android:inputType="none"
+        android:text="@string/tours_traveld"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/distanceTouredText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ratingText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/toursCreatedText"
+        android:layout_width="84dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="220dp"
+        android:clickable="false"
+        android:ems="10"
+        android:text="@string/tours_created"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/ratingText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/numToursCreated"
+        android:layout_width="84dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:autofillHints="@string/number_input"
+        android:clickable="false"
+        android:ems="10"
+        android:hint="@string/number_input"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/numRating"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/numDistanceToured"
+        app:layout_constraintTop_toBottomOf="@+id/ratingText" />
+
+    <TextView
         android:id="@+id/numToursTraveled"
-        android:layout_width="60dp"
+        android:layout_width="84dp"
         android:layout_height="60dp"
-        android:layout_marginStart="112dp"
+        android:layout_marginTop="20dp"
+        android:autofillHints="@string/number_input"
         android:clickable="false"
         android:ems="10"
-        android:hint="#"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="223dp" />
+        android:hint="@string/number_input"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/numRating"
+        app:layout_constraintTop_toBottomOf="@+id/distanceTouredText" />
 
-    <EditText
-        android:id="@+id/numDistanceToured"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="200dp"
-        android:clickable="false"
-        android:ems="10"
-        android:hint="#"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="222dp" />
-
-    <EditText
+    <TextView
         android:id="@+id/numRating"
-        android:layout_width="60dp"
+        android:layout_width="84dp"
         android:layout_height="60dp"
-        android:layout_marginStart="296dp"
+        android:layout_marginTop="20dp"
+        android:autofillHints="@string/number_input"
         android:clickable="false"
         android:ems="10"
-        android:hint="#"
-        android:inputType="number"
+        android:hint="@string/number_input"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/numToursTraveled"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/numToursCreated"
+        app:layout_constraintTop_toBottomOf="@+id/distanceTraveledText" />
+
+    <TextView
+        android:id="@+id/numDistanceToured"
+        android:layout_width="84dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:autofillHints="@string/number_input"
+        android:clickable="false"
+        android:ems="10"
+        android:hint="@string/number_input"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/numToursCreated"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="222dp" />
+        app:layout_constraintTop_toBottomOf="@+id/toursCreatedText" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="125dp"
         android:layout_height="125dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/user_profile_pic"
         android:padding="@dimen/activity_horizontal_margin"
         android:src="@drawable/user_profile_pic"
+        app:layout_constraintBottom_toTopOf="@+id/distanceTraveledText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.168" />
 
-    <EditText
-        android:id="@+id/toursCreatedText"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="188dp"
-        android:clickable="false"
-        android:ems="10"
-        android:hint="helloooooo"
-        android:text="@string/tours_created"
-        android:textSize="9sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <Button
+        android:id="@+id/signOutButton"
+        android:layout_width="88dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/sign_out"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/ratingText"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="288dp"
-        android:layout_marginTop="188dp"
-        android:clickable="false"
-        android:ems="10"
-        android:text="@string/rating"
-        android:textSize="9dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/distanceTraveledText"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="188dp"
-        android:clickable="false"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/tours_traveld"
-        android:textSize="9sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/distanceTouredText"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="188dp"
-        android:layout_marginTop="188dp"
-        android:clickable="false"
-        android:ems="10"
-        android:text="@string/distance_toured"
-        android:textSize="9dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/numToursCreated"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:clickable="false"
-        android:ems="10"
-        android:hint="#"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="222dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

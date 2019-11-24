@@ -17,14 +17,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.188"
         >
-    <LinearLayout
-        android:id="@+id/parent_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:adjustViewBounds="true"
             android:layout_height="182dp">
 
             <EditText
@@ -32,6 +29,7 @@
                 android:layout_width="374dp"
                 android:layout_height="47dp"
                 android:ems="10"
+
                 android:inputType="textPersonName"
                 android:hint="@string/add_tour_name"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -148,17 +146,17 @@
                 android:id="@+id/listViewCheckpoints"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/checkpoint_field_constraint_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.49"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/add_checkpoint_button"
-                app:layout_constraintVertical_bias="1.5" >
+                app:layout_constraintVertical_bias="1.5">
 
             </ListView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
 </ScrollView>
+
     <Button
         android:id="@+id/add_tour_button"
         style="@style/Widget.AppCompat.Button"
@@ -171,6 +169,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/parent_scrollview"
-        app:layout_constraintVertical_bias="1.5" />
+        app:layout_constraintTop_toBottomOf="@+id/parent_scrollview" />
 </androidx.constraintlayout.widget.ConstraintLayout>

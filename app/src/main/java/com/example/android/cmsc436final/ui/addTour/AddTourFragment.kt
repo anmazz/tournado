@@ -63,10 +63,8 @@ class AddTourFragment : Fragment() {
         addTourViewModel =
             ViewModelProviders.of(this).get(AddTourViewModel::class.java)
 
-
         val root = inflater.inflate(com.example.android.cmsc436final.R.layout.fragment_add_tour, container, false)
 
-        buttonAddCheckpoint = root.findViewById(com.example.android.cmsc436final.R.id.add_checkpoint_button)
 
         //Parent linear layout to dynamically add checkpoint views
 //        parentLinearLayout = root.findViewById(com.example.android.cmsc436final.R.id.parent_linear_layout)
@@ -96,6 +94,7 @@ class AddTourFragment : Fragment() {
         checkptDesc = root.findViewById<View>(com.example.android.cmsc436final.R.id.checkpoint_description_et) as EditText
 
         buttonAddCheckpoint = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_checkpoint_button) as Button
+        buttonAddCheckpoint = root.findViewById(com.example.android.cmsc436final.R.id.add_checkpoint_button)
         buttonAddLocation = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_location_button) as Button
         buttonAddTour = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_tour_button) as Button
         listviewCP = root.findViewById<View>(com.example.android.cmsc436final.R.id.listViewCheckpoints) as ListView
@@ -104,7 +103,6 @@ class AddTourFragment : Fragment() {
         buttonAddTour.setOnClickListener {
             addTour()
         }
-
 
 
         buttonAddMedia.setOnClickListener{

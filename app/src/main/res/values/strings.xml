@@ -27,7 +27,7 @@
     <!-- Add tour strings -->
     <string name="add_tour_description">Tour description</string>
     <string name="add_tour_name">Tour name</string>
-    <string name="checkpoint_tv">Checkpoint</string>
+    <string name="checkpoint_tv">Add Checkpoint</string>
     <string name="add_checkpoint_name">Checkpoint name</string>
     <string name="add_checkpoint_description">Checkpoint description</string>
     <string name="add_location">Add location</string>

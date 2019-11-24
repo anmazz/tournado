@@ -1,3 +1,4 @@
+
 package com.example.android.cmsc436final.ui.addTour
 
 import android.os.Bundle
@@ -70,12 +71,12 @@ class AddTourFragment : Fragment() {
         tourName = root.findViewById<View>(com.example.android.cmsc436final.R.id.tour_name_et) as EditText
         tourDescrip = root.findViewById<View>(com.example.android.cmsc436final.R.id.tour_description_et) as EditText
         checkptName = root.findViewById<View>(com.example.android.cmsc436final.R.id.checkpoint_name_et) as EditText
-        checkptDesc = root.findViewById<View>(com.example.android.cmsc436final.R.id.checkpoint_desc) as EditText
+        checkptDesc = root.findViewById<View>(com.example.android.cmsc436final.R.id.checkpoint_description_et) as EditText
 
-        buttonAddCheckpoint = root.findViewById<View>(com.example.android.cmsc436final.R.id.addCheckpoint) as Button
-        buttonAddLocation = root.findViewById<View>(com.example.android.cmsc436final.R.id.addLocation) as Button
-        buttonAddTour = root.findViewById<View>(com.example.android.cmsc436final.R.id.addTourButton) as Button
-        buttonAddMedia = root.findViewById<View>(com.example.android.cmsc436final.R.id.addMedia) as Button
+        buttonAddCheckpoint = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_checkpoint_button) as Button
+        buttonAddLocation = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_location_button) as Button
+        buttonAddTour = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_tour_button) as Button
+        buttonAddMedia = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_media_button) as Button
 
 
         // OnClickListener for addTour Button
@@ -113,7 +114,7 @@ class AddTourFragment : Fragment() {
 
         //checking if the value is provided
         if (!TextUtils.isEmpty(tourName) && !TextUtils.isEmpty(tourDescrip) &&
-                checkpoints.isNotEmpty()) {
+            checkpoints.isNotEmpty()) {
 
             // Create an ID key for our new Tour Document
             val id = db.collection("tours").document().id

@@ -4,7 +4,7 @@ data class User (
     var id: String = "",
     var name: String = "",
     var email: String = "",
-    var description:  String = "",
+    var profilePic:  String = "",
     var toursCreated: List<Tour>? = null,
     var toursCompleted: List<Tour>? = null
 )

@@ -98,6 +98,7 @@ class AddTourFragment : Fragment() {
         buttonAddCheckpoint = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_checkpoint_button) as Button
         buttonAddLocation = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_location_button) as Button
         buttonAddTour = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_tour_button) as Button
+        buttonAddMedia = root.findViewById(R.id.add_media_button)
         listviewCP = root.findViewById<View>(com.example.android.cmsc436final.R.id.listViewCheckpoints) as ListView
 
         // OnClickListener for addTour Button

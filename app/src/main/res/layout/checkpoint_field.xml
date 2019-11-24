@@ -7,7 +7,7 @@
 
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/add_media_button"
         android:layout_width="171dp"
         android:layout_height="46dp"
         android:layout_marginStart="212dp"
@@ -49,8 +49,8 @@
         android:layout_height="46dp"
         android:layout_marginTop="12dp"
         android:text="@string/add_location"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
-        app:layout_constraintHorizontal_bias="0.39"
+        app:layout_constraintEnd_toStartOf="@+id/add_checkpoint_button"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText3" />
 

@@ -11,7 +11,7 @@
         android:layout_height="48dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/add_tour_name"
+        android:hint="@string/add_tour_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.432"
@@ -25,7 +25,7 @@
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:text="@string/add_tour_description"
+        android:hint="@string/add_tour_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.432"
@@ -57,7 +57,7 @@
             android:layout_height="48dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@string/add_checkpoint_name"
+            android:hint="@string/add_checkpoint_name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.486"
@@ -72,7 +72,7 @@
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:text="@string/add_checkpoint_description"
+            android:hint="@string/add_checkpoint_description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.486"
@@ -93,6 +93,17 @@
             app:layout_constraintTop_toBottomOf="@+id/checkpoint_desc" />
 
         <Button
+            android:id="@+id/addMedia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/add_media"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addLocation" />
+
+        <Button
             android:id="@+id/addCheckpoint"
             android:layout_width="384dp"
             android:layout_height="47dp"
@@ -102,7 +113,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.518"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addLocation"
+            app:layout_constraintTop_toBottomOf="@+id/addMedia"
             app:layout_constraintVertical_bias="0.006" />
 
 <!--    </LinearLayout>-->
@@ -112,12 +123,13 @@
         android:layout_width="384dp"
         android:layout_height="47dp"
         android:layout_marginTop="18dp"
-        android:text="Add new checkpoint"
+        android:text="Add Tour!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addLocation"
-        app:layout_constraintVertical_bias="0.006" />
+        android:onClick="addTour"
+        app:layout_constraintTop_toBottomOf="@+id/addCheckpoint"
+        app:layout_constraintVertical_bias="0.257" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

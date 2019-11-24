@@ -10,4 +10,5 @@ class AddTourViewModel : ViewModel() {
         value = "This is the add tour Fragment"
     }
     val text: LiveData<String> = _text
+
 }

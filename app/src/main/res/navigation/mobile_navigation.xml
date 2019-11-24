@@ -21,7 +21,20 @@
         android:id="@+id/navigation_add_tour"
         android:name="com.example.android.cmsc436final.ui.addTour.AddTourFragment"
         android:label="@string/title_add_tour"
-        tools:layout="@layout/fragment_add_tour" />
+        tools:layout="@layout/fragment_add_tour" >
+        <action
+            android:id="@+id/action_navigation_add_tour_to_navigation_add_media"
+            app:destination="@id/navigation_add_media"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="false"
+            app:popUpTo="@+id/navigation_add_tour" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_add_media"
+        android:name="com.example.android.cmsc436final.ui.addTour.AddMediaFragment"
+        android:label="Add media"
+        tools:layout="@layout/fragment_add_media" />
 
     <fragment
         android:id="@+id/navigation_user_profile"

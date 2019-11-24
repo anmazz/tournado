@@ -1,6 +1,7 @@
 package com.example.android.cmsc436final.ui.addTour
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.android.cmsc436final.R
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -35,6 +37,7 @@ class AddTourFragment : Fragment() {
     internal lateinit var buttonAddCheckpoint: Button
     internal lateinit var buttonAddTour: Button
     internal lateinit var buttonAddLocation: Button
+    private lateinit var buttonAddMedia: Button
 
     internal lateinit var db: FirebaseFirestore
     private var dbTours: Query? = null
@@ -49,13 +52,11 @@ class AddTourFragment : Fragment() {
             ViewModelProviders.of(this).get(AddTourViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_add_tour, container, false)
-        Log.i(TAG, "onCreateView1")
 
         addCheckpointButton = root.findViewById(R.id.add_checkpoint_button)
 
         //Parent linear layout to dynamically add checkpoint views
         parentLinearLayout = root.findViewById(R.id.parent_linear_layout)
-        Log.i(TAG, "onCreateView2")
 
         addCheckpointButton.setOnClickListener{
             onAddField(root, inflater)
@@ -81,6 +82,12 @@ class AddTourFragment : Fragment() {
 
         buttonAddCheckpoint = root.findViewById<View>(R.id.add_checkpoint_button) as Button
         buttonAddLocation = root.findViewById<View>(R.id.add_location_button) as Button
+
+
+        buttonAddMedia = root.findViewById<View>(R.id.add_media_button) as Button
+        buttonAddMedia.setOnClickListener{
+            navigateToAddMedia()
+        }
 //        buttonAddTour = root.findViewById<View>(R.id.add_tour_button) as Button
 
         return root
@@ -92,4 +99,9 @@ class AddTourFragment : Fragment() {
         var view = inflater.inflate(R.layout.checkpoint_field, null)
         parentLinearLayout.addView(view, parentLinearLayout.childCount - 1)
     }
+
+    private fun navigateToAddMedia(){
+        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+    }
+
 }

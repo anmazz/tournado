@@ -5,6 +5,7 @@
     <string name="reset_pass_email">Enter email</string>
     <string name="account_login_string">Account login</string>
     <string name="registration_title_string">Registration</string>
+    <string name="registration_link_string">Don\'t have an account? Register here</string>
     <string name="choose_photo">Choose Photo</string>
     <string name="name_hint_string">Name</string>
     <string name="email_hint_string">Email</string>

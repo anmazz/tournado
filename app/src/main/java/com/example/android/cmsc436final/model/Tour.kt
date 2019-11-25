@@ -2,8 +2,10 @@ package com.example.android.cmsc436final.model
 
 
 data class Tour (
+    var id: String = "",
     var name: String = "",
     var pplCompleted: Int = 0,
     var description: String = "",
-    var tags: List<Checkpoint>? = null
+    var checkpoints: List<Checkpoint>? = null,
+    var tags: List<String>? = null
 )

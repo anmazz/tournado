@@ -6,17 +6,22 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
 import com.example.locationbasedtourguide.ui.home.HomeFragment
+import com.google.android.gms.dynamic.SupportFragmentWrapper
 import java.util.Random
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.reset_password_dialogue.view.*
 
 
-
-class LoginActivity : Activity() {
+class LoginActivity : Activity()  {
 
     private lateinit var uname: EditText
     private lateinit var passwd: EditText
@@ -43,8 +48,35 @@ class LoginActivity : Activity() {
         //updateUI(currentUser)
     }
 
+    private fun resetPassword(){
+        Log.i(TAG, "Im about to reset password")
+        val resetPassView = LayoutInflater.from(this).inflate(R.layout.reset_password_dialogue, null)
+        val builder = AlertDialog.Builder(this)
+            .setView(resetPassView)
+            .setTitle("Enter email for reset instructions")
+        val mAlertDialog = builder.show()
+        resetPassView.resetPassButton.setOnClickListener{
+            mAlertDialog.dismiss()
+            //actually reset here
+            val email = resetPassView.resetPasswordEmailEditText.text.toString()
+            auth.sendPasswordResetEmail(email).addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    Toast.makeText(applicationContext, "Reset instructions have been sent to email", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        resetPassView.cancelPassReset.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+    }
+
+
     fun onClick(v: View?) {
-        if (v!!.getId() == R.id.registerBttn) {
+        if (v!!.getId() == R.id.resetPasswordButton) {
+            resetPassword()
+
+        } else if (v!!.getId() == R.id.registerBttn) {
             //user is about to register
             val helloAndroidIntent = Intent(
                 this@LoginActivity,

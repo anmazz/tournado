@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">CMSC436Final</string>
+    <string name="app_function">Location Based Tour Guide</string>
     <!-- Strings related to login -->
+    <string name="reset_pass_email">Enter email</string>
     <string name="account_login_string">Account login</string>
     <string name="registration_title_string">Registration</string>
     <string name="choose_photo">Choose Photo</string>
@@ -10,6 +12,9 @@
     <string name="password_confirm_hint_string">Confirm Password</string>
     <string name="login_string">Login</string>
     <string name="register_string">Register</string>
+    <string name="reset_password_string">Forget Password?</string>
+    <string name="send_reset_link">Send Reset Link</string>
+
     <!-- Strings related to navigation bar -->
     <string name="title_home">Home</string>
     <string name="title_search_tour">Search Tour</string>
@@ -17,6 +22,7 @@
     <string name="title_user_profile">Profile</string>
     <!-- UserProfile Strings-->
     <string name="user_profile_pic">*Username*</string>
+    <string name="change_pic">Change Profile Picture</string>
     <string name="tours_created">Tours Created</string>
     <string name="tours_traveld">Tours Traveled</string>
     <string name="distance_toured">Distance Toured</string>
@@ -31,6 +37,7 @@
     <string name="add_checkpoint_name">Checkpoint name</string>
     <string name="add_checkpoint_description">Checkpoint description</string>
     <string name="add_location">Add location</string>
+    <string name="add_media">Add Media</string>
     <!-- Others-->
     <string name="title_activity_home">Home</string>
     <string name="title_activity_search">SearchActivity</string>

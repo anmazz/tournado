@@ -18,6 +18,13 @@ import java.io.ByteArrayOutputStream
 import com.google.firebase.storage.UploadTask
 import com.google.android.gms.tasks.OnSuccessListener
 import java.net.URI
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.example.android.cmsc436final.model.Tour
+import com.example.android.cmsc436final.model.User
 
 
 class RegistrationActivity : Activity() {
@@ -70,7 +77,7 @@ class RegistrationActivity : Activity() {
         }
     }
 
-    private fun uploadUserPic():String {
+    private fun uploadUserPic() {
         Log.i(TAG, "about to upload to firebase")
         val storageRef = storage.reference
         val userRef = storageRef.child(auth.uid as String + ".jpg")
@@ -81,25 +88,24 @@ class RegistrationActivity : Activity() {
         val data = baos.toByteArray()
         val uploadTask = userRef.putBytes(data)
 
-        val urlTask = uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
-                }
-            }
-            Log.i(TAG, "download url is:" + userRef.downloadUrl)
-            userRef.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.i(TAG, "task result is:" + task.result.toString())
-                 val uri = task.result.toString()
-            } else {
-                // Handle failures
-                // ...
-            }
-        }
-        //does not work. Need to wait until urlTask finishes uploading
-        return userRef.downloadUrl.toString()
+
+//        val urlTask = uploadTask.continueWithTask { task ->
+//            if (!task.isSuccessful) {
+//                task.exception?.let {
+//                    throw it
+//                }
+//            }
+//            userRef.downloadUrl
+//        }.addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                Log.i(TAG, "task result is:" + task.result.toString())
+//                //actual url stored here
+//                val uristring = task.result.toString()
+//            } else {
+//                // Handle failures
+//                // ...
+//            }
+//        }
     }
 
 
@@ -153,26 +159,71 @@ class RegistrationActivity : Activity() {
                 if (task.isSuccessful) {
 
                     val db = FirebaseFirestore.getInstance()
-                    val picUrl = uploadUserPic()
-                    Log.i(TAG, "uploaded to firebase")
-                    val newUserInfo = hashMapOf(
-                        "name" to name,
-                        "profilePic" to picUrl
-                    )
-                    db.collection("users").document(auth.uid as String).set(newUserInfo)
-                    Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
-                    startActivity(Intent(this@RegistrationActivity, SearchActivity::class.java))
+                    //val profilePicUrl = uploadUserPic()
+
+                    //uploading pic url to firestore
+                    Log.i(TAG, "about to upload to firebase")
+                    val storageRef = storage.reference
+                    val userRef = storageRef.child(auth.uid as String + ".jpg")
+                    //val userImagesRef = storageRef.child("/userProfilePics"+ auth.uid as String + ".jpg")
+                    val imageBitmap = (userPic.drawable as BitmapDrawable).bitmap
+                    val baos = ByteArrayOutputStream()
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                    val data = baos.toByteArray()
+                    val uploadTask = userRef.putBytes(data)
+
+
+                    val urlTask = uploadTask.continueWithTask { task ->
+                        if (!task.isSuccessful) {
+                            task.exception?.let {
+                                throw it
+                            }
+                        }
+                        userRef.downloadUrl
+                    }.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.i(TAG, "task result is:" + task.result.toString())
+                            //actual url stored here
+                            val uristring = task.result.toString()
+                            Log.i(TAG, "uploaded to firebase")
+//                            val newUserInfo = hashMapOf(
+//                                "name" to name,
+//                                "profilePic" to uristring
+//                            )
+                            val newUser = User(auth.uid as String, name, email, uristring, arrayListOf<Tour>(),arrayListOf<Tour>())
+                            db.collection("users").document(auth.uid as String).set(newUser)
+                            Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
+                            startActivity(Intent(this@RegistrationActivity, SearchActivity::class.java))
+                        } else {
+                            Toast.makeText(applicationContext, "Could not upload pic", Toast.LENGTH_LONG).show()
+                            // ...
+                        }
+                    }
+
                 } else {
+
+                    try {
+                        throw task.exception!!
+                    } catch (e: FirebaseAuthWeakPasswordException) {
+                        Toast.makeText(applicationContext, "Password was weak. Please try again.", Toast.LENGTH_LONG).show()
+                        passwd.text.clear()
+                        confPasswd.text.clear()
+                    }  catch (e: FirebaseAuthUserCollisionException) {
+                        Toast.makeText(applicationContext, "User already exists please sign in.", Toast.LENGTH_LONG).show()
+                        uEmail.text.clear()
+                        uName.text.clear()
+                        passwd.text.clear()
+                        confPasswd.text.clear()
+                    } catch (e: Exception) {
+                        Toast.makeText(applicationContext, "Registration error." + task.exception.toString(), Toast.LENGTH_LONG).show()
+                        uEmail.text.clear()
+                        uName.text.clear()
+                        passwd.text.clear()
+                        confPasswd.text.clear()
+                    }
+
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        applicationContext,
-                        "Registration failed!" + task.exception + "Please try again",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    uEmail.text.clear()
-                    uName.text.clear()
-                    passwd.text.clear()
-                    confPasswd.text.clear()
+
                 }
             }
         }

@@ -3,7 +3,6 @@ package com.example.android.cmsc436final
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,12 +11,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.FragmentManager
-import com.example.locationbasedtourguide.ui.home.HomeFragment
-import com.google.android.gms.dynamic.SupportFragmentWrapper
-import java.util.Random
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.reset_password_dialogue.view.*
 
 
@@ -76,7 +70,7 @@ class LoginActivity : Activity()  {
         if (v!!.getId() == R.id.resetPasswordButton) {
             resetPassword()
 
-        } else if (v!!.getId() == R.id.registerBttn) {
+        } else if (v!!.getId() == R.id.registerLink) {
             //user is about to register
             val helloAndroidIntent = Intent(
                 this@LoginActivity,
@@ -93,11 +87,13 @@ class LoginActivity : Activity()  {
         val password: String = passwd.text.toString()
 
         if (TextUtils.isEmpty(email)) {
-           // Toast.makeText(applicationContext, "Please enter email...", Toast.LENGTH_LONG).show()
+           Toast.makeText(applicationContext, "Please enter email...", Toast.LENGTH_LONG).show()
+            progressBar.visibility = View.GONE
             return
         }
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(applicationContext, "Please enter password!", Toast.LENGTH_LONG).show()
+            progressBar.visibility = View.GONE
             return
         }
 

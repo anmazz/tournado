@@ -27,6 +27,7 @@ import com.example.android.cmsc436final.model.Tour
 import com.example.android.cmsc436final.model.User
 
 
+
 class RegistrationActivity : Activity() {
     private lateinit var uEmail: EditText
     private lateinit var uName: EditText
@@ -69,44 +70,12 @@ class RegistrationActivity : Activity() {
             selectedPhoto = data!!.data as Uri
             if(selectedPhoto != null){
                 photoHasBeenSelected=true
+                Log.i(TAG, "changing imageview to"+ selectedPhoto )
+                userPic.setImageURI(selectedPhoto)
             }
-            Log.i(TAG, "changing imageview to"+ selectedPhoto )
-            userPic.setImageURI(selectedPhoto)
-
-
         }
     }
 
-    private fun uploadUserPic() {
-        Log.i(TAG, "about to upload to firebase")
-        val storageRef = storage.reference
-        val userRef = storageRef.child(auth.uid as String + ".jpg")
-        //val userImagesRef = storageRef.child("/userProfilePics"+ auth.uid as String + ".jpg")
-        val imageBitmap = (userPic.drawable as BitmapDrawable).bitmap
-        val baos = ByteArrayOutputStream()
-        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
-        val uploadTask = userRef.putBytes(data)
-
-
-//        val urlTask = uploadTask.continueWithTask { task ->
-//            if (!task.isSuccessful) {
-//                task.exception?.let {
-//                    throw it
-//                }
-//            }
-//            userRef.downloadUrl
-//        }.addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                Log.i(TAG, "task result is:" + task.result.toString())
-//                //actual url stored here
-//                val uristring = task.result.toString()
-//            } else {
-//                // Handle failures
-//                // ...
-//            }
-//        }
-    }
 
 
     fun onClick(v: View?) {
@@ -121,19 +90,22 @@ class RegistrationActivity : Activity() {
             val password: String = passwd.text.toString()
             val confirmedPassword: String = confPasswd.text.toString()
 
-
+            //Checking to see if all necessary fields have been provided
             if (TextUtils.isEmpty(name)) {
                 Toast.makeText(applicationContext, "Please enter name...", Toast.LENGTH_LONG).show()
+                progressBar.visibility = View.GONE
                 return
             }
             if (TextUtils.isEmpty(email)) {
                 Toast.makeText(applicationContext, "Please enter email...", Toast.LENGTH_LONG)
                     .show()
+                progressBar.visibility = View.GONE
                 return
             }
             if (TextUtils.isEmpty(password)) {
                 Toast.makeText(applicationContext, "Please enter password!", Toast.LENGTH_LONG)
                     .show()
+                progressBar.visibility = View.GONE
                 return
             }
             if (password.compareTo(confirmedPassword) != 0) {
@@ -144,13 +116,15 @@ class RegistrationActivity : Activity() {
                 ).show()
                 passwd.text.clear()
                 confPasswd.text.clear()
+                progressBar.visibility = View.GONE
                 return
             }
-            if (!photoHasBeenSelected) {
-                Toast.makeText(applicationContext, "Please select a photo", Toast.LENGTH_LONG)
-                    .show()
-                return
-            }
+//            if (!photoHasBeenSelected) {
+//                Toast.makeText(applicationContext, "Please select a photo", Toast.LENGTH_LONG)
+//                    .show()
+//                progressBar.visibility = View.GONE
+//                return
+            //}
 
             val x = auth!!.createUserWithEmailAndPassword(email, password)
 
@@ -159,14 +133,18 @@ class RegistrationActivity : Activity() {
                 if (task.isSuccessful) {
 
                     val db = FirebaseFirestore.getInstance()
-                    //val profilePicUrl = uploadUserPic()
-
                     //uploading pic url to firestore
                     Log.i(TAG, "about to upload to firebase")
                     val storageRef = storage.reference
                     val userRef = storageRef.child(auth.uid as String + ".jpg")
                     //val userImagesRef = storageRef.child("/userProfilePics"+ auth.uid as String + ".jpg")
-                    val imageBitmap = (userPic.drawable as BitmapDrawable).bitmap
+                    if(!photoHasBeenSelected){
+                        //:TODO send default pic to firebase
+                        val uriFromResource = Uri.parse("android.resource://com.example.android.cmsc436final/" + R.drawable.ic_person_black_24dp)
+                        userPic.setImageURI(uriFromResource)
+                        //userPic.setImageURI(R.drawable.ic_person_black_24dp)
+                    }
+                    val imageBitmap =  (userPic.drawable as BitmapDrawable).bitmap
                     val baos = ByteArrayOutputStream()
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                     val data = baos.toByteArray()

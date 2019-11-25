@@ -9,12 +9,12 @@
 
     <TextView
         android:id="@+id/registrationTitle"
-        android:layout_width="330dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="29dp"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="5dp"
         android:fontFamily="monospace"
         android:text="@string/registration_title_string"
         android:textAlignment="center"
@@ -30,9 +30,9 @@
 
     <ImageView
         android:id="@+id/regUserPic"
-        android:layout_width="155dp"
-        android:layout_height="112dp"
-        android:layout_marginBottom="11dp"
+        android:layout_width="165dp"
+        android:layout_height="110dp"
+        android:layout_marginBottom="12dp"
         android:contentDescription="@string/user_profile_pic"
         android:src="@drawable/ic_person_black_24dp"
         android:visibility="visible"
@@ -44,24 +44,23 @@
 
     <EditText
         android:id="@+id/regName"
-        android:layout_width="0dp"
+        android:layout_width="335dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="38dp"
+        android:layout_marginTop="204dp"
         android:layout_marginEnd="38dp"
-        android:layout_marginBottom="404dp"
         android:ems="10"
         android:hint="@string/name_hint_string"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regSelectPhotobutton" />
+        app:layout_constraintTop_toBottomOf="@+id/registrationTitle" />
 
     <EditText
         android:id="@+id/regUserEmail"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginStart="38dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="38dp"
@@ -69,13 +68,14 @@
         android:hint="@string/email_hint_string"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regName" />
 
     <EditText
         android:id="@+id/regPassword"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginStart="38dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="38dp"
@@ -91,17 +91,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginBottom="14dp"
         android:onClick="onClick"
         android:text="@string/register_string"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regPasswordConfirm" />
+        app:layout_constraintTop_toBottomOf="@+id/regSelectPhotobutton" />
 
     <EditText
         android:id="@+id/regPasswordConfirm"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginStart="38dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="38dp"
@@ -114,12 +116,12 @@
 
     <Button
         android:id="@+id/regSelectPhotobutton"
-        android:layout_width="147dp"
-        android:layout_height="37dp"
-        android:layout_marginBottom="18dp"
+        android:layout_width="177dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="348dp"
         android:onClick="onClick"
         android:text="@string/choose_photo"
-        app:layout_constraintBottom_toTopOf="@+id/regName"
+        app:layout_constraintBottom_toTopOf="@+id/newUserRegisterBttn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regUserPic" />
@@ -133,6 +135,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regSelectPhotobutton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

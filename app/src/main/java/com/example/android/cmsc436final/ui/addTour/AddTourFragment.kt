@@ -21,26 +21,33 @@ import com.google.firebase.firestore.Query
 //import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.model.Checkpoint
 import com.example.android.cmsc436final.model.Tour
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.Place.*
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_add_tour.*
 
 import com.google.firebase.firestore.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AddTourFragment : Fragment() {
 
     private lateinit var addTourViewModel: AddTourViewModel
-    internal lateinit var tourName: EditText
-    internal lateinit var tourDescrip: EditText
-    internal lateinit var checkptName: EditText
-    internal lateinit var checkptDesc: EditText
-    internal lateinit var location: GeoPoint
+    private lateinit var tourName: EditText
+    private lateinit var tourDescrip: EditText
+    private lateinit var checkptName: EditText
+    private lateinit var checkptDesc: EditText
+    private lateinit var location: GeoPoint
 
-    internal lateinit var buttonAddCheckpoint: Button
-    internal lateinit var buttonAddTour: Button
-    internal lateinit var buttonAddLocation: Button
+    private lateinit var buttonAddCheckpoint: Button
+    private lateinit var buttonAddTour: Button
+    private lateinit var buttonAddLocation: Button
     private lateinit var buttonAddMedia: Button
     private lateinit var buttonCancel: Button
 
@@ -53,9 +60,8 @@ class AddTourFragment : Fragment() {
     private var dbTours: CollectionReference? = null
     // reference to specific users' document
     private var dbUser: DocumentReference? = null
-    internal lateinit var checkpoints: MutableList<Checkpoint>
-
-    internal lateinit var dummyTags: MutableList<String>
+    private lateinit var checkpoints: MutableList<Checkpoint>
+    private lateinit var dummyTags: MutableList<String>
 
 
     override fun onCreateView(
@@ -66,7 +72,7 @@ class AddTourFragment : Fragment() {
         addTourViewModel =
             ViewModelProviders.of(this).get(AddTourViewModel::class.java)
 
-        val root = inflater.inflate(com.example.android.cmsc436final.R.layout.fragment_add_tour, container, false)
+        val root = inflater.inflate(R.layout.fragment_add_tour, container, false)
 
 
         //Parent linear layout to dynamically add checkpoint views
@@ -91,29 +97,45 @@ class AddTourFragment : Fragment() {
         dbUser = db.collection("users").document(uid)
 
         // Get UI elements
-        tourName = root.findViewById<View>(com.example.android.cmsc436final.R.id.tour_name_et) as EditText
-        tourDescrip = root.findViewById<View>(com.example.android.cmsc436final.R.id.tour_description_et) as EditText
-        checkptName = root.findViewById<View>(com.example.android.cmsc436final.R.id.checkpoint_name_et) as EditText
-        checkptDesc = root.findViewById<View>(com.example.android.cmsc436final.R.id.checkpoint_description_et) as EditText
+        tourName = root.findViewById<View>(R.id.tour_name_et) as EditText
+        tourDescrip = root.findViewById<View>(R.id.tour_description_et) as EditText
+        checkptName = root.findViewById<View>(R.id.checkpoint_name_et) as EditText
+        checkptDesc = root.findViewById<View>(R.id.checkpoint_description_et) as EditText
 
-        buttonAddCheckpoint = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_checkpoint_button) as Button
-        buttonAddCheckpoint = root.findViewById(com.example.android.cmsc436final.R.id.add_checkpoint_button)
-        buttonAddLocation = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_location_button) as Button
-        buttonAddTour = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_tour_button) as Button
+        buttonAddCheckpoint = root.findViewById<View>(R.id.add_checkpoint_button) as Button
+        buttonAddCheckpoint = root.findViewById(R.id.add_checkpoint_button)
+        buttonAddLocation = root.findViewById<View>(R.id.add_location_button) as Button
+        buttonAddTour = root.findViewById<View>(R.id.add_tour_button) as Button
         buttonAddMedia = root.findViewById(R.id.add_media_button)
-        buttonCancel =  root.findViewById(com.example.android.cmsc436final.R.id.cancel_tour_button)
-        listviewCP = root.findViewById<View>(com.example.android.cmsc436final.R.id.listViewCheckpoints) as ListView
+        buttonCancel =  root.findViewById(R.id.cancel_tour_button)
+        listviewCP = root.findViewById<View>(R.id.listViewCheckpoints) as ListView
+
+
+        //Navigation buttons
+        buttonAddLocation.setOnClickListener{
+            if (!Places.isInitialized()) {
+                context?.let { it1 -> Places.initialize(it1, getString(R.string.api_key), Locale.US) }
+            }
+            var AUTOCOMPLETE_REQUEST_CODE = 1;
+            // Set the fields to specify which types of place data to
+            // return after the user has made a selection.
+            var fields = Arrays.asList(Place.Field.ID, Place.Field.NAME)
+
+            // Start the autocomplete intent.
+            var intent = Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.FULLSCREEN, fields).build(activity!!)
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+        }
+
+        buttonAddMedia.setOnClickListener{
+            navigateToAddMedia()
+        }
 
         // OnClickListener for addTour Button
         buttonAddTour.setOnClickListener {
             addTour()
         }
 
-
-        buttonAddMedia.setOnClickListener{
-            navigateToAddMedia()
-        }
-//        buttonAddTour = root.findViewById<View>(R.id.add_tour_button) as Button
 
         buttonAddCheckpoint.setOnClickListener {
             addCheckpoint()
@@ -206,7 +228,7 @@ class AddTourFragment : Fragment() {
     }
 
     private fun navigateToAddMedia(){
-        findNavController().navigate(com.example.android.cmsc436final.R.id.action_navigation_add_tour_to_navigation_add_media)
+        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
     }
 
 }

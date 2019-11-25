@@ -41,4 +41,5 @@
         android:name="com.example.android.cmsc436final.ui.userProfile.UserProfileFragment"
         android:label="@string/title_user_profile"
         tools:layout="@layout/fragment_user_profile" />
+
 </navigation>

@@ -107,9 +107,7 @@ class LoginActivity : Activity()  {
                 if (task.isSuccessful) {
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
-                    startActivity(Intent(
-                        this@LoginActivity,
-                        SearchActivity::class.java))
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     //MainActivity::class.java USE THIS TO SEE THE MAP)
                     //for filling in data
 //                    val user = FirebaseAuth.getInstance().currentUser

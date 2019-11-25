@@ -26,6 +26,13 @@ import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import androidx.core.graphics.drawable.toBitmap
 
 
+
+
+import com.example.android.cmsc436final.model.Tour
+import com.example.android.cmsc436final.model.User
+
+
+
 class RegistrationActivity : Activity() {
     private lateinit var uEmail: EditText
     private lateinit var uName: EditText
@@ -162,11 +169,12 @@ class RegistrationActivity : Activity() {
                             //actual url stored here
                             val uristring = task.result.toString()
                             Log.i(TAG, "uploaded to firebase")
-                            val newUserInfo = hashMapOf(
-                                "name" to name,
-                                "profilePic" to uristring
-                            )
-                            db.collection("users").document(auth.uid as String).set(newUserInfo)
+//                            val newUserInfo = hashMapOf(
+//                                "name" to name,
+//                                "profilePic" to uristring
+//                            )
+                            val newUser = User(auth.uid as String, name, email, uristring, arrayListOf<Tour>(),arrayListOf<Tour>())
+                            db.collection("users").document(auth.uid as String).set(newUser)
                             Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
                             startActivity(Intent(this@RegistrationActivity, SearchActivity::class.java))
                         } else {

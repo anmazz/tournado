@@ -42,6 +42,9 @@ class AddTourFragment : Fragment() {
     internal lateinit var buttonAddTour: Button
     internal lateinit var buttonAddLocation: Button
     private lateinit var buttonAddMedia: Button
+    private lateinit var buttonCancel: Button
+
+
     internal lateinit var listviewCP: ListView
 
 
@@ -63,10 +66,8 @@ class AddTourFragment : Fragment() {
         addTourViewModel =
             ViewModelProviders.of(this).get(AddTourViewModel::class.java)
 
-
         val root = inflater.inflate(com.example.android.cmsc436final.R.layout.fragment_add_tour, container, false)
 
-        buttonAddCheckpoint = root.findViewById(com.example.android.cmsc436final.R.id.add_checkpoint_button)
 
         //Parent linear layout to dynamically add checkpoint views
 //        parentLinearLayout = root.findViewById(com.example.android.cmsc436final.R.id.parent_linear_layout)
@@ -96,16 +97,17 @@ class AddTourFragment : Fragment() {
         checkptDesc = root.findViewById<View>(com.example.android.cmsc436final.R.id.checkpoint_description_et) as EditText
 
         buttonAddCheckpoint = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_checkpoint_button) as Button
+        buttonAddCheckpoint = root.findViewById(com.example.android.cmsc436final.R.id.add_checkpoint_button)
         buttonAddLocation = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_location_button) as Button
         buttonAddTour = root.findViewById<View>(com.example.android.cmsc436final.R.id.add_tour_button) as Button
         buttonAddMedia = root.findViewById(R.id.add_media_button)
+        buttonCancel =  root.findViewById(com.example.android.cmsc436final.R.id.cancel_tour_button)
         listviewCP = root.findViewById<View>(com.example.android.cmsc436final.R.id.listViewCheckpoints) as ListView
 
         // OnClickListener for addTour Button
         buttonAddTour.setOnClickListener {
             addTour()
         }
-
 
 
         buttonAddMedia.setOnClickListener{
@@ -115,6 +117,10 @@ class AddTourFragment : Fragment() {
 
         buttonAddCheckpoint.setOnClickListener {
             addCheckpoint()
+        }
+
+        buttonCancel.setOnClickListener {
+            cancel()
         }
 
         //list of checkpoints for the listview
@@ -183,6 +189,20 @@ class AddTourFragment : Fragment() {
         } else  {
             Toast.makeText(activity, "Please complete the fields", Toast.LENGTH_LONG).show()
         }
+    }
+
+
+    private fun cancel() {
+        tourName.setText("")
+        tourDescrip.setText("")
+        checkptName.setText("")
+        checkptDesc.setText("")
+        checkpoints.clear()
+
+        val lvCheckpoint = CheckPointList(activity!!, checkpoints)
+        //attaching adapter to the listview
+        listviewCP.adapter = lvCheckpoint
+
     }
 
     private fun navigateToAddMedia(){

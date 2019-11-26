@@ -3,89 +3,85 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginBottom="85dp"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<ScrollView
-    android:id = "@+id/parent_scrollview"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    <ScrollView
+        android:id="@+id/parent_scrollview"
+        android:layout_width="0dp"
+        android:layout_height="732dp"
 
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintHorizontal_bias="0.4"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.188"
-        >
-    <!--    android:layout_marginBottom="130dp"-->
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+        <!--    android:layout_marginBottom="130dp"-->
 
         <LinearLayout
             android:id="@+id/parent_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:adjustViewBounds="true"
-            android:layout_height="182dp"
-            android:layout_marginBottom="-30dp"
-            >
+            <!-- CHECKPOINT FIELD -->
 
-            <EditText
-                android:id="@+id/tour_name_et"
-                android:layout_width="374dp"
-                android:layout_height="47dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="@string/add_tour_name"
-                android:includeFontPadding="false"
-                app:layout_constraintBottom_toTopOf="@id/tour_description_et"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_conversion_absoluteHeight="48dp"
-                tools:layout_conversion_absoluteWidth="374dp" />
-
-            <EditText
-                android:id="@+id/tour_description_et"
-                android:layout_width="374dp"
-                android:layout_height="47dp"
-                android:gravity="start|top"
-                android:includeFontPadding="false"
-                android:hint="@string/add_tour_description"
-                android:inputType="textMultiLine"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.432"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tour_name_et"
-                app:layout_constraintVertical_bias="0.631" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- CHECKPOINT FIELD -->
-
-<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:id="@+id/checkpoint_field_constraint_layout"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="471dp">-->
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                android:id="@+id/checkpoint_field_constraint_layout"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="471dp">-->
 
 
-                <TextView
-                    android:id="@+id/checkpointTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/checkpoint_tv"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="24sp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="182dp"
+                android:layout_marginBottom="-30dp"
+                android:adjustViewBounds="true">
+
+                <EditText
+                    android:id="@+id/tour_name_et"
+                    android:layout_width="374dp"
+                    android:layout_height="47dp"
+                    android:ems="10"
+                    android:hint="@string/add_tour_name"
+                    android:includeFontPadding="false"
+                    android:inputType="textPersonName"
+                    app:layout_constraintBottom_toTopOf="@id/tour_description_et"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.4"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_conversion_absoluteHeight="48dp"
+                    tools:layout_conversion_absoluteWidth="374dp" />
+
+                <EditText
+                    android:id="@+id/tour_description_et"
+                    android:layout_width="374dp"
+                    android:layout_height="47dp"
+                    android:gravity="start|top"
+                    android:hint="@string/add_tour_description"
+                    android:includeFontPadding="false"
+                    android:inputType="textMultiLine"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.432"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tour_name_et"
+                    app:layout_constraintVertical_bias="0.631" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/checkpointTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/checkpoint_tv"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/checkpoint_name_et"
@@ -99,24 +95,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/checkpointTextView" />
 
-                <EditText
-                    android:id="@+id/checkpoint_description_et"
-                    android:layout_width="369dp"
-                    android:layout_height="73dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:hint="@string/add_checkpoint_description"
-                    android:inputType="textMultiLine"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/checkpoint_name_et" />
+            <EditText
+                android:id="@+id/checkpoint_description_et"
+                android:layout_width="369dp"
+                android:layout_height="73dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/add_checkpoint_description"
+                android:inputType="textMultiLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/checkpoint_name_et" />
 
 
             <LinearLayout
                 android:id="@+id/buttons_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_width="fill_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <Button
@@ -124,28 +121,33 @@
                     android:layout_width="173dp"
                     android:layout_height="51dp"
                     android:hint="@string/add_location"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/checkpoint_description_et"
                     app:layout_constraintVertical_bias="0.045" />
+
                 <Button
-                        android:id="@+id/add_media_button"
-                        android:layout_width="173dp"
-                        android:layout_height="51dp"
-                        android:text="Add media"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.49"
-                        app:layout_constraintStart_toEndOf="@+id/add_location_button"
-                        app:layout_constraintTop_toBottomOf="@+id/checkpoint_description_et"
-                        app:layout_constraintVertical_bias="0.094" />
+                    android:id="@+id/add_media_button"
+                    android:layout_width="173dp"
+                    android:layout_height="51dp"
+                    android:text="Add media"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.49"
+                    app:layout_constraintStart_toEndOf="@+id/add_location_button"
+                    app:layout_constraintTop_toBottomOf="@+id/checkpoint_description_et"
+                    app:layout_constraintVertical_bias="0.094" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/checkptbutton_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_width="fill_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/add_checkpoint_button"
                     style="@style/Widget.AppCompat.Button"
@@ -162,54 +164,56 @@
                     app:layout_constraintVertical_bias="0.37" />
             </LinearLayout>
 
-<!--            listView for all the checkpoints to appear -->
+            <!--            listView for all the checkpoints to appear -->
             <ListView
-                    android:id="@+id/listViewCheckpoints"
-                    android:layout_width="wrap_content"
-                    android:layout_height="150dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/parent_linear_layout"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.49"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_checkpoint_button"
-                    app:layout_constraintVertical_bias="1.5"
-                android:nestedScrollingEnabled="true">
+                android:id="@+id/listViewCheckpoints"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:nestedScrollingEnabled="true"
+                app:layout_constraintBottom_toBottomOf="@+id/parent_linear_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_checkpoint_button"
+                app:layout_constraintVertical_bias="1.5">
 
-                </ListView>
-<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-
-                <LinearLayout
-                    android:id="@+id/final_buttons"
-                    android:gravity="center"
-                    android:layout_width="fill_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/parent_scrollview">
+            </ListView>
+            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-                    <Button
-                        android:id="@+id/cancel_tour_button"
-                        style="@style/Widget.AppCompat.Button"
-                        android:layout_width="180dp"
-                        android:layout_height="46dp"
-                        android:background="@drawable/button_background"
-                        android:text="Cancel"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-                    <Button
-                        android:id="@+id/add_tour_button"
-                        style="@style/Widget.AppCompat.Button"
-                        android:layout_width="180dp"
-                        android:layout_height="46dp"
-                        android:background="@drawable/button_background"
-                        android:text="Add Tour!"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-                </LinearLayout>
+            <LinearLayout
+                android:id="@+id/final_buttons"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/parent_scrollview">
+
+
+                <Button
+                    android:id="@+id/cancel_tour_button"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="180dp"
+                    android:layout_height="46dp"
+                    android:background="@drawable/button_background"
+                    android:text="Cancel"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+                <Button
+                    android:id="@+id/add_tour_button"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="180dp"
+                    android:layout_height="46dp"
+                    android:background="@drawable/button_background"
+                    android:text="Add Tour!"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+            </LinearLayout>
         </LinearLayout>
-</ScrollView>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

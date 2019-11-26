@@ -12,8 +12,8 @@ import com.google.android.gms.location.LocationServices
 class LocationLiveData(context: Context) : LiveData<LocationModel>() {
     companion object {
         val locationRequest: LocationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 12000
+            fastestInterval = 8000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
     }

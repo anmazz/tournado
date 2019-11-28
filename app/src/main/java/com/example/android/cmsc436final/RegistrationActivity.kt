@@ -15,22 +15,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
-import com.google.firebase.storage.UploadTask
-import com.google.android.gms.tasks.OnSuccessListener
-import java.net.URI
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import androidx.core.graphics.drawable.toBitmap
-
-
-
-
 import com.example.android.cmsc436final.model.Tour
 import com.example.android.cmsc436final.model.User
-
+import android.graphics.BitmapFactory
 
 
 class RegistrationActivity : Activity() {
@@ -46,7 +35,7 @@ class RegistrationActivity : Activity() {
     private lateinit var selectedPhoto: Uri
     private var photoHasBeenSelected: Boolean = false
     private val PICK_IMAGE = 4
-    private val TAG = "Something Bad Happened"
+    private val TAG = "OUTPUT HERE"
 
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,14 +61,17 @@ class RegistrationActivity : Activity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            Log.i(TAG, "data is" + data!!.data.toString())
+
             selectedPhoto = data!!.data as Uri
             if(selectedPhoto != null){
                 photoHasBeenSelected=true
-                Log.i(TAG, "changing imageview to"+ selectedPhoto )
                 userPic.setImageURI(selectedPhoto)
             }
         }
     }
+
+
 
 
 
@@ -124,12 +116,6 @@ class RegistrationActivity : Activity() {
                 progressBar.visibility = View.GONE
                 return
             }
-//            if (!photoHasBeenSelected) {
-//                Toast.makeText(applicationContext, "Please select a photo", Toast.LENGTH_LONG)
-//                    .show()
-//                progressBar.visibility = View.GONE
-//                return
-            //}
 
             val x = auth!!.createUserWithEmailAndPassword(email, password)
 
@@ -141,15 +127,18 @@ class RegistrationActivity : Activity() {
                     //uploading pic url to firestore
                     Log.i(TAG, "about to upload to firebase")
                     val storageRef = storage.reference
-                    val userRef = storageRef.child(auth.uid as String + ".jpg")
-                    //val userImagesRef = storageRef.child("/userProfilePics"+ auth.uid as String + ".jpg")
-                    if(!photoHasBeenSelected){
-                        //:TODO send default pic to firebase
-                        val uriFromResource = Uri.parse("android.resource://com.example.android.cmsc436final/" + R.drawable.ic_person_black_24dp)
-                        userPic.setImageURI(uriFromResource)
-                        //userPic.setImageURI(R.drawable.ic_person_black_24dp)
+                    val userRef = storageRef.child("/userProfilePics").child(auth.uid as String + ".jpg")
+                    var imageBitmap: Bitmap
+                    when(photoHasBeenSelected) {
+                        //grabs drawable from resource and converts it to bitmap
+                        false -> imageBitmap = BitmapFactory.decodeResource(
+                            applicationContext.resources,
+                            R.drawable.default_user_pic
+                        )
+                        //converts image selected by user to bitmap
+                        true -> imageBitmap = (userPic.drawable as BitmapDrawable).bitmap
                     }
-                    val imageBitmap =  (userPic.drawable as BitmapDrawable).bitmap
+
                     val baos = ByteArrayOutputStream()
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                     val data = baos.toByteArray()
@@ -169,10 +158,6 @@ class RegistrationActivity : Activity() {
                             //actual url stored here
                             val uristring = task.result.toString()
                             Log.i(TAG, "uploaded to firebase")
-//                            val newUserInfo = hashMapOf(
-//                                "name" to name,
-//                                "profilePic" to uristring
-//                            )
                             val newUser = User(auth.uid as String, name, email, uristring, arrayListOf<Tour>(),arrayListOf<Tour>())
                             db.collection("users").document(auth.uid as String).set(newUser)
                             Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
@@ -215,4 +200,3 @@ class RegistrationActivity : Activity() {
 
 
  }
-

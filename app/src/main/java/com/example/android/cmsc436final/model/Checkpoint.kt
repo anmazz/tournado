@@ -6,7 +6,7 @@ data class Checkpoint (
     var name: String = "",
     var location: GeoPoint = GeoPoint(0.0,0.0),
     var description:  String = "",
-    var images: List<String>? = null,
-    var audio: List<String>? = null,
-    var video: List<String>? = null
+    var image: String = "",
+    var audio: String = "",
+    var video: String = ""
 )

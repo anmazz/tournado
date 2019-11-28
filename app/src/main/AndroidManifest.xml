@@ -41,10 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SearchActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:label="@string/title_activity_search" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

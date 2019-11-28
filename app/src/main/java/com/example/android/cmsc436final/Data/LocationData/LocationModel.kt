@@ -1,4 +1,4 @@
-package com.example.android.cmsc436final
+package com.example.android.cmsc436final.Data.LocationData
 
 data class LocationModel(
     val longitude: Double,

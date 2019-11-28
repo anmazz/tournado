@@ -2,11 +2,14 @@
 package com.example.android.cmsc436final.ui.addTour
 
 
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +28,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.Place.*
 import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -62,6 +66,7 @@ class AddTourFragment : Fragment() {
     private var dbUser: DocumentReference? = null
     private lateinit var checkpoints: MutableList<Checkpoint>
     private lateinit var dummyTags: MutableList<String>
+    private val AUTOCOMPLETE_REQUEST_CODE = 1
 
 
     override fun onCreateView(
@@ -73,20 +78,6 @@ class AddTourFragment : Fragment() {
             ViewModelProviders.of(this).get(AddTourViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_add_tour, container, false)
-
-
-        //Parent linear layout to dynamically add checkpoint views
-//        parentLinearLayout = root.findViewById(com.example.android.cmsc436final.R.id.parent_linear_layout)
-
-//        buttonAddCheckpoint.setOnClickListener{
-//            onAddField(root, inflater)
-//        }
-
-
-//        val textView: TextView = root.findViewById(R.id.text_add_tour)
-//        addTourViewModel.text.observe(this, Observer {
-//            textView.text = it
-//        })
 
         // Get DB refs
         db = FirebaseFirestore.getInstance()
@@ -110,20 +101,21 @@ class AddTourFragment : Fragment() {
         buttonCancel =  root.findViewById(R.id.cancel_tour_button)
         listviewCP = root.findViewById<View>(R.id.listViewCheckpoints) as ListView
 
+        //For add location intent
+        var fields = Arrays.asList(Place.Field.ID, Place.Field.NAME)
+
+        // Start the autocomplete intent.
+        var intent = Autocomplete.IntentBuilder(
+            AutocompleteActivityMode.FULLSCREEN, fields).build(activity!!)
 
         //Navigation buttons
         buttonAddLocation.setOnClickListener{
             if (!Places.isInitialized()) {
                 context?.let { it1 -> Places.initialize(it1, getString(R.string.api_key), Locale.US) }
             }
-            var AUTOCOMPLETE_REQUEST_CODE = 1;
             // Set the fields to specify which types of place data to
             // return after the user has made a selection.
-            var fields = Arrays.asList(Place.Field.ID, Place.Field.NAME)
 
-            // Start the autocomplete intent.
-            var intent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN, fields).build(activity!!)
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
 
@@ -131,7 +123,6 @@ class AddTourFragment : Fragment() {
             navigateToAddMedia()
         }
 
-        // OnClickListener for addTour Button
         buttonAddTour.setOnClickListener {
             addTour()
         }
@@ -231,4 +222,17 @@ class AddTourFragment : Fragment() {
         findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                var place = Autocomplete.getPlaceFromIntent(data) as Place
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                var status = Autocomplete.getStatusFromIntent(data)
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+
+    }
 }

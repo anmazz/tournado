@@ -176,7 +176,7 @@ class RegistrationActivity : Activity() {
                             val newUser = User(auth.uid as String, name, email, uristring, arrayListOf<Tour>(),arrayListOf<Tour>())
                             db.collection("users").document(auth.uid as String).set(newUser)
                             Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
-                            startActivity(Intent(this@RegistrationActivity, SearchActivity::class.java))
+                            startActivity(Intent(this@RegistrationActivity, MainActivity::class.java))
                         } else {
                             Toast.makeText(applicationContext, "Could not upload pic", Toast.LENGTH_LONG).show()
                             // ...

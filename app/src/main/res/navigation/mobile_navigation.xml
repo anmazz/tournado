@@ -26,8 +26,7 @@
             android:id="@+id/action_navigation_add_tour_to_navigation_add_media"
             app:destination="@id/navigation_add_media"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:launchSingleTop="false"
-            app:popUpTo="@+id/navigation_add_tour" />
+            app:launchSingleTop="false" />
     </fragment>
 
     <fragment

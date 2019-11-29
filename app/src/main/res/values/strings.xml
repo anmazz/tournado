@@ -40,6 +40,11 @@
     <string name="add_checkpoint_description">Checkpoint description</string>
     <string name="add_location">Add location</string>
     <string name="add_media">Add Media</string>
+    <string name="add_photo">+ Picture</string>
+    <string name="add_video">+ Video</string>
+    <string name="add_audio">+ Audio</string>
+    <string name="upload_media">Upload Media</string>
+
     <!-- Others-->
     <string name="title_activity_home">Home</string>
     <string name="title_activity_search">SearchActivity</string>

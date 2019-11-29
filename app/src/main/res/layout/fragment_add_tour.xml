@@ -38,21 +38,42 @@
                 android:layout_marginBottom="-30dp"
                 android:adjustViewBounds="true">
 
-                <EditText
+<!--                <EditText-->
+<!--                    android:id="@+id/tour_name_et"-->
+<!--                    android:layout_width="374dp"-->
+<!--                    android:layout_height="47dp"-->
+<!--                    android:ems="10"-->
+<!--                    android:hint="@string/add_tour_name"-->
+<!--                    android:includeFontPadding="false"-->
+<!--                    android:inputType="textPersonName"-->
+<!--                    app:layout_constraintBottom_toTopOf="@id/tour_description_et"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.4"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    tools:layout_conversion_absoluteHeight="48dp"-->
+<!--                    tools:layout_conversion_absoluteWidth="374dp" />-->
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tour_name_et"
-                    android:layout_width="374dp"
-                    android:layout_height="47dp"
-                    android:ems="10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="@string/add_tour_name"
-                    android:includeFontPadding="false"
-                    android:inputType="textPersonName"
                     app:layout_constraintBottom_toTopOf="@id/tour_description_et"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.4"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_conversion_absoluteHeight="48dp"
-                    tools:layout_conversion_absoluteWidth="374dp" />
+                    boxStrokeColor="blue"
+                    android:labelFor="@+id/tour_name_et_2">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tour_name_et_2"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <EditText
                     android:id="@+id/tour_description_et"

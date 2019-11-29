@@ -21,6 +21,7 @@
     <string name="title_search_tour">Search Tour</string>
     <string name="title_add_tour">Add Tour</string>
     <string name="title_user_profile">Profile</string>
+    <string name="title_add_media">Add Media</string>
     <!-- UserProfile Strings-->
     <string name="user_profile_pic">*Username*</string>
     <string name="change_pic">Change Profile Picture</string>

@@ -72,7 +72,6 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
     }
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -133,16 +132,16 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
         mGoogleMap.animateCamera(cu)
     }
 
-    private fun createExample(): Tour {
-        val checkPointList = mutableListOf<Checkpoint>()
-        val checkpoint1 = Checkpoint("Stamp Student Union", GeoPoint(38.9882, -76.9447), "", "", "", "")
-        checkPointList.add(checkpoint1)
-        val checkpoint2 = Checkpoint("Eppley Recreation Center", GeoPoint(38.9936, -76.9452), "", "", "", "")
-        checkPointList.add(checkpoint2)
-        val checkpoint3 = Checkpoint("Prince Frederick", GeoPoint(38.9832, -76.9458), "", "", "", "")
-        checkPointList.add(checkpoint3)
-        val exampleTour = Tour("1", "UMD Tour", "", 0, "", checkPointList)
-        return exampleTour
-    }
+//    private fun createExample(): Tour {
+//        val checkPointList = mutableListOf<Checkpoint>()
+//        val checkpoint1 = Checkpoint("Stamp Student Union", GeoPoint(38.9882, -76.9447), "", "", "", "")
+//        checkPointList.add(checkpoint1)
+//        val checkpoint2 = Checkpoint("Eppley Recreation Center", GeoPoint(38.9936, -76.9452), "", "", "", "")
+//        checkPointList.add(checkpoint2)
+//        val checkpoint3 = Checkpoint("Prince Frederick", GeoPoint(38.9832, -76.9458), "", "", "", "")
+//        checkPointList.add(checkpoint3)
+//        val exampleTour = Tour("1", "UMD Tour", "", 0, "", checkPointList)
+//        return exampleTour
+//    }
 
 }

@@ -49,6 +49,10 @@
         android:id="@+id/tour_overview"
         android:name="com.example.android.cmsc436final.ui.tourOverview.TourOverviewFragment"
         android:label="Tour Overview"
-        tools:layout="@layout/fragment_tour_overview" />
+        tools:layout="@layout/fragment_tour_overview" >
+        <argument
+            android:name="tourID"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

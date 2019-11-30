@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
 import com.example.android.cmsc436final.adapter.TourAdapter
+import com.example.android.cmsc436final.ui.tourOverview.TourOverviewFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -80,16 +82,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val button = root.findViewById<View>(R.id.testingButton)
+
         mToursRecycler = root.findViewById(R.id.recycler_tours)
 
         // Initialize Firestore and the main RecyclerView
         initFirestore()
         initRecyclerView()
 
-        button.setOnClickListener{
-            findNavController().navigate(R.id.action_navigation_home_to_tour_overview)
-        }
         return root
     }
 
@@ -123,10 +122,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
             override fun onDataChanged() { // Show/hide content if the query returns empty.
                 if (itemCount == 0) {
                     mToursRecycler!!.visibility = View.GONE
-                    //mEmptyView.setVisibility(View.VISIBLE)
                 } else {
                     mToursRecycler!!.visibility = View.VISIBLE
-                   // mEmptyView.setVisibility(View.GONE)
                 }
             }
 
@@ -196,8 +193,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
     }
 
     override fun onRestaurantSelected(tour: DocumentSnapshot?) {
-        findNavController().navigate(R.id.action_navigation_home_to_tour_overview)
+        val bundle = bundleOf("tourid" to tour!!.id)
+        findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
     }
-
-
 }

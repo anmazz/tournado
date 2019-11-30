@@ -32,9 +32,10 @@ import org.json.JSONObject
 
 class TourOverviewFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapRouteDrawer: MapRouteDrawer
-    private var currTour = createExample()
+    private var currTour: Tour? = null
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var mapView: MapView
+    private lateinit var db: FirebaseFirestore
 
     companion object{
         private const val TAG = "TourOverviewFragment"
@@ -45,13 +46,28 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
-//        val db = FirebaseFirestore.getInstance()
-//        val id = db.collection("tours").document().id
-//        db.collection("tours").document(id).set(currTour)
-
-
+        var tourid = arguments?.getString("tourid")
+        getTourById(tourid!!)
         val root = inflater.inflate(R.layout.fragment_tour_overview, container, false)
         return root
+    }
+
+    private fun getTourById(tourId: String) {
+        db = FirebaseFirestore.getInstance()
+        var tour :Tour? = null
+        val docRef = db.collection("tours").document(tourId)
+        docRef.get().addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    currTour = document.toObject(Tour::class.java)
+                    drawOnMap()
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,9 +90,10 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
-        mapRouteDrawer = MapRouteDrawer(currTour, context!!)
+    }
 
-        Log.i(TAG, mapRouteDrawer.getURL())
+    private fun drawOnMap(){
+        mapRouteDrawer = MapRouteDrawer(currTour!!, context!!)
 
         val requestQueue = Volley.newRequestQueue(context!!)
         val url = mapRouteDrawer.getURL()
@@ -104,13 +121,12 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
         }){}
 
         requestQueue.add(directionsRequest)
-
     }
 
 
     private fun moveCameraToTourBounds(){
         val builder = LatLngBounds.Builder()
-        for (marker: Checkpoint in currTour.checkpoints!!) {
+        for (marker: Checkpoint in currTour!!.checkpoints!!) {
             builder.include(LatLng(marker.location.latitude, marker.location.longitude))
         }
         val bounds = builder.build()

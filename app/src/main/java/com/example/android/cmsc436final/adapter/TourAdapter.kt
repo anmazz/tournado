@@ -66,7 +66,6 @@ open class TourAdapter(query: Query?, private val mListener: OnTourSelectedListe
         RecyclerView.ViewHolder(itemView) {
         var imageView: ImageView = itemView.findViewById(R.id.tour_item_image)
         var nameView: TextView = itemView.findViewById(R.id.tour_item_name)
-        //var distanceView: TextView = itemView.findViewById(R.id.tour_item_distance)
         var locationView: TextView = itemView.findViewById(R.id.tour_item_location)
         fun bind(
             snapshot: DocumentSnapshot,
@@ -77,11 +76,12 @@ open class TourAdapter(query: Query?, private val mListener: OnTourSelectedListe
             Glide.with(imageView.context).load(tour!!.pic).centerCrop().into(imageView)
             //Set nameView text
             nameView.text = tour.name
+
+            //Retrieve starting checkpoint location's city
             val geocoder = Geocoder(itemView.context)
             val lat = tour.checkpoints!![0].location.latitude
             val long = tour.checkpoints!![0].location.longitude
             locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality
-                //tour.checkpoints!![0].location.toString()
 
             // Click listener
             itemView.setOnClickListener { listener?.onRestaurantSelected(snapshot) }

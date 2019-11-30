@@ -32,12 +32,12 @@
                 android:layout_height="wrap_content"
                 android:text="Button" />
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
-                android:layout_width="464dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </ListView>
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

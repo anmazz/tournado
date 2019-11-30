@@ -119,7 +119,6 @@ class AddTourFragment : Fragment() {
             }
             // Set the fields to specify which types of place data to
             // return after the user has made a selection.
-
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
 
@@ -159,7 +158,7 @@ class AddTourFragment : Fragment() {
 //        images = arr
 //        audio:  MutableList<String>
 //        video: MutableList<String>
-        val newCP = Checkpoint(name, location, description, null, null, null)
+        val newCP = Checkpoint(name, location, description, "", "", "")
 
         // need to add this checkpoint to tour arrayList
         checkpoints.add(newCP)
@@ -188,7 +187,7 @@ class AddTourFragment : Fragment() {
             val id = db.collection("tours").document().id
 
             //creating a Tour Object
-            val newTour = Tour(id, tourNameStr, 0, tourDescripStr, checkpoints, dummyTags)
+            val newTour = Tour(id, tourNameStr, "", 0, tourDescripStr, checkpoints, dummyTags)
 
             // Add newTour obj to the database in the tours collection
             dbTours!!.document(id).set(newTour)
@@ -226,21 +225,24 @@ class AddTourFragment : Fragment() {
         findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                var place = Autocomplete.getPlaceFromIntent(data)
-                Log.i(TAG, "Place: " + place.name + ", " + place.id)
-                Toast.makeText(activity, "Place: " + place.name + ", " + place.id, Toast.LENGTH_LONG).show()
+                val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
+                if (place != null) {
+                    Log.i(TAG, "Place: " + place.name + ", " + place.id)
+                    Toast.makeText(activity, "Place: " + place.name + ", " + place.id, Toast.LENGTH_LONG).show()
+                }
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // TODO: Handle the error.
                 Toast.makeText(activity, "Error with autocomplete. Please try again.", Toast.LENGTH_LONG)
-                var status = Autocomplete.getStatusFromIntent(data)
+                var status = Autocomplete.getStatusFromIntent(data!!)
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
         }
 
-
     }
+
 }

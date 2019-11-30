@@ -29,9 +29,9 @@ import com.google.firebase.firestore.GeoPoint
 import com.google.maps.android.PolyUtil
 import org.json.JSONObject
 
-class TourOverviewFragment(tour: Tour) : Fragment(), OnMapReadyCallback {
+class TourOverviewFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapRouteDrawer: MapRouteDrawer
-    private var currTour = tour
+    private var currTour = createExample()
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var mapView: MapView
 
@@ -119,13 +119,13 @@ class TourOverviewFragment(tour: Tour) : Fragment(), OnMapReadyCallback {
 
     private fun createExample(): Tour {
         val checkPointList = mutableListOf<Checkpoint>()
-        val checkpoint1 = Checkpoint("Stamp Student Union", GeoPoint(38.9882, -76.9447), "", null, null, null)
+        val checkpoint1 = Checkpoint("Stamp Student Union", GeoPoint(38.9882, -76.9447), "", "", "", "")
         checkPointList.add(checkpoint1)
-        val checkpoint2 = Checkpoint("Eppley Recreation Center", GeoPoint(38.9936, -76.9452), "", null, null, null)
+        val checkpoint2 = Checkpoint("Eppley Recreation Center", GeoPoint(38.9936, -76.9452), "", "", "", "")
         checkPointList.add(checkpoint2)
-        val checkpoint3 = Checkpoint("Prince Frederick", GeoPoint(38.9832, -76.9458), "", null, null, null)
+        val checkpoint3 = Checkpoint("Prince Frederick", GeoPoint(38.9832, -76.9458), "", "", "", "")
         checkPointList.add(checkpoint3)
-        val exampleTour = Tour("1", "UMD Tour", 0, "", checkPointList, null)
+        val exampleTour = Tour("1", "UMD Tour", "", 0, "", checkPointList)
         return exampleTour
     }
 

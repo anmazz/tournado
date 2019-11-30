@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="383dp"
+        android:layout_height="173dp"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing"
+        android:minHeight="200dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/image_tour"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tour_name_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tour Name"
+                android:layout_above="@id/tour_location"
+                android:layout_marginLeft="3dp"
+                android:textSize="30dp"/>
+
+            <TextView
+                android:id="@+id/tour_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp"
+                android:layout_alignStart="@id/tour_name_view"
+                android:text="College Park, MD"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/divider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" • "
+                android:layout_toRightOf="@id/tour_location"
+                android:layout_alignParentBottom="true"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/location_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 miles"
+                android:layout_toRightOf="@id/divider"
+                android:layout_alignParentBottom="true"
+                android:textSize="15dp"/>
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</RelativeLayout>

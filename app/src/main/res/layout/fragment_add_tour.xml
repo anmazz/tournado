@@ -65,11 +65,11 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_conversion_absoluteHeight="48dp"
                     boxStrokeColor="blue"
-                    android:labelFor="@+id/tour_name_et_2">
+                    android:labelFor="@+id/tour_name_et_2"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tour_name_et_2"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -91,6 +91,11 @@
                     app:layout_constraintVertical_bias="0.631" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
                 android:id="@+id/checkpointTextView"

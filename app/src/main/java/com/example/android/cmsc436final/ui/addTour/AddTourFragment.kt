@@ -30,6 +30,7 @@ import com.google.android.libraries.places.api.model.Place.*
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -43,7 +44,7 @@ import kotlin.collections.ArrayList
 class AddTourFragment : Fragment() {
 
     private lateinit var addTourViewModel: AddTourViewModel
-    private lateinit var tourName: EditText
+    private lateinit var tourName: TextInputEditText
     private lateinit var tourDescrip: EditText
     private lateinit var checkptName: EditText
     private lateinit var checkptDesc: EditText
@@ -92,7 +93,7 @@ class AddTourFragment : Fragment() {
         dbUser = db.collection("users").document(uid)
 
         // Get UI elements
-        tourName = root.findViewById<View>(R.id.tour_name_et) as EditText
+        tourName = root.findViewById<View>(R.id.tour_name_et_2) as TextInputEditText
         tourDescrip = root.findViewById<View>(R.id.tour_description_et) as EditText
         checkptName = root.findViewById<View>(R.id.checkpoint_name_et) as EditText
         checkptDesc = root.findViewById<View>(R.id.checkpoint_description_et) as EditText
@@ -178,6 +179,7 @@ class AddTourFragment : Fragment() {
         //getting the values to save
         val tourNameStr = tourName.text.toString().trim { it <= ' ' }
         val tourDescripStr = tourDescrip.text.toString()
+        val picString = ""
 
         //checking if the value is provided
         if (!TextUtils.isEmpty(tourNameStr) && !TextUtils.isEmpty(tourDescripStr) &&
@@ -187,7 +189,9 @@ class AddTourFragment : Fragment() {
             val id = db.collection("tours").document().id
 
             //creating a Tour Object
-            val newTour = Tour(id, tourNameStr, "", 0, tourDescripStr, checkpoints, dummyTags)
+
+//            val newTour = Tour(id, tourNameStr, "", 0, tourDescripStr, checkpoints, dummyTags)
+            val newTour = Tour(id, tourNameStr, picString, 0, tourDescripStr, checkpoints, dummyTags)
 
             // Add newTour obj to the database in the tours collection
             dbTours!!.document(id).set(newTour)

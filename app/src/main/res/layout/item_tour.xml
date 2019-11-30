@@ -20,47 +20,43 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/image_tour"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/tour_item_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:adjustViewBounds="true"/>
+
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/gradient_overlay"/>
+            </FrameLayout>
 
             <TextView
-                android:id="@+id/tour_name_view"
+                android:id="@+id/tour_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/quantum_white_text"
                 android:text="Tour Name"
-                android:layout_above="@id/tour_location"
+                android:layout_above="@id/tour_item_location"
                 android:layout_marginLeft="3dp"
                 android:textSize="30dp"/>
 
             <TextView
-                android:id="@+id/tour_location"
+                android:id="@+id/tour_item_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="0dp"
-                android:layout_alignStart="@id/tour_name_view"
+                android:layout_alignStart="@id/tour_item_name"
                 android:text="College Park, MD"
+                android:textColor="@color/quantum_white_text"
                 android:textSize="15dp" />
 
-            <TextView
-                android:id="@+id/divider"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" • "
-                android:layout_toRightOf="@id/tour_location"
-                android:layout_alignParentBottom="true"
-                android:textSize="15dp"/>
-
-            <TextView
-                android:id="@+id/location_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10 miles"
-                android:layout_toRightOf="@id/divider"
-                android:layout_alignParentBottom="true"
-                android:textSize="15dp"/>
         </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>

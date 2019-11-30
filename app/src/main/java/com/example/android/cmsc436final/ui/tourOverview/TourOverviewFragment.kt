@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.maps.android.PolyUtil
 import org.json.JSONObject
@@ -43,6 +44,11 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
+
+//        val db = FirebaseFirestore.getInstance()
+//        val id = db.collection("tours").document().id
+//        db.collection("tours").document(id).set(currTour)
+
 
         val root = inflater.inflate(R.layout.fragment_tour_overview, container, false)
         return root

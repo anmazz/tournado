@@ -7,34 +7,50 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
-import com.google.android.gms.location.*
-import com.google.android.gms.maps.*
+import com.example.android.cmsc436final.adapter.TourAdapter
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.Query
 
 
-class HomeFragment : Fragment(), OnMapReadyCallback {
+class HomeFragment : Fragment(), OnMapReadyCallback,
+    TourAdapter.OnTourSelectedListener {
 
     companion object{
         private const val LOCATION_REQUEST = 1
 
         private lateinit var mapView: MapView
         private const val TAG = "HomeFragment"
+        private const val LIMIT = 50
     }
 
     private lateinit var mSharedViewModel: SharedViewModel
     private lateinit var mGoogleMap: GoogleMap
     private var lat : Double = 0.0
     private var long : Double = 0.0
+    private var mFirestore: FirebaseFirestore? = null
+    private var mQuery: Query? = null
+    private var mToursRecycler: RecyclerView? = null
+    private var mAdapter: TourAdapter? = null
+    //private val mEmptyView: ViewGroup? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -44,6 +60,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onStart() {
         super.onStart()
         invokeLocationAction()
+        // Start listening for Firestore updates
+        if (mAdapter != null) {
+            mAdapter!!.startListening()
+        }
+    }
+
+    override fun onStop(){
+        super.onStop()
+        if (mAdapter != null) {
+            mAdapter!!.startListening()
+        }
     }
 
     override fun onCreateView(
@@ -51,8 +78,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val button = root.findViewById<View>(R.id.testingButton)
+        mToursRecycler = root.findViewById(R.id.recycler_tours)
+
+        // Initialize Firestore and the main RecyclerView
+        initFirestore()
+        initRecyclerView()
+
         button.setOnClickListener{
             findNavController().navigate(R.id.action_navigation_home_to_tour_overview)
         }
@@ -72,6 +106,42 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
     }
+
+    private fun initFirestore() {
+        mFirestore = FirebaseFirestore.getInstance()
+        // Get the 50 highest rated restaurants
+        mQuery = mFirestore!!.collection("tours")
+            .limit(LIMIT.toLong())
+    }
+
+    private fun initRecyclerView() {
+        if (mQuery == null) {
+            Log.w(TAG, "No query, not initializing RecyclerView")
+        }
+
+        mAdapter = object: TourAdapter(mQuery, this) {
+            override fun onDataChanged() { // Show/hide content if the query returns empty.
+                if (itemCount == 0) {
+                    mToursRecycler!!.visibility = View.GONE
+                    //mEmptyView.setVisibility(View.VISIBLE)
+                } else {
+                    mToursRecycler!!.visibility = View.VISIBLE
+                   // mEmptyView.setVisibility(View.GONE)
+                }
+            }
+
+            override fun onError(e: FirebaseFirestoreException?) { // Show a snackbar on errors
+                Snackbar.make(
+                    activity!!.findViewById<View>(android.R.id.content),
+                    "Error: check logs for info.", Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+        mToursRecycler!!.layoutManager = LinearLayoutManager(context)
+        mToursRecycler!!.adapter = mAdapter
+    }
+
+
 
     private fun invokeLocationAction(){
         if(hasPermission()){
@@ -123,6 +193,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 invokeLocationAction()
             }
         }
+    }
+
+    override fun onRestaurantSelected(tour: DocumentSnapshot?) {
+        findNavController().navigate(R.id.action_navigation_home_to_tour_overview)
     }
 
 

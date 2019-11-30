@@ -155,7 +155,7 @@ class AddTourFragment : Fragment() {
 //        images = arr
 //        audio:  MutableList<String>
 //        video: MutableList<String>
-        val newCP = Checkpoint(name, location, description, null, null, null)
+        val newCP = Checkpoint(name, location, description, "", "", "")
 
         // need to add this checkpoint to tour arrayList
         checkpoints.add(newCP)
@@ -175,6 +175,7 @@ class AddTourFragment : Fragment() {
         //getting the values to save
         val tourNameStr = tourName.text.toString().trim { it <= ' ' }
         val tourDescripStr = tourDescrip.text.toString()
+        val picString = ""
 
         //checking if the value is provided
         if (!TextUtils.isEmpty(tourNameStr) && !TextUtils.isEmpty(tourDescripStr) &&
@@ -184,7 +185,7 @@ class AddTourFragment : Fragment() {
             val id = db.collection("tours").document().id
 
             //creating a Tour Object
-            val newTour = Tour(id, tourNameStr, 0, tourDescripStr, checkpoints, dummyTags)
+            val newTour = Tour(id, tourNameStr, picString, 0, tourDescripStr, checkpoints, dummyTags)
 
             // Add newTour obj to the database in the tours collection
             dbTours!!.document(id).set(newTour)

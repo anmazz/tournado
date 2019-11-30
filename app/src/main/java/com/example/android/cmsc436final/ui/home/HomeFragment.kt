@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
 import com.google.android.gms.location.*
@@ -27,7 +28,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         private const val LOCATION_REQUEST = 1
 
         private lateinit var mapView: MapView
-        private var mLocationRequest: LocationRequest? = null
         private const val TAG = "HomeFragment"
     }
 
@@ -51,7 +51,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        val button = root.findViewById<View>(R.id.testingButton)
+        button.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_home_to_tour_overview)
+        }
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,9 +70,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mGoogleMap = googleMap
-        Log.i(TAG, "IN ON MAP READY")
-
         mGoogleMap = googleMap
     }
 

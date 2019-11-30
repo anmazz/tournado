@@ -15,7 +15,11 @@
         android:id="@+id/navigation_home"
         android:name="com.example.locationbasedtourguide.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_tour_overview"
+            app:destination="@id/tour_overview" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_add_tour"
@@ -32,7 +36,7 @@
     <fragment
         android:id="@+id/navigation_add_media"
         android:name="com.example.android.cmsc436final.ui.addTour.AddMediaFragment"
-        android:label="Add media"
+        android:label="@string/title_add_tour"
         tools:layout="@layout/fragment_add_media" />
 
     <fragment
@@ -40,5 +44,11 @@
         android:name="com.example.android.cmsc436final.ui.userProfile.UserProfileFragment"
         android:label="@string/title_user_profile"
         tools:layout="@layout/fragment_user_profile" />
+
+    <fragment
+        android:id="@+id/tour_overview"
+        android:name="com.example.android.cmsc436final.ui.tourOverview.TourOverviewFragment"
+        android:label="Tour Overview"
+        tools:layout="@layout/fragment_tour_overview" />
 
 </navigation>

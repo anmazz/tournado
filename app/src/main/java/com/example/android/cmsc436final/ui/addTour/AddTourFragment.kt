@@ -68,6 +68,10 @@ class AddTourFragment : Fragment() {
     private lateinit var dummyTags: MutableList<String>
     private val AUTOCOMPLETE_REQUEST_CODE = 1
 
+    companion object{
+        private val TAG = "AddTourFragment"
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -225,14 +229,18 @@ class AddTourFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                var place = Autocomplete.getPlaceFromIntent(data) as Place
+                var place = Autocomplete.getPlaceFromIntent(data)
+                Log.i(TAG, "Place: " + place.name + ", " + place.id)
+                Toast.makeText(activity, "Place: " + place.name + ", " + place.id, Toast.LENGTH_LONG).show()
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // TODO: Handle the error.
+                Toast.makeText(activity, "Error with autocomplete. Please try again.", Toast.LENGTH_LONG)
                 var status = Autocomplete.getStatusFromIntent(data)
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
         }
+
 
     }
 }

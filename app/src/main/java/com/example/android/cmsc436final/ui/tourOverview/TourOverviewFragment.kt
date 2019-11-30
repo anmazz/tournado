@@ -49,7 +49,6 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
 
     private fun getTourById(tourId: String) {
         db = FirebaseFirestore.getInstance()
-        var tour :Tour? = null
         val docRef = db.collection("tours").document(tourId)
         docRef.get().addOnSuccessListener { document ->
                 if (document != null) {

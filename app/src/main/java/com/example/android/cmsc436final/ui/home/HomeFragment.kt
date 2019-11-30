@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
 import com.example.android.cmsc436final.adapter.TourAdapter
+import com.example.android.cmsc436final.model.Checkpoint
+import com.example.android.cmsc436final.model.Tour
 import com.example.android.cmsc436final.ui.tourOverview.TourOverviewFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -27,10 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback,
@@ -196,4 +195,5 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         val bundle = bundleOf("tourid" to tour!!.id)
         findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
     }
+
 }

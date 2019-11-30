@@ -37,7 +37,7 @@ open class TourAdapter(query: Query?, private val mListener: OnTourSelectedListe
 
 
     interface OnTourSelectedListener {
-        fun onRestaurantSelected(tour: DocumentSnapshot?)
+        fun onTourSelected(tour: DocumentSnapshot?)
     }
 
     override fun onCreateViewHolder(
@@ -84,7 +84,7 @@ open class TourAdapter(query: Query?, private val mListener: OnTourSelectedListe
             locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality
 
             // Click listener
-            itemView.setOnClickListener { listener?.onRestaurantSelected(snapshot) }
+            itemView.setOnClickListener { listener?.onTourSelected(snapshot) }
         }
 
     }

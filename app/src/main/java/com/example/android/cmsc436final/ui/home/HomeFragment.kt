@@ -192,7 +192,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         }
     }
 
-    override fun onRestaurantSelected(tour: DocumentSnapshot?) {
+    override fun onTourSelected(tour: DocumentSnapshot?) {
         val bundle = bundleOf("tourid" to tour!!.id)
         findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
     }

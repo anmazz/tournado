@@ -99,30 +99,16 @@ class LoginActivity : Activity()  {
 
         auth!!.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                progressBar.visibility = View.GONE
                 if (task.isSuccessful) {
+                    progressBar.visibility = View.GONE
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
+                    uname.text.clear()
+                    passwd.text.clear()
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     //MainActivity::class.java USE THIS TO SEE THE MAP)
-                    //for filling in data
-//                    val user = FirebaseAuth.getInstance().currentUser
-//                    user?.let {
-//                        for (profile in it.providerData) {
-//                            // Id of the provider (ex: google.com)
-//                            val providerId = profile.providerId
-//
-//                            // UID specific to the provider
-//                            val uid = profile.uid
-//
-//                            // Name, email address, and profile photo Url
-//                            val name = profile.displayName
-//                            val email = profile.email
-//                            val photoUrl = profile.photoUrl
-//                        }
-//                    }
-
                 } else {
+                    progressBar.visibility = View.GONE
                     Log.w(TAG, "signInUserWithEmail:failure", task.exception)
                     Toast.makeText(applicationContext, "Login failed!" + task.exception + "Please try again", Toast.LENGTH_LONG).show()
                     uname.text.clear()

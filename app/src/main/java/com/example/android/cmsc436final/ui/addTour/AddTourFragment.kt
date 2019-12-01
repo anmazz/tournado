@@ -93,7 +93,7 @@ class AddTourFragment : Fragment() {
         dbUser = db.collection("users").document(uid)
 
         // Get UI elements
-        tourName = root.findViewById<View>(R.id.tour_name_et_2) as TextInputEditText
+        tourName = root.findViewById<View>(R.id.tour_name_et) as TextInputEditText
         tourDescrip = root.findViewById<View>(R.id.tour_description_et) as EditText
         checkptName = root.findViewById<View>(R.id.checkpoint_name_et) as EditText
         checkptDesc = root.findViewById<View>(R.id.checkpoint_description_et) as EditText

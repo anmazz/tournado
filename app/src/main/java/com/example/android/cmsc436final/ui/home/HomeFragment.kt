@@ -13,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback,
@@ -43,7 +48,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         private const val LIMIT = 50
     }
 
-    private lateinit var mSharedViewModel: SharedViewModel
+    private lateinit var mModel: SharedViewModel
     private lateinit var mGoogleMap: GoogleMap
     private var lat : Double = 0.0
     private var long : Double = 0.0
@@ -55,7 +60,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mSharedViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
+        mModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
     }
 
     override fun onStart() {
@@ -153,7 +158,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
     }
 
     private fun startLocationUpdates() {
-        mSharedViewModel.getLocationData().observe(this, Observer {
+        mModel.getLocationData().observe(this, Observer {
             lat = it.latitude
             long = it.longitude
             Log.i(TAG, "in startLocationUpdates")
@@ -191,7 +196,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         }
     }
 
+
+
     override fun onTourSelected(tour: DocumentSnapshot?) {
+        lifecycleScope.launch {
+            mModel.selectTour(tour!!.id)
+        }
         val bundle = bundleOf("tourid" to tour!!.id)
         findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
     }

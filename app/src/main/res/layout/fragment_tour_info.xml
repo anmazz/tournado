@@ -23,8 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
+                android:scaleType="centerCrop"
                 android:src="@android:drawable/sym_def_app_icon"
-                android:scaleType="centerCrop" />
+                app:srcCompat="@drawable/common_google_signin_btn_icon_dark_focused" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -48,6 +49,12 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.tabs.TabItem
+        android:id="@+id/maptab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Map" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_height="wrap_content"

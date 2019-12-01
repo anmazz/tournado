@@ -1,5 +1,4 @@
 package com.example.android.cmsc436final.model
-
 import com.google.firebase.firestore.GeoPoint
 
 data class Checkpoint (

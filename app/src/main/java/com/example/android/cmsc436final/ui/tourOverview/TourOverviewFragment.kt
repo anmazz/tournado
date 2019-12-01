@@ -1,6 +1,5 @@
 package com.example.android.cmsc436final.ui.tourOverview
 
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -8,32 +7,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.model.Checkpoint
 import com.example.android.cmsc436final.model.Tour
-import com.example.android.cmsc436final.ui.searchTour.SearchTourFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.maps.android.PolyUtil
 import org.json.JSONObject
 
 class TourOverviewFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapRouteDrawer: MapRouteDrawer
-    private var currTour = createExample()
+    private var currTour: Tour? = null
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var mapView: MapView
+    private lateinit var db: FirebaseFirestore
 
     companion object{
         private const val TAG = "TourOverviewFragment"
@@ -44,8 +41,27 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
+        var tourid = arguments?.getString("tourid")
+        getTourById(tourid!!)
         val root = inflater.inflate(R.layout.fragment_tour_overview, container, false)
         return root
+    }
+
+    private fun getTourById(tourId: String) {
+        db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("tours").document(tourId)
+        docRef.get().addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    currTour = document.toObject(Tour::class.java)
+                    drawOnMap()
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,7 +71,6 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
         mapView.getMapAsync(this)
         super.onViewCreated(view, savedInstanceState)
     }
-
 
     /**
      * Manipulates the map once available.
@@ -68,9 +83,10 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
-        mapRouteDrawer = MapRouteDrawer(currTour, context!!)
+    }
 
-        Log.i(TAG, mapRouteDrawer.getURL())
+    private fun drawOnMap(){
+        mapRouteDrawer = MapRouteDrawer(currTour!!, context!!)
 
         val requestQueue = Volley.newRequestQueue(context!!)
         val url = mapRouteDrawer.getURL()
@@ -98,13 +114,12 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
         }){}
 
         requestQueue.add(directionsRequest)
-
     }
 
 
     private fun moveCameraToTourBounds(){
         val builder = LatLngBounds.Builder()
-        for (marker: Checkpoint in currTour.checkpoints!!) {
+        for (marker: Checkpoint in currTour!!.checkpoints!!) {
             builder.include(LatLng(marker.location.latitude, marker.location.longitude))
         }
         val bounds = builder.build()
@@ -117,16 +132,16 @@ class TourOverviewFragment : Fragment(), OnMapReadyCallback {
         mGoogleMap.animateCamera(cu)
     }
 
-    private fun createExample(): Tour {
-        val checkPointList = mutableListOf<Checkpoint>()
-        val checkpoint1 = Checkpoint("Stamp Student Union", GeoPoint(38.9882, -76.9447), "", "", "", "")
-        checkPointList.add(checkpoint1)
-        val checkpoint2 = Checkpoint("Eppley Recreation Center", GeoPoint(38.9936, -76.9452), "", "", "", "")
-        checkPointList.add(checkpoint2)
-        val checkpoint3 = Checkpoint("Prince Frederick", GeoPoint(38.9832, -76.9458), "", "", "", "")
-        checkPointList.add(checkpoint3)
-        val exampleTour = Tour("1", "UMD Tour", "", 0, "", checkPointList)
-        return exampleTour
-    }
+//    private fun createExample(): Tour {
+//        val checkPointList = mutableListOf<Checkpoint>()
+//        val checkpoint1 = Checkpoint("Stamp Student Union", GeoPoint(38.9882, -76.9447), "", "", "", "")
+//        checkPointList.add(checkpoint1)
+//        val checkpoint2 = Checkpoint("Eppley Recreation Center", GeoPoint(38.9936, -76.9452), "", "", "", "")
+//        checkPointList.add(checkpoint2)
+//        val checkpoint3 = Checkpoint("Prince Frederick", GeoPoint(38.9832, -76.9458), "", "", "", "")
+//        checkPointList.add(checkpoint3)
+//        val exampleTour = Tour("1", "UMD Tour", "", 0, "", checkPointList)
+//        return exampleTour
+//    }
 
 }

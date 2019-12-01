@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +11,7 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     tools:context=".LoginActivity">
+
 
     <TextView
         android:id="@+id/textView2"
@@ -70,10 +75,10 @@
     <TextView
         android:id="@+id/textView"
         style="@android:style/Widget.Material.TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="332dp"
+        android:layout_height="94dp"
         android:layout_marginTop="68dp"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/montserrat"
         android:text="@string/app_function"
         android:textAlignment="center"
         android:textSize="30sp"
@@ -108,5 +113,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
 
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

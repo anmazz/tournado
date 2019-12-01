@@ -27,11 +27,12 @@
     <string name="change_pic">Change Profile Picture</string>
     <string name="tours_created">Tours Created</string>
     <string name="tours_traveld">Tours Traveled</string>
-    <string name="distance_toured">Distance Toured</string>
+    <string name="traveled_tours">Traveled Tours</string>
+    <string name="created_tours">Created Tours</string>
     <string name="number_input">###</string>
     <string name="sign_out">Sign Out</string>
-    <string name="rating">Rating</string>
     <string name="unfinished_tours">Unfinished Tours</string>
+    <string name="load_more_tours">Load More</string>
     <!-- Add tour strings -->
     <string name="add_tour_description">Tour description</string>
     <string name="add_tour_name">Tour name</string>

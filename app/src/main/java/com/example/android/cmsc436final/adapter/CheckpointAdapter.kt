@@ -11,6 +11,8 @@ import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.model.Tour
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import androidx.lifecycle.lifecycleScope
+
 
 
 /**
@@ -36,8 +38,8 @@ open class CheckpointAdapter(query: Query?, private val mListener: OnCheckpointS
         FirestoreAdapter<CheckpointAdapter.ViewHolder>(query) {
 
 
-        interface OnTourSelectedListener {
-            fun onTourSelected(tour: DocumentSnapshot?)
+        interface OnCheckpointSelectedListener {
+            fun onCheckpointSelected(checkpoint: DocumentSnapshot?)
         }
 
         override fun onCreateViewHolder(
@@ -69,7 +71,7 @@ open class CheckpointAdapter(query: Query?, private val mListener: OnCheckpointS
             var locationView: TextView = itemView.findViewById(R.id.checkpoint_item_location)
             fun bind(
                 snapshot: DocumentSnapshot,
-                listener: OnTourSelectedListener?
+                listener: OnCheckpointSelectedListener?
             ) {
                 val tour = snapshot.toObject(Tour::class.java)
                 // Load image
@@ -89,11 +91,11 @@ open class CheckpointAdapter(query: Query?, private val mListener: OnCheckpointS
 
         }
 
-    override fun onCheckpointSelected(tour: DocumentSnapshot?) {
-        lifecycleScope.launch {
-            mModel.selectTour(tour!!.id)
-        }
-        val bundle = bundleOf("tourid" to tour!!.id)
-        findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
-    }
+//    override fun onCheckpointSelected(checkpoint: DocumentSnapshot?) {
+//        lifecycleScope.launch {
+//            mModel.selectTour(tour!!.id)
+//        }
+//        val bundle = bundleOf("tourid" to tour!!.id)
+//        findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
+//    }
     }

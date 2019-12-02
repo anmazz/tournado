@@ -17,41 +17,73 @@
         android:thumb="@drawable/seek_thumb"/>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Let's start with some basic info"
+            android:textSize="22dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="25dp"
+            android:textColor="@color/quantum_black_100"
+            android:textStyle="bold" />
+
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tour_name_lay"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:hint="hi"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:hint="Tour Name">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
-
-
-
+            android:id="@+id/tour_name_"
+            android:layout_width="365dp"
+            android:layout_height="wrap_content"
+            android:hint="Tour Name" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="hi"
-        android:layout_marginTop="48dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tour_descrip_lay"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:hint="Tour Description">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tour_descrip"
+                    android:layout_width="365dp"
+                    android:layout_height="match_parent"
+                    android:hint="Tour Description" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_marginTop="48dp"
-        android:id="@+id/material_button"
+
+        <com.google.android.material.button.MaterialButton
+        android:layout_marginTop="20dp"
+        android:id="@+id/add_tour_picture_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
         android:text="Add Picture"/>
 
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="310dp"
+            android:text="Next" />
+    </LinearLayout>
 
 </LinearLayout>

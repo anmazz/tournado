@@ -11,15 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
 import com.example.android.cmsc436final.adapter.CheckpointAdapter
-import com.example.android.cmsc436final.adapter.TourAdapter
 import com.example.android.cmsc436final.model.Checkpoint
 import com.example.android.cmsc436final.model.Tour
 import com.example.locationbasedtourguide.ui.home.HomeFragment
@@ -31,10 +33,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.google.maps.android.PolyUtil
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 /**
@@ -43,7 +47,7 @@ import org.json.JSONObject
  *
  */
 
-class InfoTab: Fragment() {
+class InfoTab: Fragment(), CheckpointAdapter.OnCheckpointSelectedListener {
     private lateinit var mModel: SharedViewModel
 
     private var currTour: Tour? = null
@@ -104,8 +108,7 @@ class InfoTab: Fragment() {
     }
 
     private fun initFirestore() {
-        mQuery = mFirestore!!.collection("tours")
-            .limit(InfoTab.LIMIT.toLong())
+        mQuery = mFirestore!!.collection("tours").limit(InfoTab.LIMIT.toLong())
     }
 
     private fun initRecyclerView() {
@@ -149,5 +152,12 @@ class InfoTab: Fragment() {
             }
     }
 
+    override fun onCheckpointSelected (checkpoint: DocumentSnapshot?) {
+        lifecycleScope.launch {
+            mModel.selectTour(tour!!.id)
+        }
+        val bundle = bundleOf("tourid" to tour!!.id)
+        findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
+    }
 
 }

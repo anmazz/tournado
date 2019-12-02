@@ -1,6 +1,5 @@
 package com.example.android.cmsc436final.model
 
-
 data class Tour (
     var id: String = "",
     var name: String = "",
@@ -9,4 +8,6 @@ data class Tour (
     var description: String = "",
     var checkpoints: List<Checkpoint>? = null,
     var tags: List<String>? = null
+
+
 )

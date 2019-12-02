@@ -45,7 +45,8 @@
     <string name="add_video">+ Video</string>
     <string name="add_audio">+ Audio</string>
     <string name="upload_media">Upload Media</string>
-
+    <!-- Add tour strings -->
+    <string name="search_tour">Search Tour</string>
     <!-- Others-->
     <string name="title_activity_home">Home</string>
     <string name="title_activity_search">SearchActivity</string>

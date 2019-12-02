@@ -41,6 +41,8 @@ class UserProfileFragment : Fragment() {
     private lateinit var selectedPhoto: Uri
     private var photoHasBeenSelected: Boolean = false
     private val PICK_IMAGE = 4
+    private val LOAD_TRAVELED = 3
+    private val LOAD_CREATED = 2
     private val TAG = "In User Profile Frag: "
 
 
@@ -111,10 +113,13 @@ class UserProfileFragment : Fragment() {
 
         //TODO: Populate tour list, and fix load more button
         loadMoreTraveledToursButton.setOnClickListener {
+//            val toLoadTraveled = Intent(context, LoadMore::class.java)
+//            startActivityForResult(toLoadTraveled, LOAD_TRAVELED)
 
         }
         loadMoreCreatedToursButton.setOnClickListener{
-
+//            val toLoadCreated = Intent(context, LoadMore::class.java)
+//            startActivityForResult(toLoadCreated, LOAD_CREATED)
         }
 
         //val textView: TextView = root.findViewById(R.id.ratingText)
@@ -140,6 +145,7 @@ class UserProfileFragment : Fragment() {
             if(selectedPhoto != null) {
                 photoHasBeenSelected = true
                 profilePic.setImageURI(selectedPhoto)
+                //TODO: scale selected image to fit into imageview maybe?
                 var imageBitmap = (profilePic.drawable as BitmapDrawable).bitmap
                 val baos = ByteArrayOutputStream()
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)

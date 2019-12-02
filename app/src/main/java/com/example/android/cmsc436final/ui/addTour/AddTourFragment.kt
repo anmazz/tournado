@@ -35,8 +35,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_add_tour.*
+//for searching with algolia
+import com.algolia.search.client.ClientSearch
+import com.algolia.search.model.APIKey
+import com.algolia.search.model.ApplicationID
+import com.algolia.search.model.IndexName
 
 import com.google.firebase.firestore.*
+import io.ktor.client.features.logging.LogLevel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.json
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -55,6 +67,10 @@ class AddTourFragment : Fragment() {
     private lateinit var buttonAddLocation: Button
     private lateinit var buttonAddMedia: Button
     private lateinit var buttonCancel: Button
+
+    //for searching
+    val client = ClientSearch(ApplicationID("MLWVY1AHOC"), APIKey("84275e27b9ffaecb0207751b4b2349c6"), LogLevel.ALL)
+    val index = client.initIndex(IndexName("tours"))
 
 
     internal lateinit var listviewCP: ListView
@@ -198,6 +214,16 @@ class AddTourFragment : Fragment() {
             // Add to the list of createdTours for specific user
             dbUser!!.update("toursCreated", FieldValue.arrayUnion(newTour))
 
+
+            // Add JSON object to algolia for searching
+            val newGuy = json {
+                "name" to tourNameStr
+                "tags" to dummyTags.toString()
+            }
+            //TODO: make sure this is uploading to algolia too
+           val uploadToAlgolia = GlobalScope.launch {
+                index.saveObject(newGuy)
+            }
 
             tourName.setText("")
             tourDescrip.setText("")

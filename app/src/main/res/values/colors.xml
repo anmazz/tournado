@@ -7,4 +7,10 @@
     <color name="seek_bar_background">#ababab</color>
     <color name="seek_bar_progress">#ffb600</color>
     <color name="seek_bar_secondary_progress">#3399CC</color>
+    <color name="searchBackground">#e0e0e0</color>
+    <color name="white">#ffffff</color>
+    <color name="searchHint">#616161</color>
+    <color name="searchText">#212121</color>
+    <color name="grey_dark">#4e5561</color>
+    <color name="grey_light">#818794</color>
 </resources>

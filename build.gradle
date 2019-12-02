@@ -21,10 +21,10 @@ buildscript {
 
 allprojects {
     repositories {
+        //maven { url "https://dl.bintray.com/algolia/maven" }
         google()
         jcenter()
         mavenCentral()
-
     }
 }
 

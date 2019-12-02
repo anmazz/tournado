@@ -9,6 +9,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.android.cmsc436final.ui.searchTour.FacetFragment
+import com.example.android.cmsc436final.ui.searchTour.SearchTourFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -36,5 +38,29 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+    fun showFacetFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.container, FacetFragment())
+            .addToBackStack("facet")
+            .commit()
+    }
+
+    fun showTourFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.container, SearchTourFragment())
+            .commit()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        supportFragmentManager.popBackStack()
+        return super.onSupportNavigateUp()
+    }
+
 
 }

@@ -1,4 +1,6 @@
 package com.example.android.cmsc436final.adapter
+
+import android.content.Context
 import android.location.Geocoder
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.android.cmsc436final.R
-import com.example.android.cmsc436final.model.Tour
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
-import androidx.lifecycle.lifecycleScope
-
+import com.example.android.cmsc436final.model.Checkpoint
 
 
 /**
@@ -34,68 +32,64 @@ import androidx.lifecycle.lifecycleScope
  * RecyclerView adapter for a list of Restaurants.
  */
 
-open class CheckpointAdapter(query: Query?, private val mListener: OnCheckpointSelectedListener) :
-        FirestoreAdapter<CheckpointAdapter.ViewHolder>(query) {
+class CheckpointAdapter internal constructor(context: Context?, data: List<Checkpoint>) :
+    RecyclerView.Adapter<CheckpointAdapter.ViewHolder?>() {
+    private val mData: List<Checkpoint> = data
+    private val mInflater: LayoutInflater = LayoutInflater.from(context)
+    private var mClickListener: ItemClickListener? = null
 
 
-        interface OnCheckpointSelectedListener {
-            fun onCheckpointSelected(checkpoint: DocumentSnapshot?)
-        }
-
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): ViewHolder {
-            val inflater = LayoutInflater.from(parent.context)
-
-            return ViewHolder(
-                inflater.inflate(
-                    R.layout.item_checkpoint,
-                    parent,
-                    false
-                )
-            )
-        }
-
-        override fun onBindViewHolder(
-            holder: ViewHolder,
-            position: Int
-        ) {
-            holder.bind(getSnapshot(position), mListener)
-        }
-
-        class ViewHolder(itemView: View) :
-            RecyclerView.ViewHolder(itemView) {
-            var imageView: ImageView = itemView.findViewById(R.id.checkpoint_item_image)
-            var nameView: TextView = itemView.findViewById(R.id.checkpoint_item_name)
-            var locationView: TextView = itemView.findViewById(R.id.checkpoint_item_location)
-            fun bind(
-                snapshot: DocumentSnapshot,
-                listener: OnCheckpointSelectedListener?
-            ) {
-                val tour = snapshot.toObject(Tour::class.java)
-                // Load image
-                Glide.with(imageView.context).load(tour!!.pic).centerCrop().into(imageView)
-                //Set nameView text
-                nameView.text = tour.name
-
-                //Retrieve starting checkpoint location's city
-                val geocoder = Geocoder(itemView.context)
-                val lat = tour.checkpoints!![0].location.latitude
-                val long = tour.checkpoints!![0].location.longitude
-                locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality
-
-                // Click listener
-                itemView.setOnClickListener { listener?.onCheckpointSelected(snapshot) }
-            }
-
-        }
-
-//    override fun onCheckpointSelected(checkpoint: DocumentSnapshot?) {
-//        lifecycleScope.launch {
-//            mModel.selectTour(tour!!.id)
-//        }
-//        val bundle = bundleOf("tourid" to tour!!.id)
-//        findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
-//    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view: View = mInflater.inflate(R.layout.item_checkpoint, parent, false)
+        return ViewHolder(view)
     }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val checkpoint = mData[position]
+        holder.nameView.text = checkpoint.name
+        Glide.with(holder.imageView.context).load(checkpoint.image).centerCrop().into(holder.imageView)
+        //Retrieve starting checkpoint location's city
+        val geocoder = Geocoder(holder.locationView.context)
+        val lat = checkpoint.location.latitude
+        val long = checkpoint.location.longitude
+        holder.locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality
+    }
+
+    // total number of rows
+    override fun getItemCount(): Int {
+        return mData.size
+    }
+
+    inner class ViewHolder internal constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
+        var nameView: TextView = itemView.findViewById(R.id.checkpoint_item_name)
+        var locationView: TextView = itemView.findViewById(R.id.checkpoint_item_location)
+        var imageView: ImageView = itemView.findViewById(R.id.checkpoint_item_image)
+
+        override fun onClick(view: View) {
+            if (mClickListener != null) mClickListener!!.onItemClick(view, adapterPosition)
+        }
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+    }
+
+    // convenience method for getting data at click position
+    fun getItem(id: Int): Checkpoint{
+        return mData[id]
+    }
+
+    // allows clicks events to be caught
+    fun setClickListener(itemClickListener: ItemClickListener?) {
+        mClickListener = itemClickListener
+    }
+
+    // parent activity will implement this method to respond to click events
+    interface ItemClickListener {
+        fun onItemClick(view: View?, position: Int)
+    }
+
+
+}

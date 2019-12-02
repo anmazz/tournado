@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
@@ -33,15 +35,17 @@ import kotlinx.coroutines.launch
  * */
 
 class TourOverviewFragment : Fragment() {
-    private lateinit var mapRouteDrawer: MapRouteDrawer
-    private lateinit var mGoogleMap: GoogleMap
-    private lateinit var mapView: MapView
-    private lateinit var db: FirebaseFirestore
-    private lateinit var tourImage: ImageView
+//    private lateinit var mapRouteDrawer: MapRouteDrawer
+//    private lateinit var mGoogleMap: GoogleMap
+//    private lateinit var mapView: MapView
+//    private lateinit var db: FirebaseFirestore
+//    private lateinit var tourImage: ImageView
     private lateinit var startButton: FloatingActionButton
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager: ViewPager
+//    private lateinit var tabLayout: TabLayout
+//    private lateinit var viewPager: ViewPager
     private lateinit var mModel: SharedViewModel
+    private lateinit var mapButton : Button
+    private lateinit var infoButton : Button
 
     companion object{
         private const val TAG = "TourOverviewFragment"
@@ -52,9 +56,16 @@ class TourOverviewFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
+        val root = inflater.inflate(R.layout.fragment_tour_overview, container, false)
+
         // saved the id that the fragment passed to this activity
         var tourid = arguments?.getString("tourid")
         mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
+
+        //UI
+        startButton = root.findViewById(R.id.start_tour_button)
+        mapButton = root.findViewById(R.id.show_map_button)
+        infoButton = root.findViewById(R.id.show_info_button)
 
         lifecycleScope.launch {
             mModel.selectTour(tourid!!)
@@ -69,7 +80,26 @@ class TourOverviewFragment : Fragment() {
             }
         })
 
-        val root = inflater.inflate(R.layout.fragment_tour_overview, container, false)
+        //On click listeners
+        startButton.setOnClickListener{
+            findNavController().navigate(R.id.action_tour_overview_to_start_tour)
+        }
+
+        infoButton.setOnClickListener{
+            frameLoader(InfoTab())
+        }
+
+        mapButton.setOnClickListener{
+            frameLoader(MapTab())
+        }
+
+        //Load map into frame when tour overview is opened
+        val transaction = childFragmentManager.beginTransaction()
+        val mapTab = MapTab()
+        transaction.replace(R.id.tab_frame, mapTab)
+        transaction.commit()
+
+
 
         // UI ELEMENTS
 //        tourImage = root.findViewById(R.id.tour_image)
@@ -77,34 +107,37 @@ class TourOverviewFragment : Fragment() {
 //        Glide.with(appBarImg.context).load(currTour!!.pic).centerCrop().into(appBarImg)
 //        Picasso.get().load(currTour!!.pic).into(tourImage)
 
-        startButton = root.findViewById(R.id.start_tour_button)
-        startButton.setOnClickListener{
-            findNavController().navigate(R.id.action_tour_overview_to_start_tour)
-        }
 
-        tabLayout = root.findViewById(R.id.tab_layout)
-        viewPager = root.findViewById(R.id.viewpager)
 
-        val fragM = getFragmentManager()
+//        tabLayout = root.findViewById(R.id.tab_layout)
+//        viewPager = root.findViewById(R.id.viewpager)
 
-        val adapter = TabsAdapter(childFragmentManager)
-
-        viewPager.adapter = adapter
-        tabLayout.setupWithViewPager(viewPager)
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-            }
-        })
+//        val fragM = getFragmentManager()
+//
+//        val adapter = TabsAdapter(childFragmentManager)
+//
+//        viewPager.adapter = adapter
+//        tabLayout.setupWithViewPager(viewPager)
+//
+//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab) {
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab) {
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab) {
+//            }
+//        })
 
 
         return root
+    }
+
+    private fun frameLoader(fragment : Fragment){
+        val transaction = childFragmentManager.beginTransaction()
+        transaction.replace(R.id.tab_frame, fragment)
+        transaction.commit()
     }
 
 
@@ -133,7 +166,7 @@ class TourOverviewFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewPager.adapter
+//        viewPager.adapter
         Log.i(TAG, "OnDestroy")
     }
 }

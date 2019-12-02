@@ -51,22 +51,38 @@
         android:layout_marginRight="16dp"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
+    <LinearLayout
+        android:id="@+id/map_info_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/tour_topcard"
+        android:weightSum="1.0">
+        <Button
+            android:id="@+id/show_map_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="MAP"/>
+        <Button
+            android:id="@+id/show_info_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="INFO"/>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/tab_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tour_topcard"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        >
+        android:layout_below="@id/map_info_buttons">
 
+    </FrameLayout>
 
-<!--    <androidx.viewpager2.widget.ViewPager2-->
-
+<!--    <androidx.viewpager.widget.ViewPager-->
 <!--        android:id="@+id/viewpager"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
@@ -75,36 +91,33 @@
 <!--        android:layout_alignParentEnd="true"-->
 <!--        android:layout_marginStart="0dp"-->
 <!--        android:layout_marginTop="0dp"-->
-<!--        android:layout_marginEnd="0dp"/>-->
+<!--        android:layout_marginEnd="0dp"-->
+<!--        >-->
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/map"
-            android:layout_below="@+id/tour_topcard"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="-14dp"
-            android:layout_marginBottom="-50dp">
-<!--            <androidx.viewpager2.widget.ViewPager2-->
-<!--                android:id="@+id/view_pager"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                />-->
+<!--        -->
+
+<!--        <com.google.android.material.tabs.TabLayout-->
+<!--            android:id="@+id/tab_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_above="@+id/map"-->
+<!--            android:layout_below="@+id/tour_topcard"-->
+<!--            android:layout_alignParentStart="true"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginStart="-14dp"-->
+<!--            android:layout_marginBottom="-50dp">-->
 
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Map" />
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Map" />-->
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="More Info" />
-        </com.google.android.material.tabs.TabLayout>
-    </androidx.viewpager.widget.ViewPager>
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="More Info" />-->
+<!--        </com.google.android.material.tabs.TabLayout>-->
+<!--    </androidx.viewpager.widget.ViewPager>-->
 
 </RelativeLayout>

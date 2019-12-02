@@ -30,5 +30,6 @@ class AddTourBasicInfo: Fragment() {
             ViewModelProviders.of(this).get(AddTourViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_add_tour_1, container, false)
+        return root
     }
 }

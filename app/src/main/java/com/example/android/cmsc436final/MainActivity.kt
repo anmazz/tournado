@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_user_profile
             )
         )
+        supportActionBar?.hide()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)

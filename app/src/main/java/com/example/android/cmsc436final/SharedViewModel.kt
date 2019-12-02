@@ -13,6 +13,16 @@ import kotlinx.coroutines.tasks.await
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
     private val locationData = LocationLiveData(application)
 
+    private var currentTour :Tour? = null
+
+    fun setCurrentTour(tour : Tour){
+        currentTour = tour
+    }
+
+    fun getCurrentTour(): Tour? {
+        return currentTour
+    }
+
     val tourId = MutableLiveData<String>()
     private var tour = MutableLiveData<Tour>()
 
@@ -38,4 +48,5 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun getLocationData() = locationData
+
 }

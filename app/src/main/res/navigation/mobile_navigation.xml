@@ -53,6 +53,15 @@
         <argument
             android:name="tourID"
             app:argType="string" />
+        <action
+            android:id="@+id/action_tour_overview_to_start_tour"
+            app:destination="@id/start_tour" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/start_tour"
+        android:name="com.example.android.cmsc436final.ui.startTour.StartTourFragment"
+        android:label="Start Tour">
     </fragment>
 
 </navigation>

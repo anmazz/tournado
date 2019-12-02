@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
+import com.example.android.cmsc436final.Utils
 import com.example.android.cmsc436final.model.Checkpoint
 import com.example.android.cmsc436final.model.Tour
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -54,11 +55,7 @@ class MapTab : Fragment(), OnMapReadyCallback, LifecycleObserver {
         mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
         Log.i("test", mModel.toString())
         Log.i("test", mModel.getTour().toString())
-        mModel.getTour().observe(this, Observer { tour ->
-            run {
-                drawOnMap(tour)
-            }
-        })
+
 
 
         val root = inflater.inflate(R.layout.tour_overview_map_tab, container, false)
@@ -86,53 +83,11 @@ class MapTab : Fragment(), OnMapReadyCallback, LifecycleObserver {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
-    }
-
-    private fun drawOnMap(currTour: Tour){
-        mapRouteDrawer = MapRouteDrawer(currTour, context!!)
-
-        val requestQueue = Volley.newRequestQueue(context!!)
-        val url = mapRouteDrawer.getURL()
-
-        val path: MutableList<List<LatLng>> = ArrayList()
-        val directionsRequest = object : StringRequest(Method.GET, url, Response.Listener<String> {
-                response ->
-            val jsonResponse = JSONObject(response)
-            Log.i(TAG, "Response: %s".format(jsonResponse.toString()))
-            // Get routes
-            val routes = jsonResponse.getJSONArray("routes")
-            val legs = routes.getJSONObject(0).getJSONArray("legs")
-            val steps = legs.getJSONObject(0).getJSONArray("steps")
-            for (i in 0 until steps.length()) {
-                val points = steps.getJSONObject(i).getJSONObject("polyline").getString("points")
-                path.add(PolyUtil.decode(points))
+        mModel.getTour().observe(this, Observer { currTour ->
+            run {
+                Utils().drawOnMap(currTour, activity!!, mGoogleMap)
             }
-            for (i in 0 until path.size) {
-                this.mGoogleMap.addPolyline(PolylineOptions().addAll(path[i]).color(Color.BLUE))
-            }
-            moveCameraToTourBounds(currTour)
-
-        }, Response.ErrorListener {
-            Log.e(TAG, "Error :(")
-        }){}
-
-        requestQueue.add(directionsRequest)
-    }
-
-
-    private fun moveCameraToTourBounds(currTour: Tour){
-        val builder = LatLngBounds.Builder()
-        for (marker: Checkpoint in currTour.checkpoints!!) {
-            builder.include(LatLng(marker.location.latitude, marker.location.longitude))
-        }
-        val bounds = builder.build()
-        val width = context!!.resources.displayMetrics.widthPixels
-        val height = context!!.resources.displayMetrics.heightPixels
-        val padding = (width * 0.20).toInt() // offset from edges of the map
-
-        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
-
-        mGoogleMap.animateCamera(cu)
+        })
     }
 
     override fun onPause() {

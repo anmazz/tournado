@@ -13,6 +13,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.example.android.cmsc436final.R
@@ -21,6 +22,7 @@ import com.example.android.cmsc436final.adapter.TabsAdapter
 import com.example.android.cmsc436final.model.Tour
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -38,7 +40,7 @@ class TourOverviewFragment : Fragment(), LifecycleOwner {
     private lateinit var mapView: MapView
     private lateinit var db: FirebaseFirestore
     private lateinit var tourImage: ImageView
-    private lateinit var startButton: Toolbar
+    private lateinit var startButton: FloatingActionButton
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
     private lateinit var mModel: SharedViewModel
@@ -64,6 +66,8 @@ class TourOverviewFragment : Fragment(), LifecycleOwner {
             run {
                 Log.i(TAG, tour.name)
                 loadDataIntoFragment(tour)
+                mModel.setCurrentTour(tour)
+                Log.i(TAG + "Hello", mModel.getCurrentTour()!!.name)
             }
         })
 
@@ -75,6 +79,10 @@ class TourOverviewFragment : Fragment(), LifecycleOwner {
 //        Glide.with(appBarImg.context).load(currTour!!.pic).centerCrop().into(appBarImg)
 //        Picasso.get().load(currTour!!.pic).into(tourImage)
 
+        startButton = root.findViewById(R.id.start_tour_button)
+        startButton.setOnClickListener{
+            findNavController().navigate(R.id.action_tour_overview_to_start_tour)
+        }
 
         tabLayout = root.findViewById(R.id.tab_layout)
         viewPager = root.findViewById(R.id.viewpager)

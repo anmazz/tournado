@@ -86,7 +86,8 @@ class TourOverviewFragment : Fragment() {
         viewPager = root.findViewById(R.id.viewpager)
 
         val fragM = getFragmentManager()
-        val adapter = TabsAdapter(fragM!!)
+
+        val adapter = TabsAdapter(childFragmentManager)
 
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)

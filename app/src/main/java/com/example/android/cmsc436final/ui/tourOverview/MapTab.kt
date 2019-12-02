@@ -86,6 +86,7 @@ class MapTab : Fragment(), OnMapReadyCallback, LifecycleObserver {
         mModel.getTour().observe(this, Observer { currTour ->
             run {
                 Utils().drawOnMap(currTour, activity!!, mGoogleMap)
+                Utils().moveCameraToTourBounds(currTour, activity!!, mGoogleMap)
             }
         })
     }

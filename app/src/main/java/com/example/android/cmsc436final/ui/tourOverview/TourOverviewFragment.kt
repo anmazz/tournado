@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
@@ -34,7 +32,7 @@ import kotlinx.coroutines.launch
  *
  * */
 
-class TourOverviewFragment : Fragment(), LifecycleOwner {
+class TourOverviewFragment : Fragment() {
     private lateinit var mapRouteDrawer: MapRouteDrawer
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var mapView: MapView
@@ -90,9 +88,9 @@ class TourOverviewFragment : Fragment(), LifecycleOwner {
         val fragM = getFragmentManager()
         val adapter = TabsAdapter(fragM!!)
 
-//        viewPager.adapter = adapter
-//        tabLayout.setupWithViewPager(viewPager)
-//
+        viewPager.adapter = adapter
+        tabLayout.setupWithViewPager(viewPager)
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
             }

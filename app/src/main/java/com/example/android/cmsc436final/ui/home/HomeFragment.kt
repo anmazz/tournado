@@ -161,9 +161,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         mModel.getLocationData().observe(this, Observer {
             lat = it.latitude
             long = it.longitude
-            Log.i(TAG, "in startLocationUpdates")
-            mGoogleMap.clear()
-            mGoogleMap.addMarker(MarkerOptions().position(LatLng(lat, long)).title("Current Location"))
+            mGoogleMap.isMyLocationEnabled = true
             mGoogleMap.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
                     LatLng(

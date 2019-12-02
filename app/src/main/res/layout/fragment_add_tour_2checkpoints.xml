@@ -51,7 +51,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tour_descrip_lay"
+            android:id="@+id/cp_descrip_lay"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:hint="Checkpoint Description">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tour_descrip"
+                android:id="@+id/cp_descrip"
                 android:layout_width="365dp"
                 android:layout_height="match_parent"
                 android:hint="Checkpoint Description" />

@@ -48,6 +48,7 @@ import org.json.JSONObject
  */
 
 class InfoTab: Fragment() {
+
     private lateinit var mModel: SharedViewModel
 
     private var currTour: Tour? = null
@@ -66,11 +67,6 @@ class InfoTab: Fragment() {
         fun newInstance(): InfoTab = InfoTab()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,6 +78,7 @@ class InfoTab: Fragment() {
 //        var tourid = arguments?.getString("tourid")
 //        getTourById(tourid!!)
         val root = inflater.inflate(R.layout.tour_overview_info_tab, container, false)
+
         mCheckpointsRecycler = root.findViewById(R.id.recycler_checkpoints)
 
         // Initialize Firestore and the main RecyclerView
@@ -91,6 +88,7 @@ class InfoTab: Fragment() {
 
         return root
     }
+
 
 //    override fun onStart() {
 //        super.onStart()
@@ -159,5 +157,4 @@ class InfoTab: Fragment() {
 ////        val bundle = bundleOf("tourid" to tour!!.id)
 ////        findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
 //    }
-
 }

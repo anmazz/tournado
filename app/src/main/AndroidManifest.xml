@@ -17,9 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name=".GeofenceReceiver"
-            android:enabled="true"
-            android:exported="true"/>
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustResize"

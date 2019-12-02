@@ -1,20 +1,27 @@
 package com.example.android.cmsc436final
 
+import android.app.PendingIntent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.android.cmsc436final.ui.searchTour.FacetFragment
+
 import com.example.android.cmsc436final.ui.searchTour.SearchTourFragment
+import com.example.android.cmsc436final.ui.searchTour.FacetFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
+
+    companion object{
+        const val TAG= "MainActivity"
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +41,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_user_profile
             )
         )
+        supportActionBar?.hide()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
@@ -61,6 +69,8 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.popBackStack()
         return super.onSupportNavigateUp()
     }
+
+
 
 
 }

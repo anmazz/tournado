@@ -17,8 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<!--        <activity android:name=".HomeActivity"></activity>-->
-<!--        android:windowSoftInputMode="adjustResize"-->
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustResize"
@@ -55,6 +53,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.example.android.cmsc436final.ui.addTour
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,9 @@ import kotlin.collections.ArrayList
 
 class AddTourTags: Fragment() {
 
+    companion object {
+        private const val TAG = "AddTOURTags"
+    }
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var tagInput: TextInputEditText
     //    Buttons
@@ -54,6 +58,7 @@ class AddTourTags: Fragment() {
     private lateinit var chip: Chip
 
     private lateinit var tags: MutableList<String>
+
 
     //for searching
     val client = ClientSearch(ApplicationID("MLWVY1AHOC"), APIKey("84275e27b9ffaecb0207751b4b2349c6"), LogLevel.ALL)
@@ -72,22 +77,26 @@ class AddTourTags: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         sharedViewModel =
-            ViewModelProviders.of(this).get(sharedViewModel::class.java)
+            ViewModelProviders.of(this).get(SharedViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_add_tour_3tags, container, false)
 
-
+        tags = ArrayList()
         // UI elements
         tagInput = root.findViewById<View>(R.id.tag_input) as TextInputEditText
 
         // buttons
 
-        buttonAddTag = root.findViewById<View>(R.id.add_tour_button) as Button
+        buttonAddTag = root.findViewById<View>(R.id.add_tag_button) as Button
+        buttonNext = root.findViewById<View>(R.id.next_button) as Button
         buttonNext = root.findViewById<View>(R.id.next_button) as Button
         buttonCancel =  root.findViewById(R.id.cancel_button)
 
+        Log.i(TAG, "in oncreate")
 
         chipGroup = root.findViewById<View>(R.id.chip_group) as ChipGroup
+//        chip = layoutInflater.inflate(R.layout.single_chip, chipGroup, false) as Chip
+
 
         // button listeners
         buttonAddTag.setOnClickListener() {
@@ -96,14 +105,13 @@ class AddTourTags: Fragment() {
 
         buttonNext.setOnClickListener() {
             addToDatabase()
+            navigateToHome()
         }
 
-        chip.setOnClickListener() {
-            deleteTag(chip)
-        }
 //        TODO navigate to home button
         buttonCancel.setOnClickListener {
             tagInput.setText("")
+            navigateToHome()
         }
 
 
@@ -123,13 +131,17 @@ class AddTourTags: Fragment() {
 
         val tagStr = tagInput.text.toString()
         // add to the arraylist if not empty
-        if (tagStr.isNotEmpty() && !tags.contains(tagStr)) {
+        if (tags != null && tagStr.isNotEmpty() && !tags.contains(tagStr)) {
             tags.add(tagStr)
         }
 
-        chip = layoutInflater.inflate(R.layout.single_chip, chipGroup, false) as Chip
+        chip = Chip(context)
         chip.text = tagStr
         chipGroup.addView(chip)
+        Log.i(TAG, "created and added chip")
+        chip.setOnClickListener() {
+            deleteTag(chip)
+        }
 
         tagInput.setText("")
     }
@@ -189,7 +201,7 @@ class AddTourTags: Fragment() {
 
 
     //    TODO navigate to the addTour home page
-    private fun navigateToAddTags() {
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+    private fun navigateToHome() {
+        findNavController().navigate(R.id.action_add_tour3_to_navigation_home)
     }
 }

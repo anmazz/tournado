@@ -4,13 +4,13 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/tour_topcard"
+        android:id="@+id/checkpoint_topcard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="4dp">
 
         <ImageView
-            android:id="@+id/tour_image"
+            android:id="@+id/checkpt_image"
             android:layout_width="match_parent"
             android:layout_height="240dp"
             android:alpha="1.0"
@@ -20,13 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="240dp"
             android:background="@drawable/gradient_overlay" />
+    </RelativeLayout>
 
-        <!-- Back button -->
 
 
-        <TextView
-            android:id="@+id/tour_name"
-            android:text="Tour Name"
+    <TextView
+            android:id="@+id/checkpoint_name"
+            android:text="Checkpoint Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -35,7 +35,5 @@
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
-
-    </RelativeLayout>
 
 </LinearLayout>

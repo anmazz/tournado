@@ -71,7 +71,7 @@ class AddTourBasicInfo: Fragment() {
 
 //    TODO navigate to the add checkpoints page
     private fun navigateToAddCheckpoints(){
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+        findNavController().navigate(R.id.action_addtour1)
     }
 
 }

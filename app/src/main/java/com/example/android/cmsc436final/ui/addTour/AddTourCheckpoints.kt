@@ -54,7 +54,7 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var selectedVideo: VideoView
     private lateinit var selectedAudio: MediaStore.Audio
     private val TAG = "In addTourCheckpoints"
-    
+
     private lateinit var location: GeoPoint
     private var mCheckpointsRecycler: RecyclerView? = null
 

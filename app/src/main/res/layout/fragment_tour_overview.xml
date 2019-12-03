@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0E0E0">
+    android:background="@color/tourOverviewBackground">
 
     <RelativeLayout
         android:id="@+id/tour_topcard"
@@ -45,12 +45,13 @@
         android:id="@+id/start_tour_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/secondaryLightColor"
         android:layout_alignBottom="@+id/tour_topcard"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="16dp"
-        app:srcCompat="@drawable/ic_add_black_24dp" />
-
+        app:borderWidth="0dp"
+        android:src="@drawable/ic_near_me_white_24dp"/>
     <LinearLayout
         android:id="@+id/map_info_buttons"
         android:layout_width="match_parent"
@@ -61,11 +62,11 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/show_map_button"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:text="MAP"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/show_info_button"
             style="@style/Widget.MaterialComponents.Button.TextButton"

@@ -28,8 +28,7 @@ class AddTourBasicInfo: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sharedViewModel =
-            ViewModelProviders.of(this).get(sharedViewModel::class.java)
+        sharedViewModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_add_tour_1, container, false)
 
@@ -62,7 +61,7 @@ class AddTourBasicInfo: Fragment() {
     //        TODO make sure this is adding just pictures
 
     private fun navigateToAddMedia(){
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+        //findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
     }
 
     fun saveAndNext() {
@@ -82,7 +81,7 @@ class AddTourBasicInfo: Fragment() {
 
 //    TODO navigate to the add checkpoints page
     private fun navigateToAddCheckpoints(){
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+        //findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
     }
 
 }

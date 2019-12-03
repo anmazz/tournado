@@ -36,7 +36,7 @@ import com.example.android.cmsc436final.model.Checkpoint
 
 
 class CheckpointAdapter(context: Context?, data: List<Checkpoint>) : RecyclerView.Adapter<CheckpointAdapter.ViewHolder?>() {
-    private val mData: List<Checkpoint> = data
+    private var mData: List<Checkpoint> = data
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
     private var mClickListener: ItemClickListener? = null
 

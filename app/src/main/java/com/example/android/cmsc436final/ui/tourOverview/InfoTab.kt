@@ -104,7 +104,7 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
         peopleCompletedView.text = ppl
 
         // populate tags
-        tour.tags!!.forEach {
+        tour.tags?.forEach {
             var newChip = Chip(context)
             newChip.text = it
             chipGroup.addView(newChip)

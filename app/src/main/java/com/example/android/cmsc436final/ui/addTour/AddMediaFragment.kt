@@ -124,7 +124,7 @@ class AddMediaFragment: Fragment() {
                 PICK_VIDEO->{
                     selectedMedia = data!!.data as Uri
                     //TODO: add selected media to list view, upload, and set upload indicator on list
-                    //view as true
+                    addVideo(selectedMedia)
                 }
                 PICK_AUDIO->{
                     selectedMedia = data!!.data as Uri
@@ -137,29 +137,24 @@ class AddMediaFragment: Fragment() {
     }
 
     private fun addVideo(selectedMedia: Uri){
-        var selectedImage = getPath(selectedMedia)
-        if(selectedImage != null){
-            videoView.setVideoPath(selectedImage)
+            videoView.setVideoURI(selectedMedia)
             var mediaController = MediaController(context)
             videoView.setMediaController(mediaController)
-            videoView.start()
-        }
-
-
+            //mediaController.setAnchorView(videoView)
     }
 
-    private fun getPath(uri:Uri):String{
-        var projectionnArray = arrayOf(MediaStore.Video.Media.DATA)
-        var cursor = context!!.contentResolver.query(uri, projectionnArray,null,null,null)
-        if(cursor!=null){
-            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
-            cursor.moveToFirst()
-            return cursor.getString(columnIndex)
-        }else
-            return ""
-
-
-    }
+//    private fun getPath(uri:Uri):String{
+//        var projectionArray = arrayOf(MediaStore.Video.Media.DATA)
+//        var cursor = context!!.contentResolver.query(uri, projectionArray,null,null,null)
+//        if(cursor!=null){
+//            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
+//            cursor.moveToFirst()
+//            return cursor.getString(columnIndex)
+//        }else
+//            return ""
+//
+//
+//    }
 
     private fun addImage(selectedMedia: Uri){
         userRef = storageRef.child("/checkpointPictures").child(selectedMedia.toString() + LocalDateTime.now() + ".jpg")

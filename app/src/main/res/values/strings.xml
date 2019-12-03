@@ -42,8 +42,11 @@
     <string name="add_location">Add location</string>
     <string name="add_media">Add Media</string>
     <string name="add_photo">+ Picture</string>
+    <string name="select_photo">Select Picture</string>
     <string name="add_video">+ Video</string>
+    <string name="select_video">Select Video</string>
     <string name="add_audio">+ Audio</string>
+    <string name="select_audio">Select Audio</string>
     <string name="upload_media">Upload Media</string>
     <!-- Add tour strings -->
     <string name="search_tour">Search Tour</string>

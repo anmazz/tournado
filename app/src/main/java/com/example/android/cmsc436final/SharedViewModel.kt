@@ -17,6 +17,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private var currentTour :Tour? = null
     private var checkpointToBeAdded = Checkpoint()
     private var currentCheckpointNum = 0
+    private var currChkptNumStartTour = 0
 
 
     fun setCurrentTour(tour : Tour){
@@ -25,6 +26,14 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getCurrentTour(): Tour? {
         return currentTour
+    }
+
+    fun setCurrChkptNumStartTour(num : Int){
+        currChkptNumStartTour = num
+    }
+
+    fun getCurrChkptNumStartTour() : Int{
+        return currChkptNumStartTour
     }
 
     fun setCurrentCheckpointNum(num: Int){

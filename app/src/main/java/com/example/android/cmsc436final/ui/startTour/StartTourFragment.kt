@@ -68,6 +68,7 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
 
         //Get loaded current tour saved into viewModel
         currTour = mModel.getCurrentTour()!!
+        currentCheckpoint = mModel.getCurrChkptNumStartTour()
         fillInNextCheckpointView()
 
         dialogShown = Array(currTour.checkpoints!!.size) {false}
@@ -120,8 +121,9 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         yesBtn.setOnClickListener {
             currentCheckpoint++
             mModel.setCurrentCheckpointNum(currentCheckpoint)
+            mModel.setCurrChkptNumStartTour(currentCheckpoint)
             findNavController().navigate(R.id.action_start_tour_to_checkpoint_overview)
-            fillInNextCheckpointView()
+            //fillInNextCheckpointView()
             dialog.dismiss()
         }
         dialog.show()
@@ -136,10 +138,9 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun fillInNextCheckpointView(){
-        val nextCheckpoint = currTour.checkpoints!![currentCheckpoint]
+        val nextCheckpoint = currTour.checkpoints!![mModel.getCurrChkptNumStartTour()]
         nameView.text = nextCheckpoint.name
         Glide.with(imageView.context).load(nextCheckpoint.image).centerCrop().into(imageView)
-
     }
 
 }

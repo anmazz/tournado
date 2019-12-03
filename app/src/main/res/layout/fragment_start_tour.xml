@@ -47,15 +47,28 @@
                         android:adjustViewBounds="true"
                         android:src="@drawable/button_background"
                         app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
-
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:id="@+id/next_checkpoint_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Next checkpoint:"
+                        android:textColor="@color/quantum_black_100"
+                        android:textSize="18dp" />
                     <TextView
                         android:id="@+id/checkpoint_item_name2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_below="@id/next_checkpoint_text"
                         android:text="Tour Name"
+                        android:textStyle="bold"
                         android:textColor="@color/quantum_black_100"
-                        android:textSize="20dp" />
+                        android:textSize="18dp" />
+                </RelativeLayout>
 
                 </FrameLayout>
 

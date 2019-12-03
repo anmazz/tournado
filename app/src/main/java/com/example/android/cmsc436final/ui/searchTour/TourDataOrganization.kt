@@ -9,6 +9,7 @@ import kotlinx.serialization.json.JsonObject
 
 data class TourDataOrganization (
     var name: String = "",
+    var tourId: String = "",
     override val _highlightResult: JsonObject?
 ) : Highlightable {
     @Transient

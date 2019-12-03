@@ -15,7 +15,9 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val locationData = LocationLiveData(application)
     private var toBeAdded = Tour()
     private var currentTour :Tour? = null
+    private var checkpointToBeAdded = Checkpoint()
     private var currentCheckpointNum = 0
+
 
     fun setCurrentTour(tour : Tour){
         currentTour = tour
@@ -40,6 +42,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         return tourId
     }
 
+
+// ------TOUR INFORMATION--------
     fun addID(id: String) {
         toBeAdded.id = id
     }
@@ -65,7 +69,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
 
-    fun getAddedTour(): Tour {
+    fun getCreatedTour(): Tour {
         return toBeAdded
     }
 

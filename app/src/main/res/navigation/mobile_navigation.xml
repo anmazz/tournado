@@ -9,7 +9,11 @@
         android:id="@+id/navigation_search_tour"
         android:name="com.example.android.cmsc436final.ui.searchTour.SearchTourFragment"
         android:label="@string/title_search_tour"
-        tools:layout="@layout/fragment_search_tour" />
+        tools:layout="@layout/fragment_search_tour" >
+        <action
+            android:id="@+id/action_navigation_search_tour_to_tour_overview"
+            app:destination="@id/tour_overview" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_home"

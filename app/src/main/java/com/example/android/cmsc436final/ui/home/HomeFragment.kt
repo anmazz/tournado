@@ -204,4 +204,5 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
     }
 
+
 }

@@ -24,16 +24,70 @@
 
 
 
-    <TextView
+
+    <FrameLayout
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <View
+            android:id="@+id/info_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary" />
+
+        <TextView
             android:id="@+id/checkpoint_name"
-            android:text="Checkpoint Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="200dp"
+            android:text="Checkpoint Name"
+            android:textColor="#000000"
             android:textSize="20dp"
-            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/cp_description"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Checkpoint Description"
+                android:textColor="@color/quantum_black_100" />
+
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Location"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/quantum_black_100" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/audio_button"
+        android:layout_width="350dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:text="Audio" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/video_button"
+        android:layout_width="350dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:text="Video" />
 
 </LinearLayout>

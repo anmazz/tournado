@@ -35,6 +35,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,6 +60,7 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
     private lateinit var checkpoints : List<Checkpoint>
     private lateinit var descriptionView : TextView
     private lateinit var peopleCompletedView : TextView
+    private lateinit var chipGroup: ChipGroup
 
 
     companion object {
@@ -74,6 +77,7 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
         mCheckpointsRecycler!!.layoutManager = LinearLayoutManager(context)
         descriptionView =root.findViewById(R.id.info_tour_description)
         peopleCompletedView = root.findViewById(R.id.info_ppl_completed)
+        chipGroup = root.findViewById(R.id.chipGroup)
 
         mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
         if(mModel.getCurrentTour() == null){
@@ -98,6 +102,13 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
         descriptionView.text = tour.description
         val ppl = "People completed ${tour.pplCompleted}"
         peopleCompletedView.text = ppl
+
+        // populate tags
+        tour.tags!!.forEach {
+            var newChip = Chip(context)
+            newChip.text = it
+            chipGroup.addView(newChip)
+        }
     }
 
     private fun initRecycler(tour: Tour){
@@ -107,8 +118,10 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
     }
 
 
+//    TODO add navigation
     override fun onItemClick(view: View?, position: Int) {
-        //TODO: Navigate to checkpoint overview fragment onclick
+        mModel.setCurrentCheckpointNum(position)
+//        findNavController().navigate(R.id)
     }
 
 }

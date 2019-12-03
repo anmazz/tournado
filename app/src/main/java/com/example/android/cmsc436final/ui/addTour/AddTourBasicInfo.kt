@@ -37,7 +37,6 @@ class AddTourBasicInfo: Fragment() {
         tourDescrip = root.findViewById<View>(R.id.tour_descrip) as TextInputEditText
         buttonAddPicture = root.findViewById<View>(R.id.add_tour_picture_button) as Button
         buttonNext = root.findViewById<View>(R.id.next_button) as Button
-        buttonNext = root.findViewById<View>(R.id.cancel_button) as Button
 
 
         buttonNext.setOnClickListener() {

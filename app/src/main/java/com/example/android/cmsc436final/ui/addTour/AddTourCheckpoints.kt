@@ -51,9 +51,6 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var buttonAddCheckpoint: Button
     private lateinit var buttonNext: Button
     private lateinit var buttonCancel: Button
-    private lateinit var selectedPic: ImageView
-    private lateinit var selectedVideo: VideoView
-    private lateinit var selectedAudio: MediaStore.Audio
     private lateinit var selectedPic: Uri
     private lateinit var selectedVideo: Uri
     private lateinit var selectedAudio: Uri
@@ -142,8 +139,6 @@ class AddTourCheckpoints: Fragment() {
         }
 
         buttonAddPicture.setOnClickListener() {
-
-            addPicture()
             selectPicture()
         }
         buttonAddVideo.setOnClickListener() {
@@ -158,7 +153,7 @@ class AddTourCheckpoints: Fragment() {
             addCheckpoint()
         }
 
-//        TODO navigate to home
+//      TODO navigate to home
         buttonCancel.setOnClickListener() {
             checkptName.setText("")
             checkptDesc.setText("")
@@ -168,7 +163,6 @@ class AddTourCheckpoints: Fragment() {
         return root
     }
 
-    // TODO make sure this is adding just pictures
     private fun selectPicture() {
         Log.i(TAG, "Im about to select picture")
         addImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)
@@ -205,7 +199,6 @@ class AddTourCheckpoints: Fragment() {
 
     }
 
-    // TODO make sure this is adding just video
     private fun selectVideo(){
         Log.i(TAG, "Im about to select audio")
         val addImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)

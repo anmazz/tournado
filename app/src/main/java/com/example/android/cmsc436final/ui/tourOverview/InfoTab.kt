@@ -113,6 +113,7 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
     private fun initRecycler(tour: Tour){
         checkpoints = tour.checkpoints!!
         mAdapter = CheckpointAdapter(context, checkpoints)
+        mAdapter!!.setClickListener(this)
         mCheckpointsRecycler!!.adapter = mAdapter
     }
 
@@ -120,6 +121,7 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
 //    TODO add navigation
     override fun onItemClick(view: View?, position: Int) {
         mModel.setCurrentCheckpointNum(position)
+        Log.i(TAG, "In onItemClick")
         findNavController().navigate(R.id.action_tour_overview_to_checkpoint_overview)
     }
 

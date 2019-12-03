@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.location.Geocoder
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +29,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.GeoPoint
 import java.util.*
@@ -48,7 +50,7 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var buttonAddPicture: Button
     private lateinit var buttonAddVideo: Button
     private lateinit var buttonAddAudio: Button
-    private lateinit var buttonAddCheckpoint: Button
+    private lateinit var buttonAddCheckpoint: FloatingActionButton
     private lateinit var buttonNext: Button
     private lateinit var buttonCancel: Button
     private lateinit var selectedPic: Uri
@@ -84,7 +86,7 @@ class AddTourCheckpoints: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         sharedViewModel =
-            ViewModelProviders.of(this).get(sharedViewModel::class.java)
+            ViewModelProviders.of(this).get(SharedViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_add_tour_2checkpoints, container, false)
 
@@ -108,7 +110,7 @@ class AddTourCheckpoints: Fragment() {
         buttonNext = root.findViewById<View>(R.id.next_button) as Button
         buttonCancel = root.findViewById<View>(R.id.cancel_button) as Button
 
-        buttonAddCheckpoint = root.findViewById<View>(R.id.add_cp_button) as Button
+        buttonAddCheckpoint = root.findViewById<View>(R.id.add_cp_button) as FloatingActionButton
 
         // list of checkpoints we keep adding to
         checkpoints = ArrayList()
@@ -119,7 +121,7 @@ class AddTourCheckpoints: Fragment() {
 
         //---------MAP STUFF---------//
         //For add location intent
-        var fields = Arrays.asList(Place.Field.ID, Place.Field.NAME)
+        var fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
 
         // Start the autocomplete intent.
         var intent = Autocomplete.IntentBuilder(
@@ -280,6 +282,7 @@ class AddTourCheckpoints: Fragment() {
                     val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
                     if (place != null) {
                         Log.i(TAG, "Place: " + place.name + ", " + place.id)
+//                        geoCode = Geocoder(context).
                         location = GeoPoint(place.latLng!!.latitude, place.latLng!!.longitude)
                         Toast.makeText(
                             activity,

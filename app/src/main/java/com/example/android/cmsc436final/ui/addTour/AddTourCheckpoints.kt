@@ -3,7 +3,8 @@ package com.example.android.cmsc436final.ui.addTour
 import android.app.AlertDialog
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
+import android.app.Activity
+import android.content.Intentimport android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +12,20 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.VideoView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
+import com.example.android.cmsc436final.adapter.CheckpointAdapter
 import com.example.android.cmsc436final.model.Checkpoint
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.GeoPoint
@@ -43,12 +49,18 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var selectedVideo: VideoView
     private lateinit var selectedAudio: MediaStore.Audio
     private val TAG = "In addTourCheckpoints"
+    private lateinit var location: GeoPoint
+    private var mCheckpointsRecycler: RecyclerView? = null
 
 
 
     // ArrayList of Checkpoints
     private lateinit var checkpoints: MutableList<Checkpoint>
     private val AUTOCOMPLETE_REQUEST_CODE = 1
+
+    companion object{
+        private val TAG = "AddTourCheckpoints"
+    }
 
 
     override fun onCreateView(
@@ -80,7 +92,11 @@ class AddTourCheckpoints: Fragment() {
         // list of checkpoints we keep adding to
         checkpoints = ArrayList()
 
-        //---------MAP STUFF---------
+
+        mCheckpointsRecycler = root.findViewById(R.id.recycler_checkpoints)
+
+
+        //---------MAP STUFF---------//
         //For add location intent
         var fields = Arrays.asList(Place.Field.ID, Place.Field.NAME)
 
@@ -163,10 +179,6 @@ class AddTourCheckpoints: Fragment() {
 
 
     fun saveAndNext() {
-        // get strings from textboxes
-        val tourNameStr = checkptName.text.toString().trim { it <= ' ' }
-        val tourDescripStr = checkptDesc.text.toString()
-
         // add to viewModel
         sharedViewModel.addCheckpoints(checkpoints)
     }
@@ -191,13 +203,36 @@ class AddTourCheckpoints: Fragment() {
         checkpoints.add(newCP)
 
         // TO display added checkpoints
-        //creating adapter using CheckPointList
-        val lvCheckpoint = CheckPointList(activity!!, checkpoints)
+        //creating adapter using CheckpointAdapter
+        val adapter = CheckpointAdapter(activity!!, checkpoints)
         //attaching adapter to the listview
-        listviewCP.adapter = lvCheckpoint
+        mCheckpointsRecycler!!.adapter = adapter
+        mCheckpointsRecycler!!.layoutManager = LinearLayoutManager(context)
 
         checkptName.setText("")
         checkptDesc.setText("")
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
+                if (place != null) {
+                    Log.i(TAG, "Place: " + place.name + ", " + place.id)
+                    location = GeoPoint(place.latLng!!.latitude, place.latLng!!.longitude)
+                    Toast.makeText(activity, "Place: " + place.name + ", " + place.id, Toast.LENGTH_LONG).show()
+                }
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Toast.makeText(activity, "Error with autocomplete. Please try again.", Toast.LENGTH_LONG)
+                var status = Autocomplete.getStatusFromIntent(data!!)
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+
     }
 
 }

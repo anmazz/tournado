@@ -1,6 +1,7 @@
 package com.example.android.cmsc436final
 
 import android.app.Application
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -14,11 +15,20 @@ import kotlinx.coroutines.tasks.await
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
     private val locationData = LocationLiveData(application)
     private var toBeAdded = Tour()
+    private var toBeUploaded: MutableList<Array<Uri?>> = ArrayList()
     private var currentTour :Tour? = null
     private var checkpointToBeAdded = Checkpoint()
     private var currentCheckpointNum = 0
     private var currChkptNumStartTour = 0
+    private val imageurl = MutableLiveData<String>()
 
+    fun getImageUrl(): LiveData<String> {
+        return imageurl
+    }
+
+    fun setImageUrl(url : String) {
+        imageurl.value = url
+    }
 
     fun setCurrentTour(tour : Tour){
         currentTour = tour
@@ -52,6 +62,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
 
+
+
 // ------TOUR INFORMATION--------
     fun addID(id: String) {
         toBeAdded.id = id
@@ -71,6 +83,10 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     fun addCheckpoints(cps: List<Checkpoint>) {
         toBeAdded.checkpoints = cps
+    }
+
+    fun addUris(uris: MutableList<Array<Uri?>>) {
+        toBeUploaded = uris
     }
 
     fun addTags(tags: List<String>) {

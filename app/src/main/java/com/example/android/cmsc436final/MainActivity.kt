@@ -1,11 +1,15 @@
 package com.example.android.cmsc436final
 
+import android.Manifest
 import android.app.PendingIntent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -14,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.android.cmsc436final.ui.searchTour.SearchTourFragment
 import com.example.android.cmsc436final.ui.searchTour.FacetFragment
+import com.example.locationbasedtourguide.ui.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -26,8 +31,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(!(ContextCompat.checkSelfPermission(applicationContext!!,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)){
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                1
+            )
+        }
         setContentView(R.layout.activity_main)
-
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)

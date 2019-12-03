@@ -9,6 +9,9 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
+import android.media.AudioDeviceCallback
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +20,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,12 +36,23 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.add_audio_dialogue.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.add_image_dialogue.view.*
 import kotlinx.android.synthetic.main.add_video_dialogue.view.*
 import kotlinx.android.synthetic.main.fragment_add_media.view.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import java.time.LocalDateTime
 
@@ -53,10 +69,23 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var buttonAddCheckpoint: FloatingActionButton
     private lateinit var buttonNext: Button
     private lateinit var buttonCancel: Button
-    private lateinit var selectedPic: Uri
-    private lateinit var selectedVideo: Uri
-    private lateinit var selectedAudio: Uri
+    //Uri's where user media selections go
+    private var allCheckpointUris: MutableList<Array<Uri?>> = ArrayList()
+    private var urisOfSingleCheckpoint: MutableList<Uri> = ArrayList()
+    private var array: Array<Uri?> = arrayOfNulls<Uri?>(3)
+    private var selectedPic: Uri? = null
+    private var selectedVideo: Uri? = null
+    private var selectedAudio: Uri? = null
     private val TAG = "In addTourCheckpoints"
+    //MediaPlayers for media selection
+    private var audioPlayer :MediaPlayer? = null
+    private var videoPlayer :MediaPlayer? = null
+    //connection to firebase
+    private lateinit var auth: FirebaseAuth
+    private lateinit var storage: FirebaseStorage
+    private lateinit var db: FirebaseFirestore
+    private lateinit var storageRef: StorageReference
+    private lateinit var userRef: StorageReference
 
     private lateinit var location: GeoPoint
     private var mCheckpointsRecycler: RecyclerView? = null
@@ -66,10 +95,14 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var  addVideoView: View
     private lateinit var  addAudioView: View
 
+    //urls in database
+    private var  imageUrl: String = ""
+    private var  videoUrl: String = ""
+    private var  audioUrl: String = ""
 
-
-    // ArrayList of Checkpoints
+    // Arraylist of Checkpoints
     private lateinit var checkpoints: MutableList<Checkpoint>
+    //request codes for activityresult
     private val AUTOCOMPLETE_REQUEST_CODE = 1
     private var PICK_IMAGE = 4
     private var PICK_VIDEO = 5
@@ -86,7 +119,7 @@ class AddTourCheckpoints: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         sharedViewModel =
-            ViewModelProviders.of(this).get(SharedViewModel::class.java)
+            ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_add_tour_2checkpoints, container, false)
 
@@ -100,12 +133,12 @@ class AddTourCheckpoints: Fragment() {
         buttonAddVideo = root.findViewById<View>(R.id.add_cp_video_button) as Button
         buttonAddAudio = root.findViewById<View>(R.id.add_cp_audio_button) as Button
 
-        //Views for dialogues
 
-        addVideoView = LayoutInflater.from(context).inflate(R.layout.add_video_dialogue, null)
-        addAudioView = LayoutInflater.from(context).inflate(R.layout.add_audio_dialogue, null)
-
-
+        //firebase initiation
+        auth = FirebaseAuth.getInstance()
+        storage = FirebaseStorage.getInstance()
+        db = FirebaseFirestore.getInstance()
+        storageRef = storage.reference
 
         buttonNext = root.findViewById<View>(R.id.next_button) as Button
         buttonCancel = root.findViewById<View>(R.id.cancel_button) as Button
@@ -140,19 +173,21 @@ class AddTourCheckpoints: Fragment() {
             saveAndNext()
         }
 
+
+        //3 buttons for adding media below
         buttonAddPicture.setOnClickListener() {
             selectPicture()
         }
         buttonAddVideo.setOnClickListener() {
-            selectAudio()
+            selectVideo()
         }
         buttonAddAudio.setOnClickListener() {
-            selectVideo()
+            selectAudio()
         }
 
 
         buttonAddCheckpoint.setOnClickListener() {
-            addCheckpoint()
+                addCheckpoint()
         }
 
 //      TODO navigate to home
@@ -165,12 +200,13 @@ class AddTourCheckpoints: Fragment() {
         return root
     }
 
+
     private fun selectPicture() {
         Log.i(TAG, "Im about to select picture")
         addImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)
         val builder = AlertDialog.Builder(context)
             .setView(addImageView)
-            .setTitle("Select photo for Checkpoint")
+            .setTitle("Select main photo for Checkpoint")
         //TODO: make sure to populate imageview if image was already selected
             if(selectedPic != null){
                 addImageView.imageToBeAdded.setImageURI(selectedPic)
@@ -182,12 +218,12 @@ class AddTourCheckpoints: Fragment() {
             addImageView.selectImageButton.setOnClickListener{
                 //now select a picture
                 val toGallery = Intent(
-                    Intent.ACTION_PICK
-                    , MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                    Intent.ACTION_GET_CONTENT
+                    , MediaStore.Images.Media.INTERNAL_CONTENT_URI).setType("image/*")
                     startActivityForResult(toGallery,PICK_IMAGE)
-                //mAlertDialog.dismiss() do this last but before it make sure to change cancel button to done
 
             }
+            //TODO: add another button for taking pic and set click listner on it
 
             addImageView.cancelPicSelectButton.setOnClickListener {
                 mAlertDialog.dismiss()
@@ -195,37 +231,77 @@ class AddTourCheckpoints: Fragment() {
 
     }
 
-    // TODO make sure this is adding just audio
+    // TODO properly handle audio(maybe get rid of slider and pause/play)
     private fun selectAudio(){
-
-
-    }
-
-    private fun selectVideo(){
         Log.i(TAG, "Im about to select audio")
-        val addImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)
+        addAudioView = LayoutInflater.from(context).inflate(R.layout.add_audio_dialogue, null)
         val builder = AlertDialog.Builder(context)
-            .setView(addImageView)
-            .setTitle("Select photo for Checkpoint")
-        //TODO: make sure to populate imageview if image was already selected
-        if(selectedPic != null){
-            addImageView.imageToBeAdded.setImageURI(selectedPic)
-            addImageView.selectImageButton.text = "Edit Image"
-            addImageView.cancelPicSelectButton.text = "Done"
+            .setView(addAudioView)
+            .setTitle("Select audio for Checkpoint")
+        //TODO: make sure to populate audio if audio was already selected
+        if(selectedAudio != null){
+            //enter audio stuff here
+            addAudioView.selectAudioButton.text = "Edit Audio"
+            addAudioView.cancelAudioSelectButton.text = "Done"
         }
 
         val mAlertDialog = builder.show()
-        addImageView.selectImageButton.setOnClickListener{
-            //now select a picture
+        addAudioView.selectAudioButton.setOnClickListener{
+            //now select audio
             val toGallery = Intent(
-                Intent.ACTION_PICK
-                , MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(toGallery,PICK_IMAGE)
-            //mAlertDialog.dismiss() do this last but before it make sure to change cancel button to done
+//                Intent.ACTION_GET_CONTENT).setType("audio/*")
+            Intent.ACTION_PICK
+            , MediaStore.Audio.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(toGallery,PICK_AUDIO)
+
+        }
+//        addAudioView.playButton.setOnClickListener {
+//            if(audioPlayer != null){
+//                audioPlayer!!.start()
+//
+//            }
+//        }
+//        addAudioView.pauseButton.setOnClickListener {
+//            if(audioPlayer != null){
+//                audioPlayer!!.stop()
+//            }
+//        }
+
+        addAudioView.cancelAudioSelectButton.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+
+    }
+
+    // TODO
+    private fun selectVideo(){
+        Log.i(TAG, "Im about to select video")
+        addVideoView = LayoutInflater.from(context).inflate(R.layout.add_video_dialogue, null)
+        val builder = AlertDialog.Builder(context)
+            .setView(addVideoView)
+            .setTitle("Select video for Checkpoint")
+        //TODO: make sure to populate imageview if image was already selected
+        if(selectedVideo != null){
+            addVideoView.videoToBeAdded.setVideoURI(selectedVideo)
+            var mediaController = MediaController(context)
+            addVideoView.videoToBeAdded.setMediaController(mediaController)
+            mediaController.setAnchorView(addVideoView)
+            addVideoView.selectVideoButton.text = "Edit Video"
+            addVideoView.cancelVidSelectButton.text = "Done"
+        }
+
+        val mAlertDialog = builder.show()
+        addVideoView.selectVideoButton.setOnClickListener{
+            //now select a video
+            val toGallery = Intent(
+                Intent.ACTION_GET_CONTENT).setType("video/*")
+            startActivityForResult(toGallery,PICK_VIDEO)
+             //do this last but before it make sure to change cancel button to done
+
 
         }
 
-        addImageView.cancelPicSelectButton.setOnClickListener {
+        addVideoView.cancelVidSelectButton.setOnClickListener {
             mAlertDialog.dismiss()
         }
 
@@ -233,8 +309,11 @@ class AddTourCheckpoints: Fragment() {
 
 
     fun saveAndNext() {
+        //TODO: upload media to firebase
+
         // add to viewModel
         sharedViewModel.addCheckpoints(checkpoints)
+
         navigateToAddTags()
     }
 
@@ -252,14 +331,28 @@ class AddTourCheckpoints: Fragment() {
         val name = checkptName.text.toString()
 
         val description = checkptDesc.text.toString()
-//        TODO figure out how to save media
-//        images = arr
-//        audio:  MutableList<String>
-//        video: MutableList<String>
-        val newCP = Checkpoint(name, location, description, "", "", "")
+//        GlobalScope.launch(Dispatchers.Main) {
+//            withContext(Dispatchers.Default) { uploadPicture() }
+//        }
+
+//        lifecycleScope.launch {
+//            uploadAudio()
+//            uploadPicture()
+//            uploadVideo()
+//        }
+        Log.i(TAG, "imageURL is :" + imageUrl)
+//        sharedViewModel.setImageUrl("hi")
+//        sharedViewModel.getImageUrl().observe(this, Observer {
+//                url -> Log.i(TAG, url)
+//        })
+
+        uploadPicture()
+        val newCP = Checkpoint(name, location, description, imageUrl, audioUrl, videoUrl)
 
         // need to add this checkpoint to tour arrayList
         checkpoints.add(newCP)
+        //clearing data in dialogs for next checkPoint
+        //clearCheckpointMediaForNext()
 
         // TO display added checkpoints
         //creating adapter using CheckpointAdapter
@@ -304,80 +397,163 @@ class AddTourCheckpoints: Fragment() {
             }
 
             PICK_IMAGE->{
-                selectedPic = data!!.data as Uri
-                if(selectedPic != null) {
+                if(data != null) {
+                    selectedPic = data!!.data as Uri
+                    //adds image to dialog
                     addImageView.imageToBeAdded.setImageURI(selectedPic)
-                    addImage(selectedPic)
+                    //changes button text
+                    addImageView.selectImageButton.text = "Edit Image"
+                    addImageView.cancelPicSelectButton.text = "Done"
                 }
 
             }
             PICK_VIDEO->{
-                selectedVideo = data!!.data as Uri
-                if(selectedVideo != null) {
+                if(data != null) {
+                    selectedVideo = data!!.data as Uri
                     //adds video to video view
                     addVideoView.videoToBeAdded.setVideoURI(selectedVideo)
                     var mediaController = MediaController(context)
                     addVideoView.videoToBeAdded.setMediaController(mediaController)
                     mediaController.setAnchorView(addVideoView.videoToBeAdded)
+                    //changes button text
+                    addVideoView.selectVideoButton.text = "Edit Video"
+                    addVideoView.cancelVidSelectButton.text = "Done"
                     //sends video off to upload to data base
-                    addVideo(selectedVideo)
                 }
             }
+
             PICK_AUDIO->{
-                selectedAudio = data!!.data as Uri
-                if(selectedAudio != null) {
+                if(data != null) {
+                    selectedAudio = data!!.data as Uri
+                    addAudioView.selectAudioButton.text = "Edit Audio"
+                    addAudioView.cancelAudioSelectButton.text = "Done"
+                    Log.i(TAG, "Uri is : "+ selectedAudio.toString())
+//                    audioPlayer = MediaPlayer()!!.apply {
+//                        setAudioStreamType(AudioManager.STREAM_MUSIC)
+//                        setDataSource(context!!, selectedAudio!!)
+//                        prepare()
+//                        start()
+//                    }
                     //addAudioView.(selectedAudio) need to attribute the selected audio to a media player
                     //to play it in
-                    addImage(selectedPic)
+
                 }
-                addAudio(selectedAudio)
             }
 
         }
     }
 
     //functions below will add media to database
+    fun uploadPicture(){
+        if(selectedPic!= null) {
+            userRef = storageRef.child("/checkpointPictures")
+                .child(selectedPic!!.lastPathSegment.toString() + LocalDateTime.now() + ".jpg")
 
-    private fun addImage(selectedMedia: Uri){
-        //userRef = storageRef.child("/checkpointPictures").child(selectedMedia.toString() + LocalDateTime.now() + ".jpg")
-        //for setting selected media into imageview
-        //userPic.setImageURI(selectedPhoto)
+            val inputStream = context!!.contentResolver.openInputStream(selectedPic!!)
+            val yourDrawable = Drawable.createFromStream(inputStream, selectedPic.toString())
 
-//        val inputStream = context!!.contentResolver.openInputStream(selectedMedia)
-//        val yourDrawable = Drawable.createFromStream(inputStream, selectedMedia.toString() )
-//
-//        val imageBitmap = (selectedMedia as BitmapDrawable).bitmap
-//        val baos = ByteArrayOutputStream()
-//        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//        val data = baos.toByteArray()
-//        val uploadTask = userRef.putBytes(data)
-//        val urlTask = uploadTask.continueWithTask { task ->
-//            if (!task.isSuccessful) {
-//                task.exception?.let {
-//                    throw it
-//                }
-//            }
-//            userRef.downloadUrl
-//        }.addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                Log.i(TAG, "task result is:" + task.result.toString())
-//                //actual url stored here
-//                val uristring = task.result.toString()
-//                Log.i(TAG, "uploaded to firebase")
-//                // val newUser = User(auth.uid as String, name, email, uristring, arrayListOf<Tour>(),arrayListOf<Tour>())
-//                // db.collection("users").document(auth.uid as String).set(newUser)
-//                //Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
-//                //startActivity(Intent(this@RegistrationActivity, MainActivity::class.java))
-//            } else {
-//                //Toast.makeText(applicationContext, "Could not upload pic", Toast.LENGTH_LONG).show()
-//                // ...
-//            }
-//        }
-
+            val imageBitmap = (addImageView.imageToBeAdded.drawable as BitmapDrawable).bitmap
+            val baos = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+            val uploadTask = userRef.putBytes(data)
+            val urlTask = uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                userRef.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.i(TAG, "task result for pic is:" + task.result.toString())
+                    //actual url stored here
+                    imageUrl = task.result.toString()
+                    Log.i(TAG, "uploaded pic to firebase")
+                    uploadAudio()
+                } else {
+                    //Toast.makeText(applicationContext, "Could not upload pic", Toast.LENGTH_LONG).show()
+                    // ...
+                }
+            }
+        } else{
+            Log.i(TAG, "Im in uploadpic- selectedPic==null")
+            uploadAudio()
+        }
     }
 
-    private fun addAudio(selectedMedia: Uri){}
-    private fun addVideo(selectedMedia: Uri){}
+     fun uploadAudio(){
+        if(selectedAudio!=null) {
+            Log.i(TAG, "Im in uploadAudio- selectedaudio!=null")
+            userRef = storageRef.child("/checkpointAudio").
+                child(selectedAudio!!.lastPathSegment!!.toString() + LocalDateTime.now() + ".audio")
+            val uploadTask = userRef.putFile(selectedAudio!!)
+            val urlTask = uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                userRef.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.i(TAG, "task for audio is:" + task.result.toString())
+                    //actual url stored here
+                    audioUrl = task.result.toString()
+                    Log.i(TAG, "uploaded audio to firebase")
+                    uploadVideo()
+                } else {
+                    //Toast.makeText(applicationContext, "Could not upload pic", Toast.LENGTH_LONG).show()
+                    // ...
+                }
+            }
+        } else {
+            Log.i(TAG, "Im in uploadAudio- selectedaudio == null")
+        }
+    }
+    fun uploadVideo(){
+        if(selectedVideo!=null) {
+            Log.i(TAG, "Im in uploadAudio- selectedVideo!=null")
+            userRef = storageRef.child("/checkpointVideos").
+                child(selectedVideo!!.lastPathSegment!!.toString() + LocalDateTime.now() + ".audio")
+            val uploadTask = userRef.putFile(selectedVideo!!)
+            val urlTask = uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                userRef.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.i(TAG, "task for video is:" + task.result.toString())
+                    //actual url stored here
+                    videoUrl = task.result.toString()
+                    Log.i(TAG, "uploaded video to firebase")
+                } else {
+                    //Toast.makeText(applicationContext, "Could not upload pic", Toast.LENGTH_LONG).show()
+                    // ...
+                }
+            }
+        } else {
+            Log.i(TAG, "Im in uploadVideo- selectedVideo == null")
+        }
 
+    }
+//    private fun clearCheckpointMediaForNext(){
+//        urisOfSingleCheckpoint.clear()
+//        selectedPic = null
+//        addImageView.imageToBeAdded.setImageResource(0)
+//        addImageView.selectImageButton.text = "Add Image"
+//        addImageView.cancelPicSelectButton.text = "Cancel"
+//        selectedAudio = null
+//        addAudioView.selectAudioButton.text = "Add Audio"
+//        addAudioView.cancelAudioSelectButton.text = "Cancel"
+//        selectedVideo = null
+//        addVideoView.videoToBeAdded.setVideoURI(null)
+//        addVideoView.selectVideoButton.text = "Add Video"
+//        addVideoView.cancelVidSelectButton.text = "Cancel"
+//
+//    }
 
 }

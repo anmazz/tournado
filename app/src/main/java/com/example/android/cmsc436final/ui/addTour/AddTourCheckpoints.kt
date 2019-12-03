@@ -151,7 +151,7 @@ class AddTourCheckpoints: Fragment() {
         buttonCancel.setOnClickListener() {
             checkptName.setText("")
             checkptDesc.setText("")
-            addCheckpoint()
+            navigateToHome()
         }
 
         return root
@@ -210,11 +210,16 @@ class AddTourCheckpoints: Fragment() {
     fun saveAndNext() {
         // add to viewModel
         sharedViewModel.addCheckpoints(checkpoints)
+        navigateToAddTags()
     }
 
-    //    TODO navigate to the add tags page
     private fun navigateToAddTags(){
-        //findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+        findNavController().navigate(R.id.action_add_tour2_to_add_tour3)
+    }
+
+//    TODO fix this
+    private fun navigateToHome(){
+        findNavController().navigate(R.id.action_add_tour3_to_navigation_home)
     }
 
 

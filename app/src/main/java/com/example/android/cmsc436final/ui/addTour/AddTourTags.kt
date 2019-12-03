@@ -96,6 +96,7 @@ class AddTourTags: Fragment() {
 
         buttonNext.setOnClickListener() {
             addToDatabase()
+            navigateToHome()
         }
 
         chip.setOnClickListener() {
@@ -104,6 +105,7 @@ class AddTourTags: Fragment() {
 //        TODO navigate to home button
         buttonCancel.setOnClickListener {
             tagInput.setText("")
+            navigateToHome()
         }
 
 
@@ -189,7 +191,7 @@ class AddTourTags: Fragment() {
 
 
     //    TODO navigate to the addTour home page
-    private fun navigateToAddTags() {
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+    private fun navigateToHome() {
+        findNavController().navigate(R.id.action_add_tour3_to_navigation_home)
     }
 }

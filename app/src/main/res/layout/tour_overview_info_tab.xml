@@ -21,13 +21,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tour_description"
+                android:id="@+id/info_tour_description"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:text="Tour description"
-                android:layout_marginTop="20dp"
+                android:layout_height="47dp"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/quantum_black_100"/>
+                android:layout_marginTop="20dp"
+                android:text="Tour description"
+                android:textColor="@color/quantum_black_100" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroup"
@@ -38,7 +38,7 @@
                 <!--            android:layout_marginTop="20dp"-->
 
                 <TextView
-                    android:id="@+id/ppl_completed"
+                    android:id="@+id/info_ppl_completed"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:text="People Completed: 12"
@@ -51,7 +51,7 @@
     <TextView
         android:id="@+id/Checkpoint"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="43dp"
         android:layout_marginTop="10dp"
         android:text="Checkpoints"
         android:textColor="@color/quantum_black_100"

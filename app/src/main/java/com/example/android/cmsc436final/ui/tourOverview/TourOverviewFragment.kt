@@ -35,14 +35,7 @@ import kotlinx.coroutines.launch
  * */
 
 class TourOverviewFragment : Fragment() {
-//    private lateinit var mapRouteDrawer: MapRouteDrawer
-//    private lateinit var mGoogleMap: GoogleMap
-//    private lateinit var mapView: MapView
-//    private lateinit var db: FirebaseFirestore
-//    private lateinit var tourImage: ImageView
     private lateinit var startButton: FloatingActionButton
-//    private lateinit var tabLayout: TabLayout
-//    private lateinit var viewPager: ViewPager
     private lateinit var mModel: SharedViewModel
     private lateinit var mapButton : Button
     private lateinit var infoButton : Button
@@ -76,7 +69,6 @@ class TourOverviewFragment : Fragment() {
                 Log.i(TAG, tour.name)
                 loadDataIntoFragment(tour)
                 mModel.setCurrentTour(tour)
-                Log.i(TAG + "Hello", mModel.getCurrentTour()!!.name)
             }
         })
 
@@ -94,45 +86,12 @@ class TourOverviewFragment : Fragment() {
         }
 
         //Load map into frame when tour overview is opened
-        val transaction = childFragmentManager.beginTransaction()
-        val mapTab = MapTab()
-        transaction.replace(R.id.tab_frame, mapTab)
-        transaction.commit()
-
-
-
-        // UI ELEMENTS
-//        tourImage = root.findViewById(R.id.tour_image)
-        // set picture of collapsingAppBar using Glide
-//        Glide.with(appBarImg.context).load(currTour!!.pic).centerCrop().into(appBarImg)
-//        Picasso.get().load(currTour!!.pic).into(tourImage)
-
-
-
-//        tabLayout = root.findViewById(R.id.tab_layout)
-//        viewPager = root.findViewById(R.id.viewpager)
-
-//        val fragM = getFragmentManager()
-//
-//        val adapter = TabsAdapter(childFragmentManager)
-//
-//        viewPager.adapter = adapter
-//        tabLayout.setupWithViewPager(viewPager)
-//
-//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//            override fun onTabSelected(tab: TabLayout.Tab) {
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab) {
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab) {
-//            }
-//        })
-
+        frameLoader(MapTab())
 
         return root
     }
+
+
 
     private fun frameLoader(fragment : Fragment){
         val transaction = childFragmentManager.beginTransaction()

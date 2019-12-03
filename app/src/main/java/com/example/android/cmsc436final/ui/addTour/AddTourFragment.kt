@@ -52,6 +52,13 @@ import kotlinx.serialization.json.json
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ *
+ * DEPRACATED!!!!!s
+ *
+ * */
+
+
 
 class AddTourFragment : Fragment() {
 

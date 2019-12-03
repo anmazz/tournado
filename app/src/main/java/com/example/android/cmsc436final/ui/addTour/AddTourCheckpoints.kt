@@ -41,6 +41,8 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var buttonAddAudio: Button
     private lateinit var buttonAddCheckpoint: Button
     private lateinit var buttonNext: Button
+    private lateinit var buttonCancel: Button
+
     private lateinit var location: GeoPoint
     private var mCheckpointsRecycler: RecyclerView? = null
 
@@ -76,6 +78,7 @@ class AddTourCheckpoints: Fragment() {
         buttonAddAudio = root.findViewById<View>(R.id.add_cp_audio_button) as Button
 
         buttonNext = root.findViewById<View>(R.id.next_button) as Button
+        buttonCancel = root.findViewById<View>(R.id.cancel_button) as Button
 
         buttonAddCheckpoint = root.findViewById<View>(R.id.add_cp_button) as Button
 
@@ -123,6 +126,13 @@ class AddTourCheckpoints: Fragment() {
         }
 
         buttonAddCheckpoint.setOnClickListener() {
+            addCheckpoint()
+        }
+
+//        TODO navigate to home
+        buttonCancel.setOnClickListener() {
+            checkptName.setText("")
+            checkptDesc.setText("")
             addCheckpoint()
         }
 

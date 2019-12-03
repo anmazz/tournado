@@ -46,8 +46,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tour_name_"
             android:layout_width="365dp"
-            android:layout_height="wrap_content"
-            android:hint="Tour Name" />
+            android:layout_height="wrap_content" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -62,8 +62,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tour_descrip"
                     android:layout_width="365dp"
-                    android:layout_height="match_parent"
-                    android:hint="Tour Description" />
+                    android:layout_height="match_parent" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,13 +76,29 @@
         android:text="Add Picture"/>
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_button"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:layout_marginLeft="310dp"
-            android:text="Next" />
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="180dp"
+                android:text="Cancel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/next_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </LinearLayout>

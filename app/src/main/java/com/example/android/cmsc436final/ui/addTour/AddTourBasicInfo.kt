@@ -21,6 +21,7 @@ class AddTourBasicInfo: Fragment() {
         private lateinit var tourDescrip: TextInputEditText
         private lateinit var buttonAddPicture: Button
         private lateinit var buttonNext: Button
+        private lateinit var buttonCancel: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +38,7 @@ class AddTourBasicInfo: Fragment() {
         tourDescrip = root.findViewById<View>(R.id.tour_descrip) as TextInputEditText
         buttonAddPicture = root.findViewById<View>(R.id.add_tour_picture_button) as Button
         buttonNext = root.findViewById<View>(R.id.next_button) as Button
+        buttonNext = root.findViewById<View>(R.id.cancel_button) as Button
 
 
         buttonNext.setOnClickListener() {
@@ -46,6 +48,12 @@ class AddTourBasicInfo: Fragment() {
 //        TODO make sure this is adding just pictures
         buttonAddPicture.setOnClickListener() {
             navigateToAddMedia()
+        }
+
+        // TODO navigate to home button
+        buttonCancel.setOnClickListener {
+            tourName.setText("")
+            tourDescrip.setText("")
         }
 
         return root
@@ -66,6 +74,9 @@ class AddTourBasicInfo: Fragment() {
         sharedViewModel.addName(tourNameStr)
         sharedViewModel.addDescription(tourDescripStr)
 //        TODO add the picture to viewmodel
+
+        tourName.setText("")
+        tourDescrip.setText("")
 
     }
 

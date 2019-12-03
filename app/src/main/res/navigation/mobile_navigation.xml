@@ -118,6 +118,7 @@
     <fragment
         android:id="@+id/checkpoint_overview"
         android:label="Checkpoint Overview"
+        android:name="com.example.android.cmsc436final.ui.tourOverview.CheckpointOverview"
         tools:layout="@layout/fragment_checkpoint_overview">
     </fragment>
 

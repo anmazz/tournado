@@ -5,15 +5,15 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.VideoView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -33,6 +33,10 @@ import com.google.firebase.firestore.GeoPoint
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.add_image_dialogue.view.*
+import kotlinx.android.synthetic.main.add_video_dialogue.view.*
+import kotlinx.android.synthetic.main.fragment_add_media.view.*
+import java.io.ByteArrayOutputStream
+import java.time.LocalDateTime
 
 class AddTourCheckpoints: Fragment() {
 
@@ -46,23 +50,31 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var buttonAddAudio: Button
     private lateinit var buttonAddCheckpoint: Button
     private lateinit var buttonNext: Button
-
     private lateinit var buttonCancel: Button
-
-
     private lateinit var selectedPic: ImageView
     private lateinit var selectedVideo: VideoView
     private lateinit var selectedAudio: MediaStore.Audio
+    private lateinit var selectedPic: Uri
+    private lateinit var selectedVideo: Uri
+    private lateinit var selectedAudio: Uri
     private val TAG = "In addTourCheckpoints"
-    
+
     private lateinit var location: GeoPoint
     private var mCheckpointsRecycler: RecyclerView? = null
+
+    //Views for dialogues
+    private lateinit var  addImageView: View
+    private lateinit var  addVideoView: View
+    private lateinit var  addAudioView: View
 
 
 
     // ArrayList of Checkpoints
     private lateinit var checkpoints: MutableList<Checkpoint>
     private val AUTOCOMPLETE_REQUEST_CODE = 1
+    private var PICK_IMAGE = 4
+    private var PICK_VIDEO = 5
+    private var PICK_AUDIO = 6
 
     companion object{
         private val TAG = "AddTourCheckpoints"
@@ -79,7 +91,6 @@ class AddTourCheckpoints: Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_add_tour_2checkpoints, container, false)
 
-
         // UI elements
         checkptName = root.findViewById<View>(R.id.cp_name) as TextInputEditText
         checkptDesc = root.findViewById<View>(R.id.cp_descrip) as TextInputEditText
@@ -89,6 +100,12 @@ class AddTourCheckpoints: Fragment() {
         buttonAddPicture = root.findViewById<View>(R.id.add_cp_picture_button) as Button
         buttonAddVideo = root.findViewById<View>(R.id.add_cp_video_button) as Button
         buttonAddAudio = root.findViewById<View>(R.id.add_cp_audio_button) as Button
+
+        //Views for dialogues
+
+        addVideoView = LayoutInflater.from(context).inflate(R.layout.add_video_dialogue, null)
+        addAudioView = LayoutInflater.from(context).inflate(R.layout.add_audio_dialogue, null)
+
 
 
         buttonNext = root.findViewById<View>(R.id.next_button) as Button
@@ -127,21 +144,15 @@ class AddTourCheckpoints: Fragment() {
         buttonAddPicture.setOnClickListener() {
 
             addPicture()
+            selectPicture()
         }
         buttonAddVideo.setOnClickListener() {
-            addAudio()
+            selectAudio()
         }
         buttonAddAudio.setOnClickListener() {
-            addVideo()
+            selectVideo()
         }
 
-        buttonAddVideo.setOnClickListener() {
-            //navigateToAddVideo()
-        }
-
-        buttonAddAudio.setOnClickListener() {
-            //navigateToAddAudio()
-        }
 
         buttonAddCheckpoint.setOnClickListener() {
             addCheckpoint()
@@ -158,36 +169,28 @@ class AddTourCheckpoints: Fragment() {
     }
 
     // TODO make sure this is adding just pictures
-//    private fun navigateToAddMedia(){
-//        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
-//    }
-//
-//    // TODO make sure this is adding just audio
-//    private fun navigateToAddAudio(){
-//        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
-//    }
-//
-//    // TODO make sure this is adding just video
-//    private fun navigateToAddVideo(){
-//        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
-//    }
+    private fun selectPicture() {
+        Log.i(TAG, "Im about to select picture")
+        addImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)
+        val builder = AlertDialog.Builder(context)
+            .setView(addImageView)
+            .setTitle("Select photo for Checkpoint")
+        //TODO: make sure to populate imageview if image was already selected
+            if(selectedPic != null){
+                addImageView.imageToBeAdded.setImageURI(selectedPic)
+                addImageView.selectImageButton.text = "Edit Image"
+                addImageView.cancelPicSelectButton.text = "Done"
+            }
 
-    private fun addPicture(){
-            Log.i(TAG, "Im about to reset password")
-            val addImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)
-            val builder = AlertDialog.Builder(context)
-                .setView(addImageView)
-                .setTitle("Enter email for reset instructions")
             val mAlertDialog = builder.show()
-        addImageView.selectImageButton.setOnClickListener{
+            addImageView.selectImageButton.setOnClickListener{
+                //now select a picture
+                val toGallery = Intent(
+                    Intent.ACTION_PICK
+                    , MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                    startActivityForResult(toGallery,PICK_IMAGE)
                 //mAlertDialog.dismiss() do this last but before it make sure to change cancel button to done
-                //actually reset here
-//                val email = addImageView.resetPasswordEmailEditText.text.toString()
-//                auth.sendPasswordResetEmail(email).addOnCompleteListener{ task ->
-//                    if(task.isSuccessful){
-//                        Toast.makeText(applicationContext, "Reset instructions have been sent to email", Toast.LENGTH_LONG).show()
-//                    }
-//                }
+
             }
 
             addImageView.cancelPicSelectButton.setOnClickListener {
@@ -197,12 +200,39 @@ class AddTourCheckpoints: Fragment() {
     }
 
     // TODO make sure this is adding just audio
-    private fun addAudio(){
+    private fun selectAudio(){
+
 
     }
 
     // TODO make sure this is adding just video
-    private fun addVideo(){
+    private fun selectVideo(){
+        Log.i(TAG, "Im about to select audio")
+        val addImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)
+        val builder = AlertDialog.Builder(context)
+            .setView(addImageView)
+            .setTitle("Select photo for Checkpoint")
+        //TODO: make sure to populate imageview if image was already selected
+        if(selectedPic != null){
+            addImageView.imageToBeAdded.setImageURI(selectedPic)
+            addImageView.selectImageButton.text = "Edit Image"
+            addImageView.cancelPicSelectButton.text = "Done"
+        }
+
+        val mAlertDialog = builder.show()
+        addImageView.selectImageButton.setOnClickListener{
+            //now select a picture
+            val toGallery = Intent(
+                Intent.ACTION_PICK
+                , MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(toGallery,PICK_IMAGE)
+            //mAlertDialog.dismiss() do this last but before it make sure to change cancel button to done
+
+        }
+
+        addImageView.cancelPicSelectButton.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
 
     }
 
@@ -245,23 +275,108 @@ class AddTourCheckpoints: Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
-                if (place != null) {
-                    Log.i(TAG, "Place: " + place.name + ", " + place.id)
-                    location = GeoPoint(place.latLng!!.latitude, place.latLng!!.longitude)
-                    Toast.makeText(activity, "Place: " + place.name + ", " + place.id, Toast.LENGTH_LONG).show()
+        when (requestCode) {
+
+             AUTOCOMPLETE_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
+                    if (place != null) {
+                        Log.i(TAG, "Place: " + place.name + ", " + place.id)
+                        location = GeoPoint(place.latLng!!.latitude, place.latLng!!.longitude)
+                        Toast.makeText(
+                            activity,
+                            "Place: " + place.name + ", " + place.id,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                    // TODO: Handle the error.
+                    Toast.makeText(
+                        activity,
+                        "Error with autocomplete. Please try again.",
+                        Toast.LENGTH_LONG
+                    )
+                    var status = Autocomplete.getStatusFromIntent(data!!)
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    // The user canceled the operation.
                 }
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Toast.makeText(activity, "Error with autocomplete. Please try again.", Toast.LENGTH_LONG)
-                var status = Autocomplete.getStatusFromIntent(data!!)
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                // The user canceled the operation.
             }
+
+            PICK_IMAGE->{
+                selectedPic = data!!.data as Uri
+                if(selectedPic != null) {
+                    addImageView.imageToBeAdded.setImageURI(selectedPic)
+                    addImage(selectedPic)
+                }
+
+            }
+            PICK_VIDEO->{
+                selectedVideo = data!!.data as Uri
+                if(selectedVideo != null) {
+                    //adds video to video view
+                    addVideoView.videoToBeAdded.setVideoURI(selectedVideo)
+                    var mediaController = MediaController(context)
+                    addVideoView.videoToBeAdded.setMediaController(mediaController)
+                    mediaController.setAnchorView(addVideoView.videoToBeAdded)
+                    //sends video off to upload to data base
+                    addVideo(selectedVideo)
+                }
+            }
+            PICK_AUDIO->{
+                selectedAudio = data!!.data as Uri
+                if(selectedAudio != null) {
+                    //addAudioView.(selectedAudio) need to attribute the selected audio to a media player
+                    //to play it in
+                    addImage(selectedPic)
+                }
+                addAudio(selectedAudio)
+            }
+
         }
+    }
+
+    //functions below will add media to database
+
+    private fun addImage(selectedMedia: Uri){
+        //userRef = storageRef.child("/checkpointPictures").child(selectedMedia.toString() + LocalDateTime.now() + ".jpg")
+        //for setting selected media into imageview
+        //userPic.setImageURI(selectedPhoto)
+
+//        val inputStream = context!!.contentResolver.openInputStream(selectedMedia)
+//        val yourDrawable = Drawable.createFromStream(inputStream, selectedMedia.toString() )
+//
+//        val imageBitmap = (selectedMedia as BitmapDrawable).bitmap
+//        val baos = ByteArrayOutputStream()
+//        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//        val data = baos.toByteArray()
+//        val uploadTask = userRef.putBytes(data)
+//        val urlTask = uploadTask.continueWithTask { task ->
+//            if (!task.isSuccessful) {
+//                task.exception?.let {
+//                    throw it
+//                }
+//            }
+//            userRef.downloadUrl
+//        }.addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                Log.i(TAG, "task result is:" + task.result.toString())
+//                //actual url stored here
+//                val uristring = task.result.toString()
+//                Log.i(TAG, "uploaded to firebase")
+//                // val newUser = User(auth.uid as String, name, email, uristring, arrayListOf<Tour>(),arrayListOf<Tour>())
+//                // db.collection("users").document(auth.uid as String).set(newUser)
+//                //Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
+//                //startActivity(Intent(this@RegistrationActivity, MainActivity::class.java))
+//            } else {
+//                //Toast.makeText(applicationContext, "Could not upload pic", Toast.LENGTH_LONG).show()
+//                // ...
+//            }
+//        }
 
     }
+
+    private fun addAudio(selectedMedia: Uri){}
+    private fun addVideo(selectedMedia: Uri){}
+
 
 }

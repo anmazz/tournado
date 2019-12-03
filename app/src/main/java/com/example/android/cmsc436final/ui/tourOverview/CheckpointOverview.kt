@@ -41,7 +41,7 @@ class CheckpointOverview: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.tour_overview_info_tab, container, false)
+        val root = inflater.inflate(R.layout.fragment_checkpoint_overview, container, false)
 //        mCheckpointsRecycler = root.findViewById(R.id.recycler_checkpoints)
 //        mCheckpointsRecycler!!.layoutManager = LinearLayoutManager(context)
         nameView = root.findViewById(R.id.checkpoint_name)
@@ -61,10 +61,10 @@ class CheckpointOverview: Fragment() {
         Glide.with(imageView.context).load(currCheckpoint.image).centerCrop().into(imageView)
 
         //Retrieve starting checkpoint location's city
-        val geocoder = Geocoder(context)
-        val lat = currCheckpoint.location.latitude
-        val long = currCheckpoint.location.longitude
-        locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality
+//        val geocoder = Geocoder(context)
+//        val lat = currCheckpoint.location.latitude
+//        val long = currCheckpoint.location.longitude
+//        locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality
 
 
         audioButton.setOnClickListener() {

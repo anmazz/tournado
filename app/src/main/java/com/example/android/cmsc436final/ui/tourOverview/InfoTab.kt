@@ -104,7 +104,7 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
         peopleCompletedView.text = ppl
 
         // populate tags
-        tour.tags!!.forEach {
+        tour.tags?.forEach {
             var newChip = Chip(context)
             newChip.text = it
             chipGroup.addView(newChip)
@@ -121,7 +121,7 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
 //    TODO add navigation
     override fun onItemClick(view: View?, position: Int) {
         mModel.setCurrentCheckpointNum(position)
-//        findNavController().navigate(R.id)
+        findNavController().navigate(R.id.action_tour_overview_to_checkpoint_overview)
     }
 
 }

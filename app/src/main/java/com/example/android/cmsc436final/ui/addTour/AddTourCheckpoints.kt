@@ -1,14 +1,18 @@
 package com.example.android.cmsc436final.ui.addTour
 
+import android.app.AlertDialog
+import android.os.Bundle
+import android.provider.MediaStore
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.VideoView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -28,6 +32,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.GeoPoint
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.add_image_dialogue.view.*
 
 class AddTourCheckpoints: Fragment() {
 
@@ -41,8 +46,18 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var buttonAddAudio: Button
     private lateinit var buttonAddCheckpoint: Button
     private lateinit var buttonNext: Button
+
+    private lateinit var buttonCancel: Button
+
+
+    private lateinit var selectedPic: ImageView
+    private lateinit var selectedVideo: VideoView
+    private lateinit var selectedAudio: MediaStore.Audio
+    private val TAG = "In addTourCheckpoints"
+    
     private lateinit var location: GeoPoint
     private var mCheckpointsRecycler: RecyclerView? = null
+
 
 
     // ArrayList of Checkpoints
@@ -75,7 +90,9 @@ class AddTourCheckpoints: Fragment() {
         buttonAddVideo = root.findViewById<View>(R.id.add_cp_video_button) as Button
         buttonAddAudio = root.findViewById<View>(R.id.add_cp_audio_button) as Button
 
+
         buttonNext = root.findViewById<View>(R.id.next_button) as Button
+        buttonCancel = root.findViewById<View>(R.id.cancel_button) as Button
 
         buttonAddCheckpoint = root.findViewById<View>(R.id.add_cp_button) as Button
 
@@ -103,15 +120,19 @@ class AddTourCheckpoints: Fragment() {
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
 
-
-        // The rest of the button listeners //
-
         buttonNext.setOnClickListener() {
             saveAndNext()
         }
 
         buttonAddPicture.setOnClickListener() {
-            //navigateToAddMedia()
+
+            addPicture()
+        }
+        buttonAddVideo.setOnClickListener() {
+            addAudio()
+        }
+        buttonAddAudio.setOnClickListener() {
+            addVideo()
         }
 
         buttonAddVideo.setOnClickListener() {
@@ -123,6 +144,13 @@ class AddTourCheckpoints: Fragment() {
         }
 
         buttonAddCheckpoint.setOnClickListener() {
+            addCheckpoint()
+        }
+
+//        TODO navigate to home
+        buttonCancel.setOnClickListener() {
+            checkptName.setText("")
+            checkptDesc.setText("")
             addCheckpoint()
         }
 
@@ -143,6 +171,40 @@ class AddTourCheckpoints: Fragment() {
 //    private fun navigateToAddVideo(){
 //        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
 //    }
+
+    private fun addPicture(){
+            Log.i(TAG, "Im about to reset password")
+            val addImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)
+            val builder = AlertDialog.Builder(context)
+                .setView(addImageView)
+                .setTitle("Enter email for reset instructions")
+            val mAlertDialog = builder.show()
+        addImageView.selectImageButton.setOnClickListener{
+                //mAlertDialog.dismiss() do this last but before it make sure to change cancel button to done
+                //actually reset here
+//                val email = addImageView.resetPasswordEmailEditText.text.toString()
+//                auth.sendPasswordResetEmail(email).addOnCompleteListener{ task ->
+//                    if(task.isSuccessful){
+//                        Toast.makeText(applicationContext, "Reset instructions have been sent to email", Toast.LENGTH_LONG).show()
+//                    }
+//                }
+            }
+
+            addImageView.cancelPicSelectButton.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+
+    }
+
+    // TODO make sure this is adding just audio
+    private fun addAudio(){
+
+    }
+
+    // TODO make sure this is adding just video
+    private fun addVideo(){
+
+    }
 
 
     fun saveAndNext() {
@@ -179,6 +241,7 @@ class AddTourCheckpoints: Fragment() {
         checkptName.setText("")
         checkptDesc.setText("")
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

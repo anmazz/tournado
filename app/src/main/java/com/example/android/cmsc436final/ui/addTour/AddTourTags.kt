@@ -22,9 +22,23 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
+//for searching with algolia
+import com.algolia.search.client.ClientSearch
+import com.algolia.search.model.APIKey
+import com.algolia.search.model.ApplicationID
+import com.algolia.search.model.IndexName
+
+import com.google.firebase.firestore.*
+import io.ktor.client.features.logging.LogLevel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.json
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddTourTags: Fragment() {
 
@@ -34,11 +48,16 @@ class AddTourTags: Fragment() {
 
     private lateinit var buttonAddTag: Button
     private lateinit var buttonNext: Button
+    private lateinit var buttonCancel: Button
 
     private lateinit var chipGroup: ChipGroup
     private lateinit var chip: Chip
 
     private lateinit var tags: MutableList<String>
+
+    //for searching
+    val client = ClientSearch(ApplicationID("MLWVY1AHOC"), APIKey("84275e27b9ffaecb0207751b4b2349c6"), LogLevel.ALL)
+    val index = client.initIndex(IndexName("tours"))
 
     // DATABASE STUFF
     internal lateinit var db: FirebaseFirestore
@@ -65,6 +84,8 @@ class AddTourTags: Fragment() {
 
         buttonAddTag = root.findViewById<View>(R.id.add_tour_button) as Button
         buttonNext = root.findViewById<View>(R.id.next_button) as Button
+        buttonCancel =  root.findViewById(R.id.cancel_button)
+
 
         chipGroup = root.findViewById<View>(R.id.chip_group) as ChipGroup
 
@@ -79,6 +100,10 @@ class AddTourTags: Fragment() {
 
         chip.setOnClickListener() {
             deleteTag(chip)
+        }
+//        TODO navigate to home button
+        buttonCancel.setOnClickListener {
+            tagInput.setText("")
         }
 
 
@@ -142,15 +167,15 @@ class AddTourTags: Fragment() {
             dbUser!!.update("toursCreated", FieldValue.arrayUnion(tourToAdd))
 
 
-//                // Add JSON object to algolia for searching
-//                val newGuy = json {
-//                    "name" to tourNameStr
-//                    "tags" to dummyTags.toString()
-//                }
-//                //TODO: make sure this is uploading to algolia too
-//                val uploadToAlgolia = GlobalScope.launch {
-//                    index.saveObject(newGuy)
-//                }
+                // Add JSON object to algolia for searching
+                val newGuy = json {
+                    "name" to tourToAdd.name
+                    "tags" to tourToAdd.tags.toString()
+                }
+                //TODO: make sure this is uploading to algolia too
+                val uploadToAlgolia = GlobalScope.launch {
+                    index.saveObject(newGuy)
+                }
 
 
             //displaying a success toast

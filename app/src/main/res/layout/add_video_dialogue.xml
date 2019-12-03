@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding = "10dp">
+
+
+    <VideoView
+        android:id="@+id/videoToBeAdded"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:contentDescription="@string/add_video"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/selectVideoButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:text="@string/select_video" />
+
+    <Button
+        android:id="@+id/cancelVidSelectButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@android:string/cancel" />
+
+
+</LinearLayout>

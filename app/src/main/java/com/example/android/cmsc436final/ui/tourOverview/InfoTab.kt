@@ -50,6 +50,7 @@ import org.json.JSONObject
  *
  */
 
+
 class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
     private lateinit var mModel: SharedViewModel
     private var mCheckpointsRecycler: RecyclerView? = null
@@ -69,7 +70,6 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.tour_overview_info_tab, container, false)
-
         mCheckpointsRecycler = root.findViewById(R.id.recycler_checkpoints)
         mCheckpointsRecycler!!.layoutManager = LinearLayoutManager(context)
         descriptionView =root.findViewById(R.id.info_tour_description)
@@ -110,6 +110,5 @@ class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
     override fun onItemClick(view: View?, position: Int) {
         //TODO: Navigate to checkpoint overview fragment onclick
     }
-
 
 }

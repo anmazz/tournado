@@ -9,7 +9,7 @@ class TabsAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment = when (position) {
         0 -> MapTab.newInstance()
-        1 -> InfoTab.newInstance()
+        //1 -> InfoTab.newInstance()
         else -> MapTab.newInstance()
     }
 

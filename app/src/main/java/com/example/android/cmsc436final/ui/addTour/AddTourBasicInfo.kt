@@ -1,18 +1,30 @@
 package com.example.android.cmsc436final.ui.addTour
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.MediaController
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.GeoPoint
+import kotlinx.android.synthetic.main.add_image_dialogue.view.*
+import kotlinx.android.synthetic.main.add_video_dialogue.view.*
 
 class AddTourBasicInfo: Fragment() {
 
@@ -22,6 +34,11 @@ class AddTourBasicInfo: Fragment() {
         private lateinit var buttonAddPicture: Button
         private lateinit var buttonNext: Button
         private lateinit var buttonCancel: Button
+        private val TAG = "Add Tour Checkpoints:"
+        private var selectedHeaderPic: Uri? = null
+        private lateinit var  addHeaderImageView: View
+        private var PICK_IMAGE = 4
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +61,9 @@ class AddTourBasicInfo: Fragment() {
             saveAndNext()
         }
 
-//        TODO make sure this is adding just pictures
-        buttonAddPicture.setOnClickListener() {
-            navigateToAddMedia()
+
+        buttonAddPicture.setOnClickListener{
+            selectTourPicture()
         }
 
         // TODO navigate to home button
@@ -58,21 +75,48 @@ class AddTourBasicInfo: Fragment() {
         return root
     }
 
-    //        TODO make sure this is adding just pictures
 
-    private fun navigateToAddMedia(){
-        //findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+    private fun selectTourPicture() {
+        Log.i(TAG, "Im about to select header picture")
+        addHeaderImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)
+        val builder = AlertDialog.Builder(context)
+            .setView(addHeaderImageView)
+            .setTitle("Select photo for Checkpoint")
+        if(selectedHeaderPic != null){
+            addHeaderImageView.imageToBeAdded.setImageURI(selectedHeaderPic)
+            addHeaderImageView.selectImageButton.text = "Edit Image"
+            addHeaderImageView.cancelPicSelectButton.text = "Done"
+        }
+
+        val mAlertDialog = builder.show()
+        addHeaderImageView.selectImageButton.setOnClickListener{
+            //now select a picture
+            val toGallery = Intent(
+                Intent.ACTION_GET_CONTENT
+                , MediaStore.Images.Media.INTERNAL_CONTENT_URI).setType("image/*")
+            startActivityForResult(toGallery,PICK_IMAGE)
+            mAlertDialog.dismiss() //do this last but before it make sure to change cancel button to done
+
+        }
+        //TODO: add another button for taking pic and set click listener on it
+
+        addHeaderImageView.cancelPicSelectButton.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+
     }
 
     fun saveAndNext() {
         // get strings from textboxes
         val tourNameStr = tourName.text.toString().trim { it <= ' ' }
         val tourDescripStr = tourDescrip.text.toString()
-
+        //TODO: check if text fields and picture are empty before allowing them to continue
         // add to viewModel
         sharedViewModel.addName(tourNameStr)
         sharedViewModel.addDescription(tourDescripStr)
-//        TODO add the picture to viewmodel
+        //TODO add the picture to viewmodel
+        //sharedViewModel.addPicBitmap((addHeaderImageView.imageToBeAdded.drawable as BitmapDrawable).bitmap) so it can then upload later
+
 
         tourName.setText("")
         tourDescrip.setText("")
@@ -85,4 +129,17 @@ class AddTourBasicInfo: Fragment() {
         findNavController().navigate(R.id.action_add_tour1_to_add_tour2)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+            if(requestCode == PICK_IMAGE){
+                selectedHeaderPic = data!!.data as Uri
+                if(selectedHeaderPic != null) {
+                    //adds image to dialog
+                    addHeaderImageView.imageToBeAdded.setImageURI(selectedHeaderPic)
+                    //changes button text
+                    addHeaderImageView.selectImageButton.text = "Edit Image"
+                    addHeaderImageView.cancelPicSelectButton.text = "Done"
+                }
+            }
+        }
 }

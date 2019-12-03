@@ -20,6 +20,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private var currChkptNumStartTour = 0
 
 
+
     fun setCurrentTour(tour : Tour){
         currentTour = tour
     }

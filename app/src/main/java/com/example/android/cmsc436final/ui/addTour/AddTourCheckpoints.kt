@@ -12,8 +12,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
 import com.example.android.cmsc436final.model.Checkpoint
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.GeoPoint
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddTourCheckpoints: Fragment() {
 
@@ -28,8 +34,11 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var buttonAddCheckpoint: Button
     private lateinit var buttonNext: Button
 
+
     // ArrayList of Checkpoints
     private lateinit var checkpoints: MutableList<Checkpoint>
+    private val AUTOCOMPLETE_REQUEST_CODE = 1
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +48,7 @@ class AddTourCheckpoints: Fragment() {
         sharedViewModel =
             ViewModelProviders.of(this).get(sharedViewModel::class.java)
 
-        val root = inflater.inflate(R.layout.fragment_add_tour_1, container, false)
+        val root = inflater.inflate(R.layout.fragment_add_tour_2checkpoints, container, false)
 
 
         // UI elements
@@ -59,16 +68,44 @@ class AddTourCheckpoints: Fragment() {
         // list of checkpoints we keep adding to
         checkpoints = ArrayList()
 
+        //---------MAP STUFF---------
+        //For add location intent
+        var fields = Arrays.asList(Place.Field.ID, Place.Field.NAME)
 
-//        TODO add onclicks
+        // Start the autocomplete intent.
+        var intent = Autocomplete.IntentBuilder(
+            AutocompleteActivityMode.FULLSCREEN, fields).build(activity!!)
+
+        buttonAddLocation.setOnClickListener{
+            if (!Places.isInitialized()) {
+                context?.let { it1 -> Places.initialize(it1, getString(R.string.api_key), Locale.US) }
+            }
+            // Set the fields to specify which types of place data to
+            // return after the user has made a selection.
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+        }
+
+
+        // The rest of the button listeners //
 
         buttonNext.setOnClickListener() {
             saveAndNext()
         }
 
-//        TODO make sure this is adding just pictures
         buttonAddPicture.setOnClickListener() {
             navigateToAddMedia()
+        }
+
+        buttonAddVideo.setOnClickListener() {
+            navigateToAddVideo()
+        }
+
+        buttonAddAudio.setOnClickListener() {
+            navigateToAddAudio()
+        }
+
+        buttonAddCheckpoint.setOnClickListener() {
+            addCheckpoint()
         }
 
         return root
@@ -89,6 +126,7 @@ class AddTourCheckpoints: Fragment() {
         findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
     }
 
+
     fun saveAndNext() {
         // get strings from textboxes
         val tourNameStr = checkptName.text.toString().trim { it <= ' ' }
@@ -101,6 +139,30 @@ class AddTourCheckpoints: Fragment() {
     //    TODO navigate to the add tags page
     private fun navigateToAddTags(){
         findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+    }
+
+
+    private fun addCheckpoint() {
+        val name = checkptName.text.toString()
+
+        val description = checkptDesc.text.toString()
+//        TODO figure out how to save media
+//        images = arr
+//        audio:  MutableList<String>
+//        video: MutableList<String>
+        val newCP = Checkpoint(name, location, description, "", "", "")
+
+        // need to add this checkpoint to tour arrayList
+        checkpoints.add(newCP)
+
+        // TO display added checkpoints
+        //creating adapter using CheckPointList
+        val lvCheckpoint = CheckPointList(activity!!, checkpoints)
+        //attaching adapter to the listview
+        listviewCP.adapter = lvCheckpoint
+
+        checkptName.setText("")
+        checkptDesc.setText("")
     }
 
 }

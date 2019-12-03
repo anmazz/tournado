@@ -18,7 +18,20 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private var checkpointToBeAdded = Checkpoint()
     private var currentCheckpointNum = 0
     private var currChkptNumStartTour = 0
+    private var dialogShown: Array<Boolean>? = null
 
+    fun reset(){
+        dialogShown = null
+        currChkptNumStartTour = 0
+    }
+
+    fun setDialogShown(arr : Array<Boolean>){
+        dialogShown = arr
+    }
+
+    fun getDialogShown() : Array<Boolean>? {
+        return dialogShown
+    }
 
     fun setCurrentTour(tour : Tour){
         currentTour = tour

@@ -22,6 +22,7 @@ import com.algolia.instantsearch.helper.stats.StatsPresenterImpl
 import com.algolia.instantsearch.helper.stats.connectView
 import com.example.android.cmsc436final.MainActivity
 import com.example.android.cmsc436final.R
+import com.example.android.cmsc436final.SharedViewModel
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.android.synthetic.main.fragment_search_tour.*
 import kotlinx.coroutines.launch
@@ -30,6 +31,13 @@ import kotlinx.coroutines.launch
 class SearchTourFragment: Fragment(){
 
     private val connection = ConnectionHandler()
+    private lateinit var mModel: SharedViewModel
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
+        mModel.reset()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_search_tour, container, false)

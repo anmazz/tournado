@@ -60,12 +60,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
+        mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
+        mModel.reset()
     }
 
     override fun onStart() {
         super.onStart()
-        invokeLocationAction()
         // Start listening for Firestore updates
         if (mAdapter != null) {
             mAdapter!!.startListening()
@@ -108,6 +108,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
 
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
+        invokeLocationAction()
     }
 
     private fun initFirestore() {

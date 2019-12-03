@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.android.cmsc436final.R
@@ -69,7 +70,11 @@ class CheckpointAdapter(context: Context?, data: List<Checkpoint>) : RecyclerVie
         var imageView: ImageView = itemView.findViewById(R.id.checkpoint_item_image)
 
         override fun onClick(view: View) {
-            if (mClickListener != null) mClickListener!!.onItemClick(view, adapterPosition)
+            Log.i("Adapter", "onclick")
+            if (mClickListener != null) {
+                Log.i("Adapter", "listener not null")
+                mClickListener!!.onItemClick(view, adapterPosition)
+            }
         }
 
         init {

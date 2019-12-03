@@ -167,6 +167,8 @@ class AddTourTags: Fragment() {
         if (!TextUtils.isEmpty(tourToAdd.name) && !TextUtils.isEmpty(tourToAdd.description) &&
             tourToAdd.checkpoints!!.isNotEmpty()
         ) {
+            //maybe could access all checkpoint media here and upload
+            //for()
 
             // Create an ID key for our new Tour Document
             val id = db.collection("tours").document().id

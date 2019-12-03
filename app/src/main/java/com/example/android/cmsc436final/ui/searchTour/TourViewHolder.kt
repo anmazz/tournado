@@ -10,7 +10,6 @@ import com.algolia.instantsearch.helper.android.highlighting.toSpannedString
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.model.Tour
 import kotlinx.android.synthetic.main.list_item_small.view.*
-import kotlin.coroutines.coroutineContext
 
 
 class TourViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {

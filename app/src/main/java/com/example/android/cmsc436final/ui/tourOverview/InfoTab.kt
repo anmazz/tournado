@@ -43,7 +43,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.google.maps.android.PolyUtil
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 /**

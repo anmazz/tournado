@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding = "10dp">
+    android:orientation="vertical"
+    android:padding="10dp">
 
 
     <VideoView
@@ -10,7 +12,28 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:contentDescription="@string/add_video"
-        android:ems="10" />
+        android:ems="10"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:layout_width="392dp"
+        android:layout_height="57dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/videoPauseButton"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_pause" />
+
+        <ImageButton
+            android:id="@+id/videoPlayButton"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_media_play" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/selectVideoButton"

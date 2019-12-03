@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_add_tour1_to_add_tour2"
             app:destination="@id/navigation_add_tour2" />
+        <action
+            android:id="@+id/action_navigation_add_tour_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
 
@@ -49,6 +52,9 @@
         <action
             android:id="@+id/action_add_tour2_to_add_tour3"
             app:destination="@id/navigation_add_tour3" />
+        <action
+            android:id="@+id/action_navigation_add_tour2_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
     <fragment
         android:id="@+id/navigation_add_tour3"
@@ -57,6 +63,9 @@
         tools:layout="@layout/fragment_add_tour_3tags">
         <action
             android:id="@+id/action_add_tour3_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_add_tour3_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
 
@@ -74,7 +83,11 @@
         android:id="@+id/navigation_user_profile"
         android:name="com.example.android.cmsc436final.ui.userProfile.UserProfileFragment"
         android:label="@string/title_user_profile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_navigation_user_profile_to_tour_overview"
+            app:destination="@id/tour_overview" />
+    </fragment>
 
     <fragment
         android:id="@+id/tour_overview"
@@ -87,6 +100,9 @@
         <action
             android:id="@+id/action_tour_overview_to_start_tour"
             app:destination="@id/start_tour" />
+        <action
+            android:id="@+id/action_tour_overview_to_checkpoint_overview"
+            app:destination="@id/checkpoint_overview" />
     </fragment>
 
     <fragment
@@ -94,6 +110,15 @@
         android:name="com.example.android.cmsc436final.ui.startTour.StartTourFragment"
         android:label="Start Tour"
         tools:layout="@layout/fragment_start_tour">
+        <action
+            android:id="@+id/action_start_tour_to_checkpoint_overview"
+            app:destination="@id/checkpoint_overview" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/checkpoint_overview"
+        android:label="Checkpoint Overview"
+        tools:layout="@layout/fragment_checkpoint_overview">
     </fragment>
 
 

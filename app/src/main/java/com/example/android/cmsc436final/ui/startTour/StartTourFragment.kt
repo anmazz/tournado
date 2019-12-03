@@ -3,6 +3,7 @@ package com.example.android.cmsc436final.ui.startTour
 import android.app.Dialog
 import android.app.PendingIntent
 import android.content.Intent
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.android.cmsc436final.*
 import com.example.android.cmsc436final.model.Tour
 import com.example.android.cmsc436final.ui.tourOverview.TourOverviewFragment
@@ -40,6 +43,9 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
     private lateinit var currTour: Tour
     private var currentCheckpoint = 0
     private lateinit var dialogShown : Array<Boolean>
+    private lateinit var nameView: TextView
+    private lateinit var locationView: TextView
+    private lateinit var imageView :ImageView
 
 
     companion object{
@@ -56,8 +62,13 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         mModel.setCurrentCheckpointNum(0)
         mapView = root.findViewById(R.id.map_start_tour)
 
+        //Set up next checkpoint view
+        nameView = root.findViewById(R.id.checkpoint_item_name2)
+        imageView = root.findViewById(R.id.checkpoint_item_image2)
+
         //Get loaded current tour saved into viewModel
         currTour = mModel.getCurrentTour()!!
+        fillInNextCheckpointView()
 
         dialogShown = Array(currTour.checkpoints!!.size) {false}
 
@@ -109,6 +120,8 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         yesBtn.setOnClickListener {
             currentCheckpoint++
             mModel.setCurrentCheckpointNum(currentCheckpoint)
+            findNavController().navigate(R.id.action_start_tour_to_checkpoint_overview)
+            fillInNextCheckpointView()
             dialog.dismiss()
         }
         dialog.show()
@@ -120,6 +133,13 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         Utils().drawOnMap(currTour, activity!!, mGoogleMap)
         Utils().moveCameraToTourBounds(currTour, activity!!, mGoogleMap)
         mGoogleMap.isMyLocationEnabled = true
+    }
+
+    private fun fillInNextCheckpointView(){
+        val nextCheckpoint = currTour.checkpoints!![currentCheckpoint]
+        nameView.text = nextCheckpoint.name
+        Glide.with(imageView.context).load(nextCheckpoint.image).centerCrop().into(imageView)
+
     }
 
 }

@@ -31,7 +31,7 @@ import com.example.android.cmsc436final.model.Tour
 import io.ktor.client.features.logging.LogLevel
 
 
-class SearchTourViewModel : ViewModel() {
+class SearchTourViewModel: ViewModel() {
 
         val client = ClientSearch(ApplicationID("MLWVY1AHOC"), APIKey("84275e27b9ffaecb0207751b4b2349c6"), LogLevel.ALL)
         val index = client.initIndex(IndexName("tours"))
@@ -39,6 +39,7 @@ class SearchTourViewModel : ViewModel() {
         val dataSourceFactory = SearcherSingleIndexDataSource.Factory(searcher) { hit ->
             TourDataOrganization(
                 hit.json.getPrimitive("name").content,
+                hit.json.getPrimitive("tourID").content,
                 hit.json.getObjectOrNull("_highlightResult")
 
             )
@@ -46,7 +47,7 @@ class SearchTourViewModel : ViewModel() {
         val pagedListConfig = PagedList.Config.Builder().setPageSize(50).setEnablePlaceholders(false).build()
         val tours: LiveData<PagedList<TourDataOrganization>> = LivePagedListBuilder(dataSourceFactory, pagedListConfig).build()
         val searchBox = SearchBoxConnectorPagedList(searcher, listOf(tours))
-        val adapterTour = TourAdapter()
+        val adapterTour = SearchTourAdapter(/*parentFragment*/)
         val stats = StatsConnector(searcher)
 
 

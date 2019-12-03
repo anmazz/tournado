@@ -219,6 +219,7 @@ class AddTourFragment : Fragment() {
             val newGuy = json {
                 "name" to tourNameStr
                 "tags" to dummyTags.toString()
+                "tourID" to id
             }
             //TODO: make sure this is uploading to algolia too
            val uploadToAlgolia = GlobalScope.launch {

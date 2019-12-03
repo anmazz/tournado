@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.algolia.instantsearch.core.connection.ConnectionHandler
 import com.algolia.instantsearch.helper.android.list.autoScrollToStart
@@ -19,10 +22,12 @@ import com.algolia.instantsearch.helper.stats.StatsPresenterImpl
 import com.algolia.instantsearch.helper.stats.connectView
 import com.example.android.cmsc436final.MainActivity
 import com.example.android.cmsc436final.R
+import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.android.synthetic.main.fragment_search_tour.*
+import kotlinx.coroutines.launch
 
 
-class SearchTourFragment: Fragment() {
+class SearchTourFragment: Fragment(){
 
     private val connection = ConnectionHandler()
 
@@ -33,6 +38,7 @@ class SearchTourFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val viewModel = ViewModelProviders.of(requireActivity())[SearchTourViewModel::class.java]
+        //val viewModel = ViewModelProviders.of(requireActivity())[SearchTourViewModel(this)::class.java]
         val searchBoxView = SearchBoxViewAppCompat(searchView)
         val statsView = StatsTextView(stats)
 
@@ -58,12 +64,14 @@ class SearchTourFragment: Fragment() {
 //                .addToBackStack("facet")
 //                .commit()
 //        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         connection.disconnect()
     }
+
 }
 //
 //class SearchTourFragment : Fragment(), OnMapReadyCallback {

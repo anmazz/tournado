@@ -8,12 +8,15 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cmsc436final.R
+import com.example.android.cmsc436final.adapter.TourAdapter
+import com.google.firebase.firestore.DocumentSnapshot
 import com.squareup.picasso.Picasso
 
 
-class TourAdapter :PagedListAdapter<TourDataOrganization, TourViewHolder>(
-    TourAdapter
+class SearchTourAdapter/*(parentFragment: SearchTourFragment)*/ :PagedListAdapter<TourDataOrganization, TourViewHolder>(
+    SearchTourAdapter
 ) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TourViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_small, parent, false)

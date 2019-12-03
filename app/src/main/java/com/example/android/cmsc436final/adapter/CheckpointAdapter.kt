@@ -33,8 +33,10 @@ import com.example.android.cmsc436final.model.Checkpoint
  * RecyclerView adapter for a list of Restaurants.
  */
 
+
+
 class CheckpointAdapter(context: Context?, data: List<Checkpoint>) : RecyclerView.Adapter<CheckpointAdapter.ViewHolder?>() {
-    private val mData: List<Checkpoint> = data
+    private var mData: List<Checkpoint> = data
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
     private var mClickListener: ItemClickListener? = null
 
@@ -83,6 +85,11 @@ class CheckpointAdapter(context: Context?, data: List<Checkpoint>) : RecyclerVie
     // allows clicks events to be caught
     fun setClickListener(itemClickListener: ItemClickListener?) {
         mClickListener = itemClickListener
+    }
+
+    fun updateList(newData : List<Checkpoint>) {
+        mData = newData
+        notifyDataSetChanged()
     }
 
     // parent activity will implement this method to respond to click events

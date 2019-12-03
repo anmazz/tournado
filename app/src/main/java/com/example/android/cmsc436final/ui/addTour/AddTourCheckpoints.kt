@@ -68,26 +68,26 @@ class AddTourCheckpoints: Fragment() {
 
 //        TODO make sure this is adding just pictures
         buttonAddPicture.setOnClickListener() {
-            navigateToAddMedia()
+            //navigateToAddMedia()
         }
 
         return root
     }
 
     // TODO make sure this is adding just pictures
-    private fun navigateToAddMedia(){
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
-    }
-
-    // TODO make sure this is adding just audio
-    private fun navigateToAddAudio(){
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
-    }
-
-    // TODO make sure this is adding just video
-    private fun navigateToAddVideo(){
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
-    }
+//    private fun navigateToAddMedia(){
+//        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+//    }
+//
+//    // TODO make sure this is adding just audio
+//    private fun navigateToAddAudio(){
+//        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+//    }
+//
+//    // TODO make sure this is adding just video
+//    private fun navigateToAddVideo(){
+//        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+//    }
 
     fun saveAndNext() {
         // get strings from textboxes
@@ -100,7 +100,7 @@ class AddTourCheckpoints: Fragment() {
 
     //    TODO navigate to the add tags page
     private fun navigateToAddTags(){
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+        //findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
     }
 
 }

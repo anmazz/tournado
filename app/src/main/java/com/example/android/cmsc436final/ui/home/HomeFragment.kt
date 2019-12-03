@@ -61,6 +61,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
+
     }
 
     override fun onStart() {

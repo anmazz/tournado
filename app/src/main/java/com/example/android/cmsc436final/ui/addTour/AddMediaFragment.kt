@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_add_media.view.*
 import java.io.ByteArrayOutputStream
@@ -141,20 +142,40 @@ class AddMediaFragment: Fragment() {
             var mediaController = MediaController(context)
             videoView.setMediaController(mediaController)
             //mediaController.setAnchorView(videoView)
+
+        //uploading
+
+        var mReference = storageRef.child(selectedMedia.lastPathSegment!!)
+        try {
+            mReference.putFile(selectedMedia).addOnSuccessListener {
+                    taskSnapshot: UploadTask.TaskSnapshot? ->
+                var url = userRef.downloadUrl
+                Toast.makeText(context, "Successfully Uploaded :)", Toast.LENGTH_LONG).show()
+            }
+        }catch (e: Exception) {
+            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
+        }
+    }
+    private fun addAudio(selectedMedia: Uri){
+        videoView.setVideoURI(selectedMedia)
+        var mediaController = MediaController(context)
+        videoView.setMediaController(mediaController)
+        //mediaController.setAnchorView(videoView)
+
+        //uploading
+
+        var mReference = storageRef.child(selectedMedia.lastPathSegment!!)
+        try {
+            mReference.putFile(selectedMedia).addOnSuccessListener {
+                    taskSnapshot: UploadTask.TaskSnapshot? ->
+                var url = userRef.downloadUrl
+                Toast.makeText(context, "Successfully Uploaded :)", Toast.LENGTH_LONG).show()
+            }
+        }catch (e: Exception) {
+            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
+        }
     }
 
-//    private fun getPath(uri:Uri):String{
-//        var projectionArray = arrayOf(MediaStore.Video.Media.DATA)
-//        var cursor = context!!.contentResolver.query(uri, projectionArray,null,null,null)
-//        if(cursor!=null){
-//            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
-//            cursor.moveToFirst()
-//            return cursor.getString(columnIndex)
-//        }else
-//            return ""
-//
-//
-//    }
 
     private fun addImage(selectedMedia: Uri){
         userRef = storageRef.child("/checkpointPictures").child(selectedMedia.toString() + LocalDateTime.now() + ".jpg")

@@ -116,6 +116,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         return result.toObject(Tour::class.java)
     }
 
+
     fun getLocationData() = locationData
 
 }

@@ -87,6 +87,8 @@ class AddTourCheckpoints: Fragment() {
     private lateinit var storageRef: StorageReference
     private lateinit var userRef: StorageReference
 
+    private lateinit var arrayCheck: Array<Boolean>
+
     private lateinit var location: GeoPoint
     private var mCheckpointsRecycler: RecyclerView? = null
 
@@ -107,6 +109,9 @@ class AddTourCheckpoints: Fragment() {
     private var PICK_IMAGE = 4
     private var PICK_VIDEO = 5
     private var PICK_AUDIO = 6
+
+    private var vidFlag = false
+    private var audFlag = false
 
     companion object{
         private val TAG = "AddTourCheckpoints"
@@ -197,6 +202,10 @@ class AddTourCheckpoints: Fragment() {
             navigateToHome()
         }
 
+
+        // array to check if things are added
+        var arrayCheck = booleanArrayOf(false,false,false)
+
         return root
     }
 
@@ -241,6 +250,7 @@ class AddTourCheckpoints: Fragment() {
         //TODO: make sure to populate audio if audio was already selected
         if(selectedAudio != null){
             //enter audio stuff here
+            audFlag = true
             addAudioView.selectAudioButton.text = "Edit Audio"
             addAudioView.cancelAudioSelectButton.text = "Done"
         }
@@ -286,6 +296,7 @@ class AddTourCheckpoints: Fragment() {
             var mediaController = MediaController(context)
             addVideoView.videoToBeAdded.setMediaController(mediaController)
             mediaController.setAnchorView(addVideoView)
+            vidFlag = true
             addVideoView.selectVideoButton.text = "Edit Video"
             addVideoView.cancelVidSelectButton.text = "Done"
         }
@@ -309,12 +320,14 @@ class AddTourCheckpoints: Fragment() {
 
 
     fun saveAndNext() {
-        //TODO: upload media to firebase
+        if(checkpoints.isEmpty()) {
+            Toast.makeText(context, "Please enter a checkpoint", Toast.LENGTH_LONG).show()
+        } else {
+            // add to viewModel
+            sharedViewModel.addCheckpoints(checkpoints)
 
-        // add to viewModel
-        sharedViewModel.addCheckpoints(checkpoints)
-
-        navigateToAddTags()
+            navigateToAddTags()
+        }
     }
 
     private fun navigateToAddTags(){
@@ -328,9 +341,16 @@ class AddTourCheckpoints: Fragment() {
 
 
     private fun addCheckpoint() {
+
         val name = checkptName.text.toString()
 
         val description = checkptDesc.text.toString()
+
+
+        if (name == null || name.equals("")
+            || description == null || description.equals("")) {
+            Toast.makeText(context, "Please fill out these fields", Toast.LENGTH_LONG).show()
+        } else {
 //        GlobalScope.launch(Dispatchers.Main) {
 //            withContext(Dispatchers.Default) { uploadPicture() }
 //        }
@@ -340,29 +360,40 @@ class AddTourCheckpoints: Fragment() {
 //            uploadPicture()
 //            uploadVideo()
 //        }
-        Log.i(TAG, "imageURL is :" + imageUrl)
+            Log.i(TAG, "imageURL is :" + imageUrl)
 //        sharedViewModel.setImageUrl("hi")
 //        sharedViewModel.getImageUrl().observe(this, Observer {
 //                url -> Log.i(TAG, url)
 //        })
+            uploadPicture()
 
-        uploadPicture()
-        val newCP = Checkpoint(name, location, description, imageUrl, audioUrl, videoUrl)
+            if (imageUrl == null || imageUrl.equals("")) {
+                Toast.makeText(context, "Image not selected or still uploading", Toast.LENGTH_LONG)
+                    .show()
+            } else if (vidFlag && (videoUrl == null || videoUrl.equals(""))) {
+                Toast.makeText(context, "Video still uploading", Toast.LENGTH_LONG).show()
+            } else if (audFlag && (audioUrl == null || audioUrl.equals(""))) {
+                Toast.makeText(context, "Audio still uploading", Toast.LENGTH_LONG).show()
+            } else {
 
-        // need to add this checkpoint to tour arrayList
-        checkpoints.add(newCP)
-        //clearing data in dialogs for next checkPoint
-        //clearCheckpointMediaForNext()
+                val newCP = Checkpoint(name, location, description, imageUrl, audioUrl, videoUrl)
 
-        // TO display added checkpoints
-        //creating adapter using CheckpointAdapter
-        val adapter = CheckpointAdapter(activity!!, checkpoints)
-        //attaching adapter to the listview
-        mCheckpointsRecycler!!.adapter = adapter
-        mCheckpointsRecycler!!.layoutManager = LinearLayoutManager(context)
+                // need to add this checkpoint to tour arrayList
+                checkpoints.add(newCP)
+                //clearing data in dialogs for next checkPoint
+                //clearCheckpointMediaForNext()
 
-        checkptName.setText("")
-        checkptDesc.setText("")
+                // TO display added checkpoints
+                //creating adapter using CheckpointAdapter
+                val adapter = CheckpointAdapter(activity!!, checkpoints)
+                //attaching adapter to the listview
+                mCheckpointsRecycler!!.adapter = adapter
+                mCheckpointsRecycler!!.layoutManager = LinearLayoutManager(context)
+
+                checkptName.setText("")
+                checkptDesc.setText("")
+            }
+        }
     }
 
 
@@ -379,7 +410,7 @@ class AddTourCheckpoints: Fragment() {
                         location = GeoPoint(place.latLng!!.latitude, place.latLng!!.longitude)
                         Toast.makeText(
                             activity,
-                            "Place: " + place.name + ", " + place.id,
+                            "Place: " + place.name,
                             Toast.LENGTH_LONG
                         ).show()
                     }

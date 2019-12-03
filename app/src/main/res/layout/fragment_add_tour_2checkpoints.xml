@@ -144,6 +144,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="16dp"
+            android:backgroundTint="@color/colorPrimary"
+            app:borderWidth="0dp"
             app:srcCompat="@drawable/ic_add_black_24dp" />
         </RelativeLayout>
 

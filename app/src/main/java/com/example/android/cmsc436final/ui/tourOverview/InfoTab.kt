@@ -1,5 +1,6 @@
 package com.example.android.cmsc436final.ui.tourOverview
 
+import android.content.Context
 import android.graphics.Color
 import android.icu.text.IDNA
 import android.os.Bundle
@@ -10,9 +11,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -47,114 +50,65 @@ import org.json.JSONObject
  *
  */
 
-class InfoTab: Fragment() {
 
+class InfoTab: Fragment(), CheckpointAdapter.ItemClickListener {
     private lateinit var mModel: SharedViewModel
-
-    private var currTour: Tour? = null
-    private var mFirestore: FirebaseFirestore? = null
-    private lateinit var db: FirebaseFirestore
-    private lateinit var tourImage: ImageView
-    private lateinit var startButton: Toolbar
     private var mCheckpointsRecycler: RecyclerView? = null
     private var mAdapter: CheckpointAdapter? = null
-    private var mQuery: Query? = null
+    private lateinit var checkpoints : List<Checkpoint>
+    private lateinit var descriptionView : TextView
+    private lateinit var peopleCompletedView : TextView
 
 
     companion object {
-        private const val TAG = "TourOverviewFragment"
-        private const val LIMIT = 50
-        fun newInstance(): InfoTab = InfoTab()
+        private const val TAG = "InfoTab"
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // saved the id that the fragment passed to this activity
-//        var tourid = arguments?.getString("tourid")
-//        getTourById(tourid!!)
         val root = inflater.inflate(R.layout.tour_overview_info_tab, container, false)
-
         mCheckpointsRecycler = root.findViewById(R.id.recycler_checkpoints)
+        mCheckpointsRecycler!!.layoutManager = LinearLayoutManager(context)
+        descriptionView =root.findViewById(R.id.info_tour_description)
+        peopleCompletedView = root.findViewById(R.id.info_ppl_completed)
 
-        // Initialize Firestore and the main RecyclerView
-//        initFirestore()
-//        initRecyclerView()
-
+        mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
+        if(mModel.getCurrentTour() == null){
+            mModel.getTour().observe(this, Observer { tour ->
+                run {
+                    loadScreen(tour)
+                }
+            })
+        } else {
+            loadScreen(mModel.getCurrentTour()!!)
+        }
 
         return root
     }
 
+    private fun loadScreen(tour: Tour){
+        setupView(tour)
+        initRecycler(tour)
+    }
 
-//    override fun onStart() {
-//        super.onStart()
-//        // Start listening for Firestore updates
-//        if (mAdapter != null) {
-//            mAdapter!!.startListening()
-//        }
-//    }
-//
-//    override fun onStop(){
-//        super.onStop()
-//        if (mAdapter != null) {
-//            mAdapter!!.startListening()
-//        }
-//    }
-//
-//    private fun initFirestore() {
-//        mQuery = mFirestore!!.collection("tours").limit(InfoTab.LIMIT.toLong())
-//    }
-//
-//    private fun initRecyclerView() {
-//        if (mQuery == null) {
-//            Log.w(InfoTab.TAG, "No query, not initializing RecyclerView")
-//        }
-//
-//        mAdapter = object: CheckpointAdapter(mQuery, this) {
-//            override fun onDataChanged() { // Show/hide content if the query returns empty.
-//                if (itemCount == 0) {
-//                    mCheckpointsRecycler!!.visibility = View.GONE
-//                } else {
-//                    mCheckpointsRecycler!!.visibility = View.VISIBLE
-//                }
-//            }
-//
-//            override fun onError(e: FirebaseFirestoreException?) { // Show a snackbar on errors
-//                Snackbar.make(
-//                    activity!!.findViewById<View>(android.R.id.content),
-//                    "Error: check logs for info.", Snackbar.LENGTH_LONG
-//                ).show()
-//            }
-//        }
-//        mCheckpointsRecycler!!.layoutManager = LinearLayoutManager(context)
-//        mCheckpointsRecycler!!.adapter = mAdapter
-//    }
-//
-//    private fun getTourById(tourId: String) {
-//        db = FirebaseFirestore.getInstance()
-//        val docRef = db.collection("tours").document(tourId)
-//        docRef.get().addOnSuccessListener { document ->
-//            if (document != null) {
-//                Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-//                currTour = document.toObject(Tour::class.java)
-//            } else {
-//                Log.d(TAG, "No such document")
-//            }
-//        }
-//            .addOnFailureListener { exception ->
-//                Log.d(TAG, "get failed with ", exception)
-//            }
-//    }
-//
-//    override fun onCheckpointSelected (checkpoint: DocumentSnapshot?) {
-////        lifecycleScope.launch {
-////            mModel.selectTour(tour!!.id)
-////        }
-////        val bundle = bundleOf("tourid" to tour!!.id)
-////        findNavController().navigate(R.id.action_navigation_home_to_tour_overview, bundle)
-//    }
+    private fun setupView(tour: Tour){
+        descriptionView.text = tour.description
+        val ppl = "People completed ${tour.pplCompleted}"
+        peopleCompletedView.text = ppl
+    }
+
+    private fun initRecycler(tour: Tour){
+        checkpoints = tour.checkpoints!!
+        mAdapter = CheckpointAdapter(context, checkpoints)
+        mCheckpointsRecycler!!.adapter = mAdapter
+    }
+
+
+    override fun onItemClick(view: View?, position: Int) {
+        //TODO: Navigate to checkpoint overview fragment onclick
+    }
+
 }

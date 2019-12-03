@@ -46,8 +46,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cp_name"
                 android:layout_width="365dp"
-                android:layout_height="wrap_content"
-                android:hint="Checkpoint Name" />
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -62,8 +61,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cp_descrip"
                 android:layout_width="365dp"
-                android:layout_height="match_parent"
-                android:hint="Checkpoint Description" />
+                android:layout_height="match_parent" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,13 +148,27 @@
         </RelativeLayout>
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="310dp"
-            android:layout_marginTop="0dp"
-            android:text="Next" />
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="180dp"
+                android:text="Cancel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/next_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -260,7 +260,7 @@ class AddTourFragment : Fragment() {
     }
 
     private fun navigateToAddMedia(){
-        findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
+       // findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_add_media)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

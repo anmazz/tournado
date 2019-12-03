@@ -2,6 +2,7 @@ package com.example.android.cmsc436final.adapter
 
 import android.content.Context
 import android.location.Geocoder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,8 +33,9 @@ import com.example.android.cmsc436final.model.Checkpoint
  * RecyclerView adapter for a list of Restaurants.
  */
 
-class CheckpointAdapter internal constructor(context: Context?, data: List<Checkpoint>) :
-    RecyclerView.Adapter<CheckpointAdapter.ViewHolder?>() {
+
+
+class CheckpointAdapter(context: Context?, data: List<Checkpoint>) : RecyclerView.Adapter<CheckpointAdapter.ViewHolder?>() {
     private var mData: List<Checkpoint> = data
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
     private var mClickListener: ItemClickListener? = null
@@ -41,6 +43,7 @@ class CheckpointAdapter internal constructor(context: Context?, data: List<Check
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = mInflater.inflate(R.layout.item_checkpoint, parent, false)
+        Log.i("CheckpointAdapter", "oncreateviewholder")
         return ViewHolder(view)
     }
 
@@ -60,9 +63,7 @@ class CheckpointAdapter internal constructor(context: Context?, data: List<Check
         return mData.size
     }
 
-    inner class ViewHolder internal constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var nameView: TextView = itemView.findViewById(R.id.checkpoint_item_name)
         var locationView: TextView = itemView.findViewById(R.id.checkpoint_item_location)
         var imageView: ImageView = itemView.findViewById(R.id.checkpoint_item_image)

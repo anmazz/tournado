@@ -60,7 +60,7 @@ class AddTourCheckpoints: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         sharedViewModel =
-            ViewModelProviders.of(this).get(sharedViewModel::class.java)
+            ViewModelProviders.of(this).get(SharedViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_add_tour_2checkpoints, container, false)
 
@@ -115,11 +115,11 @@ class AddTourCheckpoints: Fragment() {
         }
 
         buttonAddVideo.setOnClickListener() {
-            navigateToAddVideo()
+            //navigateToAddVideo()
         }
 
         buttonAddAudio.setOnClickListener() {
-            navigateToAddAudio()
+            //navigateToAddAudio()
         }
 
         buttonAddCheckpoint.setOnClickListener() {

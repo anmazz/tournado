@@ -39,13 +39,11 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var currTour: Tour
     private var currentCheckpoint = 0
-    private lateinit var geofencingClient : GeofencingClient
     private lateinit var dialogShown : Array<Boolean>
 
 
     companion object{
         const val TAG = "StartTour"
-        const val GEOFENCE_RADIUS = 50F
     }
 
     override fun onCreateView(
@@ -55,7 +53,7 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
 
         val root = inflater.inflate(R.layout.fragment_start_tour, container, false)
         mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
-
+        mModel.setCurrentCheckpointNum(0)
         mapView = root.findViewById(R.id.map_start_tour)
 
         //Get loaded current tour saved into viewModel
@@ -89,7 +87,7 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
                 Toast.makeText(context, "SUCCESS!", Toast.LENGTH_LONG)
                 dialogShown[currentCheckpoint] = true
                 val onCheckpoint = currTour.checkpoints!![currentCheckpoint]
-                val title = "Checkpoint $currentCheckpoint reached!"
+                val title = "Checkpoint ${currentCheckpoint+1} reached!"
                 val body = onCheckpoint.name
                 showDialog(title, body)
             }
@@ -109,9 +107,8 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         bodyView.text = body
         val yesBtn = dialog .findViewById(R.id.btn_yes) as Button
         yesBtn.setOnClickListener {
-            //TODO: navigate to checkpoint fragment when closing dialog
-            //TODO: increase currentCheckpoint count
-            //currentCheckpoint++
+            currentCheckpoint++
+            mModel.setCurrentCheckpointNum(currentCheckpoint)
             dialog.dismiss()
         }
         dialog.show()
@@ -123,47 +120,6 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         Utils().drawOnMap(currTour, activity!!, mGoogleMap)
         Utils().moveCameraToTourBounds(currTour, activity!!, mGoogleMap)
         mGoogleMap.isMyLocationEnabled = true
-//        createGeofences()
-
     }
-
-//    private fun createGeofences(){
-//        val geofences = currTour.checkpoints!!.map {
-//            Geofence.Builder()
-//                .setRequestId(it.name)
-//                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-//                .setCircularRegion(it.location.latitude, it.location.latitude, GEOFENCE_RADIUS)
-//                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-//                .build()
-//        }
-//
-//        val geofencingRequest = GeofencingRequest.Builder().apply {
-//            setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-//            addGeofences(geofences)
-//        }.build()
-//
-//        val geofencePendingIntent: PendingIntent by lazy {
-//            val intent = Intent(context, GeofenceReceiver::class.java)
-//            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//        }
-//
-//        Log.i(TAG, "geofences: $geofences, request $geofencingRequest, intent: $geofencePendingIntent")
-//
-//        val geofencingClient = LocationServices.getGeofencingClient(activity!!)
-//
-//        geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
-//            Log.i(TAG, "in addGeofences")
-//            addOnFailureListener {
-//                // display error
-//                Log.i(TAG, "failure")
-//            }
-//            addOnSuccessListener {
-//                // move on
-//                Log.i(TAG, "success listener")
-//                Toast.makeText(context, "SUCCESS!", Toast.LENGTH_LONG)
-//            }
-//        }
-//
-//    }
 
 }

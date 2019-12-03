@@ -60,6 +60,8 @@ class TourOverviewFragment : Fragment() {
         mapButton = root.findViewById(R.id.show_map_button)
         infoButton = root.findViewById(R.id.show_info_button)
 
+
+        //Selects tour a
         lifecycleScope.launch {
             mModel.selectTour(tourid!!)
         }

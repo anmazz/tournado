@@ -2,6 +2,7 @@ package com.example.android.cmsc436final.adapter
 
 import android.content.Context
 import android.location.Geocoder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,6 +80,7 @@ open class TourAdapter(query: Query?, private val mListener: OnTourSelectedListe
 
             //Retrieve starting checkpoint location's city
             val geocoder = Geocoder(itemView.context)
+            Log.i("Adapter", tour.checkpoints!![0].location.toString())
             val lat = tour.checkpoints!![0].location.latitude
             val long = tour.checkpoints!![0].location.longitude
             locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality

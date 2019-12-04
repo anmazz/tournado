@@ -1,9 +1,12 @@
 package com.example.android.cmsc436final.ui.tourOverview
 
-import android.location.Geocoder
+import android.app.AlertDialog
+import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +20,8 @@ import com.bumptech.glide.Glide
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
 import com.example.android.cmsc436final.model.Checkpoint
+import kotlinx.android.synthetic.main.add_image_dialogue.view.*
+import kotlinx.android.synthetic.main.play_audio_dialogue.view.*
 
 
 class CheckpointOverview: Fragment() {
@@ -32,6 +37,11 @@ class CheckpointOverview: Fragment() {
     private lateinit var doneButton : Button
 
     private lateinit var currCheckpoint: Checkpoint
+
+    private var  playAudioDialog: View? = null
+    private var  playVideoDialog: View? = null
+
+    private var audioPlayer :MediaPlayer? = MediaPlayer()
 
     companion object {
         private const val TAG = "InfoTab"
@@ -88,13 +98,38 @@ class CheckpointOverview: Fragment() {
     }
 
     fun playAudio() {
-        val url = currCheckpoint.audio
-        val mediaPlayer: MediaPlayer? = MediaPlayer().apply {
-            setAudioStreamType(AudioManager.STREAM_MUSIC)
-            setDataSource(url)
-            prepare() // might take long! (for buffering, etc)
-            start()
+            Log.i(TAG, "Im about to select picture")
+            playAudioDialog = LayoutInflater.from(context).inflate(R.layout.play_audio_dialogue, null)
+            val builder = AlertDialog.Builder(context)
+                .setView(playAudioDialog)
+                .setTitle("Checkpoint Audio")
+
+            val mAlertDialog = builder.show()
+
+
+        playAudioDialog!!.playButton.setOnClickListener {
+            //get url or something
+                audioPlayer!!.reset()
+                audioPlayer!!.setDataSource(currCheckpoint!!.audio)
+                audioPlayer!!.prepare()
+                audioPlayer!!.setOnPreparedListener(object: MediaPlayer.OnPreparedListener{
+                    override fun onPrepared(mediaPlayer: MediaPlayer) {
+                        mediaPlayer.start()
+                    }
+                })
         }
+        //pause audio
+        playAudioDialog!!.pauseButton.setOnClickListener {
+            if (audioPlayer != null) {
+                audioPlayer!!.stop()
+            }
+        }
+
+        playAudioDialog!!.donePlayingAudio.setOnClickListener {
+            mAlertDialog.dismiss()
+
+        }
+
     }
 
     fun playVideo() {

@@ -54,5 +54,6 @@
     <string name="title_activity_home">Home</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="api_key">AIzaSyDpFxMtXyJ8rJSSaU70pKuuTSyBUPZjmt0</string>
+    <string name="done">Done</string>
 
 </resources>

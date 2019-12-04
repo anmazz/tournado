@@ -82,7 +82,7 @@ class AddTourCheckpoints: Fragment() {
     private val TAG = "In addTourCheckpoints"
     //MediaPlayers for media selection
     private var audioPlayer :MediaPlayer? = MediaPlayer()
-    private var videoPlayer :MediaPlayer? = null
+
     //connection to firebase
     private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
@@ -113,8 +113,8 @@ class AddTourCheckpoints: Fragment() {
     private var PICK_VIDEO = 5
     private var PICK_AUDIO = 6
 
-    private var vidFlag = false
-    private var audFlag = false
+    //private var vidFlag = false
+    //private var audFlag = false
 
     companion object{
         private val TAG = "AddTourCheckpoints"
@@ -253,7 +253,7 @@ class AddTourCheckpoints: Fragment() {
         //TODO: make sure to populate audio if audio was already selected
         if(selectedAudio != null){
             //enter audio stuff here
-            audFlag = true
+            //audFlag = true
             addAudioView!!.selectAudioButton.text = "Edit Audio"
             addAudioView!!.cancelAudioSelectButton.text = "Done"
         }
@@ -308,7 +308,7 @@ class AddTourCheckpoints: Fragment() {
 //            var mediaController = MediaController(context)
 //            addVideoView.videoToBeAdded.setMediaController(mediaController)
 //            mediaController.setAnchorView(addVideoView)
-            vidFlag = true
+            //vidFlag = true
 //            addVideoView.selectVideoButton.text = "Edit Video"
 //            addVideoView.cancelVidSelectButton.text = "Done"
         }
@@ -391,20 +391,18 @@ class AddTourCheckpoints: Fragment() {
 //        sharedViewModel.getImageUrl().observe(this, Observer {
 //                url -> Log.i(TAG, url)
 //        })
-            uploadPicture()
+//
+//
 
-            if (imageUrl == null || imageUrl.equals("")) {
-                Toast.makeText(context, "Image not selected or still uploading", Toast.LENGTH_LONG)
-                    .show()
-            } else if (vidFlag && (videoUrl == null || videoUrl.equals(""))) {
-                Toast.makeText(context, "Video still uploading", Toast.LENGTH_LONG).show()
-            } else if (audFlag && (audioUrl == null || audioUrl.equals(""))) {
-                Toast.makeText(context, "Audio still uploading", Toast.LENGTH_LONG).show()
-            } else {
             toUploadSelectedPic = selectedPic
             toUploadSelectedVideo = selectedVideo
             toUploadSelectedAudio = selectedAudio
-            uploadPicture()
+
+            if (toUploadSelectedPic == null) {
+                Toast.makeText(context, "Image not selected or still uploading", Toast.LENGTH_LONG)
+                    .show()
+            } else {
+                uploadPicture()
                 val newCP = Checkpoint(name, location, description, imageUrl, audioUrl, videoUrl)
 
                 // need to add this checkpoint to tour arrayList

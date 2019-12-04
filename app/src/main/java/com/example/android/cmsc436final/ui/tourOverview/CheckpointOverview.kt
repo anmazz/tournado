@@ -23,6 +23,8 @@ import com.example.android.cmsc436final.SharedViewModel
 import com.example.android.cmsc436final.model.Checkpoint
 import com.example.android.cmsc436final.ui.startTour.StartTourFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 
 class CheckpointOverview: Fragment() {
@@ -49,8 +51,6 @@ class CheckpointOverview: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_checkpoint_overview, container, false)
-//        mCheckpointsRecycler = root.findViewById(R.id.recycler_checkpoints)
-//        mCheckpointsRecycler!!.layoutManager = LinearLayoutManager(context)
         nameView = root.findViewById(R.id.checkpoint_name)
         descriptionView = root.findViewById(R.id.cp_description)
         locationView = root.findViewById(R.id.location)
@@ -69,13 +69,8 @@ class CheckpointOverview: Fragment() {
         descriptionView.text = currCheckpoint!!.description
         Glide.with(imageView.context).load(currCheckpoint.image).centerCrop().into(imageView)
 
-        //Retrieve starting checkpoint location's city
-//        val geocoder = Geocoder(context)
-//        val lat = currCheckpoint.location.latitude
-//        val long = currCheckpoint.location.longitude
-//        locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality
         continueButton.setOnClickListener{
-            if(mModel.getCurrChkptNumStartTour()==tour.checkpoints!!.size-1){
+            if(mModel.getCurrChkptNumStartTour()==tour.checkpoints!!.size){
                 val title = "Congrats!"
                 val body = "You just completed the ${tour.name} tour!"
                 showDialog(title, body)

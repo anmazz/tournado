@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.android.cmsc436final.LoginActivity
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.RegistrationActivity
+import com.example.android.cmsc436final.model.Tour
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -78,13 +79,20 @@ class UserProfileFragment : Fragment() {
                         .into(profilePic)
 //                    val arrOfToursCompleted = document["toursCompleted"] as ArrayList<*>
 //                    val arrOfToursCreated = document["toursCreated"] as ArrayList<*>
-                    val arrOfToursCompleted = document.get("toursCompleted") as ArrayList<*>
-                    val arrOfToursCreated = document.get("toursCreated") as ArrayList<*>
-                    val username = document.get("name") as String
+                    val arrOfToursCompleted = document.get("toursCompleted") as List<Tour>?
+                    val arrOfToursCreated = document.get("toursCreated") as List<Tour>?
+                    val username = document.get("name") as String?
 
-                    toursTraveledCount.setText(arrOfToursCompleted.size.toString())
-                    toursCreatedCount.setText(arrOfToursCreated.size.toString())
-                    userName.text = username
+                    if (arrOfToursCompleted == null) {
+                        toursTraveledCount.text = "0"
+                    }
+                    if(arrOfToursCreated == null) {
+                        toursCreatedCount.text = "0"
+                    } else {
+                        toursTraveledCount.text = (arrOfToursCompleted!!.size.toString())
+                        toursCreatedCount.text = (arrOfToursCreated!!.size.toString())
+                        userName.text = username
+                    }
 
 
 

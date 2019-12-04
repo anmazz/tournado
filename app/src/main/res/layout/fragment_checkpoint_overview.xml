@@ -41,13 +41,13 @@
     <FrameLayout
         android:id="@+id/info"
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="100dp">
 
         <View
             android:id="@+id/info_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/quantum_black_100" />
+            android:background="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/checkpoint_name"

@@ -53,8 +53,9 @@ class RegistrationActivity : Activity() {
         }
 
     private fun selectProfilePic(){
-         val toGallery = Intent(Intent.ACTION_PICK
-                ,MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        val toGallery = Intent(
+            Intent.ACTION_GET_CONTENT
+            , MediaStore.Images.Media.INTERNAL_CONTENT_URI).setType("image/*")
         startActivityForResult(toGallery,PICK_IMAGE)
     }
 

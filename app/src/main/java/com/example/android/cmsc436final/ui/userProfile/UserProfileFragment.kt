@@ -128,10 +128,10 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun changeProfilePic(){
-        val toGallery = Intent(Intent.ACTION_PICK
-            , MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        val toGallery = Intent(
+            Intent.ACTION_GET_CONTENT
+            , MediaStore.Images.Media.INTERNAL_CONTENT_URI).setType("image/*")
         startActivityForResult(toGallery,PICK_IMAGE)
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

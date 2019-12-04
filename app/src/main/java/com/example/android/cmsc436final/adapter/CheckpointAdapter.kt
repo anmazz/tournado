@@ -57,6 +57,7 @@ class CheckpointAdapter(context: Context?, data: List<Checkpoint>) : RecyclerVie
         val lat = checkpoint.location.latitude
         val long = checkpoint.location.longitude
 //        holder.locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality
+
     }
 
     // total number of rows

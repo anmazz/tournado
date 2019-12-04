@@ -91,10 +91,10 @@ class AddTourBasicInfo: Fragment() {
             selectTourPicture()
         }
 
-        // TODO navigate to home button
         buttonCancel.setOnClickListener {
             tourName.setText("")
             tourDescrip.setText("")
+            findNavController().navigate(R.id.action_navigation_add_tour_to_navigation_home)
         }
 
         return root

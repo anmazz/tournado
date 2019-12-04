@@ -19,8 +19,18 @@ import com.bumptech.glide.Glide
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
 import com.example.android.cmsc436final.model.Checkpoint
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.play_audio_dialogue.view.*
+import com.example.android.cmsc436final.model.Tour
+import kotlinx.android.synthetic.main.add_image_dialogue.view.*
+import kotlinx.android.synthetic.main.play_audio_dialogue.view.*
+
+import com.example.android.cmsc436final.ui.startTour.StartTourFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 
 
@@ -37,6 +47,7 @@ class CheckpointOverview: Fragment() {
     private lateinit var continueButton : FloatingActionButton
 
     private lateinit var currCheckpoint: Checkpoint
+    private lateinit var tour : Tour
 
     private var  playAudioDialog: View? = null
     private var  playVideoDialog: View? = null
@@ -64,7 +75,7 @@ class CheckpointOverview: Fragment() {
 
 
         mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
-        var tour = mModel.getCurrentTour()!!
+        tour = mModel.getCurrentTour()!!
         currCheckpoint = tour!!.checkpoints?.get(mModel.getCurrentCheckpointNum())!!
 
         nameView.text = (currCheckpoint!!.name)
@@ -113,7 +124,13 @@ class CheckpointOverview: Fragment() {
         val yesBtn = dialog .findViewById(R.id.btn_yes) as Button
         yesBtn.setOnClickListener {
             findNavController().navigate(R.id.action_checkpoint_overview_to_navigation_home)
-            //TODO: increase user tours done count
+
+            val db = FirebaseFirestore.getInstance()
+
+            // need uid of currentUser to get specific document
+            val uid = FirebaseAuth.getInstance().currentUser!!.uid
+            val dbUser = db.collection("users").document(uid)
+            dbUser!!.update("toursCompleted", FieldValue.arrayUnion(tour))
 
             mModel.reset()
             dialog.dismiss()

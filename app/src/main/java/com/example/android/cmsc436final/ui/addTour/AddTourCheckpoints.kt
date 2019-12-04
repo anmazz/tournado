@@ -346,7 +346,7 @@ class AddTourCheckpoints: Fragment() {
 
 
     fun saveAndNext() {
-        if(checkpoints.isEmpty()) {
+        if(checkpoints.size < 2) {
             Toast.makeText(context, "Please enter a checkpoint", Toast.LENGTH_LONG).show()
         } else {
             // add to viewModel

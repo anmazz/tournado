@@ -1,9 +1,6 @@
 package com.example.android.cmsc436final.ui.startTour
 
 import android.app.Dialog
-import android.app.PendingIntent
-import android.content.Intent
-import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -22,17 +19,9 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.android.cmsc436final.*
 import com.example.android.cmsc436final.model.Tour
-import com.example.android.cmsc436final.ui.tourOverview.TourOverviewFragment
-import com.google.android.gms.location.Geofence
-import com.google.android.gms.location.GeofencingClient
-import com.google.android.gms.location.GeofencingRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class StartTourFragment : Fragment(), OnMapReadyCallback {
@@ -44,7 +33,6 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
     private var currentCheckpoint = 0
     private lateinit var dialogShown : Array<Boolean>
     private lateinit var nameView: TextView
-    private lateinit var locationView: TextView
     private lateinit var imageView :ImageView
 
 
@@ -60,6 +48,7 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         val root = inflater.inflate(R.layout.fragment_start_tour, container, false)
         mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
         mModel.setCurrentCheckpointNum(0)
+        val what = parentFragment
         mapView = root.findViewById(R.id.map_start_tour)
 
         //Set up next checkpoint view
@@ -69,10 +58,16 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         //Get loaded current tour saved into viewModel
         currTour = mModel.getCurrentTour()!!
         currentCheckpoint = mModel.getCurrChkptNumStartTour()
+
+
         fillInNextCheckpointView()
-
-        dialogShown = Array(currTour.checkpoints!!.size) {false}
-
+        Log.i(TAG, "in oncreateview")
+        if(mModel.getDialogShown() == null) {
+            dialogShown = Array(currTour.checkpoints!!.size) {false}
+        } else {
+            dialogShown = mModel.getDialogShown()!!
+        }
+        mModel.setDialogShown(dialogShown)
         return root
     }
 
@@ -81,6 +76,7 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         mapView.onResume()
         mapView.getMapAsync(this)
         super.onViewCreated(view, savedInstanceState)
+        Log.i(TAG, "in onviewcreated")
 
         //Checks if user is nearby checkpoint
         mModel.getLocationData().observe(this, Observer {
@@ -93,11 +89,12 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
                 this.latitude = currTour.checkpoints!![currentCheckpoint].location.latitude
                 this.longitude = currTour.checkpoints!![currentCheckpoint].location.longitude
             }
-
+            dialogShown = mModel.getDialogShown()!!
             if(current.distanceTo(checkpoint) < 50 && !dialogShown[currentCheckpoint]){
                 Log.i(TAG, "success listener")
                 Toast.makeText(context, "SUCCESS!", Toast.LENGTH_LONG)
                 dialogShown[currentCheckpoint] = true
+                mModel.setDialogShown(dialogShown)
                 val onCheckpoint = currTour.checkpoints!![currentCheckpoint]
                 val title = "Checkpoint ${currentCheckpoint+1} reached!"
                 val body = onCheckpoint.name
@@ -119,11 +116,11 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         bodyView.text = body
         val yesBtn = dialog .findViewById(R.id.btn_yes) as Button
         yesBtn.setOnClickListener {
-            currentCheckpoint++
             mModel.setCurrentCheckpointNum(currentCheckpoint)
-            mModel.setCurrChkptNumStartTour(currentCheckpoint)
+            mModel.setCurrChkptNumStartTour(++currentCheckpoint)
+            Log.i(TAG, "Num start tour: " + mModel.getCurrChkptNumStartTour())
+            Log.i(TAG, "in yes button on click")
             findNavController().navigate(R.id.action_start_tour_to_checkpoint_overview)
-            //fillInNextCheckpointView()
             dialog.dismiss()
         }
         dialog.show()
@@ -141,6 +138,15 @@ class StartTourFragment : Fragment(), OnMapReadyCallback {
         val nextCheckpoint = currTour.checkpoints!![mModel.getCurrChkptNumStartTour()]
         nameView.text = nextCheckpoint.name
         Glide.with(imageView.context).load(nextCheckpoint.image).centerCrop().into(imageView)
+    }
+
+    override fun onPause(){
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i(TAG, "In onResume")
     }
 
 }

@@ -15,7 +15,9 @@
         android:layout_marginLeft="@dimen/mtrl_card_spacing"
         android:layout_marginTop="@dimen/mtrl_card_spacing"
         android:layout_marginRight="@dimen/mtrl_card_spacing"
-        android:minHeight="200dp">
+        android:elevation="5dp"
+        android:minHeight="200dp"
+        app:cardBackgroundColor="@color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,29 +36,29 @@
                     android:src="@drawable/button_background"
                     app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
-<!--                <View-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:background="@color/cardview_light_background" />-->
+                <!--                <View-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    android:background="@color/cardview_light_background" />-->
             </FrameLayout>
 
             <TextView
                 android:id="@+id/checkpoint_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/quantum_black_100"
-                android:text="Tour Name"
                 android:layout_above="@id/checkpoint_item_location"
                 android:layout_marginLeft="120dp"
-                android:textSize="20dp"/>
+                android:text="Tour Name"
+                android:textColor="@color/quantum_black_100"
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/checkpoint_item_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignStart="@id/checkpoint_item_name"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="25dp"
-                android:layout_alignStart="@id/checkpoint_item_name"
                 android:text="College Park, MD"
                 android:textColor="@color/quantum_black_100"
 

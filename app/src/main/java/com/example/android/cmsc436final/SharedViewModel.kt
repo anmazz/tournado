@@ -20,6 +20,22 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private var checkpointToBeAdded = Checkpoint()
     private var currentCheckpointNum = 0
     private var currChkptNumStartTour = 0
+
+    private var dialogShown: Array<Boolean>? = null
+
+    fun reset(){
+        dialogShown = null
+        currChkptNumStartTour = 0
+    }
+
+    fun setDialogShown(arr : Array<Boolean>){
+        dialogShown = arr
+    }
+
+    fun getDialogShown() : Array<Boolean>? {
+        return dialogShown
+    }
+
     private val imageurl = MutableLiveData<String>()
 
     fun getImageUrl(): LiveData<String> {
@@ -28,6 +44,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     fun setImageUrl(url : String) {
         imageurl.value = url
+
     }
 
     fun setCurrentTour(tour : Tour){
@@ -115,6 +132,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         Log.i("loadtour", "done")
         return result.toObject(Tour::class.java)
     }
+
 
     fun getLocationData() = locationData
 

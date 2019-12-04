@@ -13,7 +13,7 @@
             android:id="@+id/info_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorAccent" />
+            android:background="@color/quantum_black_100" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,13 +27,13 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:text="Tour description"
-                android:textColor="@color/quantum_black_100" />
+                android:textColor="@color/quantum_white_100" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroup"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"/>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp" />
 
                 <!--            android:layout_marginTop="20dp"-->
 
@@ -43,7 +43,7 @@
                     android:layout_height="100dp"
                     android:text="People Completed: 12"
                     android:layout_marginStart="10dp"
-                    android:textColor="@color/quantum_black_100" />
+                    android:textColor="@color/quantum_white_100" />
         </LinearLayout>
 
     </FrameLayout>

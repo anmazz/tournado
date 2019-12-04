@@ -55,6 +55,10 @@ class AddTourBasicInfo: Fragment() {
         private lateinit var storageRef: StorageReference
         private lateinit var userRef: StorageReference
 
+        private lateinit var tourNameStr : String
+        private lateinit var tourDescripStr : String
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,6 +82,7 @@ class AddTourBasicInfo: Fragment() {
         db = FirebaseFirestore.getInstance()
         storageRef = storage.reference
         buttonNext.setOnClickListener() {
+            getFields()
             saveAndNext()
         }
 
@@ -101,7 +106,7 @@ class AddTourBasicInfo: Fragment() {
         addHeaderImageView = LayoutInflater.from(context).inflate(R.layout.add_image_dialogue, null)
         val builder = AlertDialog.Builder(context)
             .setView(addHeaderImageView)
-            .setTitle("Select main photo for Tour")
+            .setTitle("Select main photo for this tour")
         if(selectedHeaderPic != null){
             addHeaderImageView.imageToBeAdded.setImageURI(selectedHeaderPic)
             addHeaderImageView.selectImageButton.text = "Edit Image"
@@ -119,29 +124,44 @@ class AddTourBasicInfo: Fragment() {
         //TODO: add another button for taking pic and set click listener on it
 
         addHeaderImageView.cancelPicSelectButton.setOnClickListener {
+            uploadPicture()
             mAlertDialog.dismiss()
         }
 
     }
 
+    fun getFields () {
+        tourNameStr = tourName.text.toString().trim { it <= ' ' }
+        tourDescripStr = tourDescrip.text.toString()
+    }
+
     fun saveAndNext() {
         // get strings from textboxes
-        val tourNameStr = tourName.text.toString().trim { it <= ' ' }
-        val tourDescripStr = tourDescrip.text.toString()
-        //TODO: check if text fields and picture are empty before allowing them to continue
-        // add to viewModel
-        uploadPicture()
-        sharedViewModel.addName(tourNameStr)
-        sharedViewModel.addDescription(tourDescripStr)
-        sharedViewModel.addPic(picUrl)
 
-        tourName.setText("")
-        tourDescrip.setText("")
-        navigateToAddCheckpoints()
+        if (tourNameStr == null || tourNameStr.equals("")
+            || tourDescripStr == null || tourDescripStr.equals("")) {
+            Log.i(
+                TAG,
+                "tourNameStr: " + tourNameStr + "  tourDes: " + tourDescripStr + "  pic" + picUrl
+            )
+            Toast.makeText(context, "Please fill out these fields", Toast.LENGTH_LONG).show()
+        }
+        if (picUrl == null || picUrl.equals("")) {
+            Toast.makeText(context, "Image not selected or still uploading", Toast.LENGTH_LONG).show()
+        } else {
+
+
+            sharedViewModel.addName(tourNameStr)
+            sharedViewModel.addDescription(tourDescripStr)
+            sharedViewModel.addPic(picUrl)
+
+            tourName.setText("")
+            tourDescrip.setText("")
+            navigateToAddCheckpoints()
+        }
 
     }
 
-//    TODO navigate to the add checkpoints page
     private fun navigateToAddCheckpoints(){
         findNavController().navigate(R.id.action_add_tour1_to_add_tour2)
     }

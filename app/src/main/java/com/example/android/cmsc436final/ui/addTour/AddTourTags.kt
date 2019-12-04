@@ -104,8 +104,12 @@ class AddTourTags: Fragment() {
         }
 
         buttonNext.setOnClickListener() {
-            addToDatabase()
-            navigateToHome()
+            if (tags.isEmpty()) {
+                Toast.makeText(context, "Please add a tag", Toast.LENGTH_LONG).show()
+            } else {
+                addToDatabase()
+                navigateToHome()
+            }
         }
 
 //        TODO navigate to home button
@@ -164,9 +168,9 @@ class AddTourTags: Fragment() {
         //getting the values to save
 
         //checking if the value is provided
-        if (!TextUtils.isEmpty(tourToAdd.name) && !TextUtils.isEmpty(tourToAdd.description) &&
-            tourToAdd.checkpoints!!.isNotEmpty()
-        ) {
+//        if (!TextUtils.isEmpty(tourToAdd.name) && !TextUtils.isEmpty(tourToAdd.description) &&
+//            tourToAdd.checkpoints!!.isNotEmpty()
+//        ) {
             //maybe could access all checkpoint media here and upload
             //for()
 
@@ -196,9 +200,9 @@ class AddTourTags: Fragment() {
             Toast.makeText(activity, "Tour created!", Toast.LENGTH_LONG).show()
 
             //if the value is not given displaying a toast
-        } else {
-            Toast.makeText(activity, "Please complete the fields", Toast.LENGTH_LONG).show()
-        }
+//        } else {
+//            Toast.makeText(activity, "Please complete the fields", Toast.LENGTH_LONG).show()
+//        }
     }
 
 

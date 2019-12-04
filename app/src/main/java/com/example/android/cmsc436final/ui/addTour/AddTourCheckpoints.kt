@@ -76,9 +76,12 @@ class AddTourCheckpoints: Fragment() {
     private var selectedPic: Uri? = null
     private var selectedVideo: Uri? = null
     private var selectedAudio: Uri? = null
+    private var toUploadSelectedPic: Uri? = null
+    private var toUploadSelectedVideo: Uri? = null
+    private var toUploadSelectedAudio: Uri? = null
     private val TAG = "In addTourCheckpoints"
     //MediaPlayers for media selection
-    private var audioPlayer :MediaPlayer? = null
+    private var audioPlayer :MediaPlayer? = MediaPlayer()
     private var videoPlayer :MediaPlayer? = null
     //connection to firebase
     private lateinit var auth: FirebaseAuth
@@ -93,9 +96,9 @@ class AddTourCheckpoints: Fragment() {
     private var mCheckpointsRecycler: RecyclerView? = null
 
     //Views for dialogues
-    private lateinit var  addImageView: View
-    private lateinit var  addVideoView: View
-    private lateinit var  addAudioView: View
+    private var  addImageView: View? = null
+    private var  addVideoView: View? = null
+    private var  addAudioView: View? = null
 
     //urls in database
     private var  imageUrl: String = ""
@@ -218,13 +221,13 @@ class AddTourCheckpoints: Fragment() {
             .setTitle("Select main photo for Checkpoint")
         //TODO: make sure to populate imageview if image was already selected
             if(selectedPic != null){
-                addImageView.imageToBeAdded.setImageURI(selectedPic)
-                addImageView.selectImageButton.text = "Edit Image"
-                addImageView.cancelPicSelectButton.text = "Done"
+                addImageView!!.imageToBeAdded.setImageURI(selectedPic)
+                addImageView!!.selectImageButton.text = "Edit Image"
+                addImageView!!.cancelPicSelectButton.text = "Done"
             }
 
             val mAlertDialog = builder.show()
-            addImageView.selectImageButton.setOnClickListener{
+            addImageView!!.selectImageButton.setOnClickListener{
                 //now select a picture
                 val toGallery = Intent(
                     Intent.ACTION_GET_CONTENT
@@ -232,9 +235,9 @@ class AddTourCheckpoints: Fragment() {
                     startActivityForResult(toGallery,PICK_IMAGE)
 
             }
-            //TODO: add another button for taking pic and set click listner on it
+            //TODO: add another button for taking pic and set click listner on it: time permitting
 
-            addImageView.cancelPicSelectButton.setOnClickListener {
+            addImageView!!.cancelPicSelectButton.setOnClickListener {
                 mAlertDialog.dismiss()
             }
 
@@ -251,12 +254,12 @@ class AddTourCheckpoints: Fragment() {
         if(selectedAudio != null){
             //enter audio stuff here
             audFlag = true
-            addAudioView.selectAudioButton.text = "Edit Audio"
-            addAudioView.cancelAudioSelectButton.text = "Done"
+            addAudioView!!.selectAudioButton.text = "Edit Audio"
+            addAudioView!!.cancelAudioSelectButton.text = "Done"
         }
 
         val mAlertDialog = builder.show()
-        addAudioView.selectAudioButton.setOnClickListener{
+        addAudioView!!.selectAudioButton.setOnClickListener{
             //now select audio
             val toGallery = Intent(
 //                Intent.ACTION_GET_CONTENT).setType("audio/*")
@@ -265,19 +268,28 @@ class AddTourCheckpoints: Fragment() {
             startActivityForResult(toGallery,PICK_AUDIO)
 
         }
-//        addAudioView.playButton.setOnClickListener {
-//            if(audioPlayer != null){
-//                audioPlayer!!.start()
-//
-//            }
-//        }
-//        addAudioView.pauseButton.setOnClickListener {
-//            if(audioPlayer != null){
-//                audioPlayer!!.stop()
-//            }
-//        }
+        //play audio
+        addAudioView!!.playButton.setOnClickListener {
+            if(selectedAudio != null){
+                audioPlayer!!.reset()
+                audioPlayer!!.setDataSource(context!!, selectedAudio!!)
+                audioPlayer!!.prepare()
+                audioPlayer!!.setOnPreparedListener(object: MediaPlayer.OnPreparedListener{
+                    override fun onPrepared(mediaPlayer: MediaPlayer) {
+                        mediaPlayer.start()
+                    }
+                })
 
-        addAudioView.cancelAudioSelectButton.setOnClickListener {
+            }
+        }
+        //pause audio
+        addAudioView!!.pauseButton.setOnClickListener {
+            if(audioPlayer != null){
+                audioPlayer!!.stop()
+            }
+        }
+
+        addAudioView!!.cancelAudioSelectButton.setOnClickListener {
             mAlertDialog.dismiss()
         }
 
@@ -292,27 +304,41 @@ class AddTourCheckpoints: Fragment() {
             .setTitle("Select video for Checkpoint")
         //TODO: make sure to populate imageview if image was already selected
         if(selectedVideo != null){
-            addVideoView.videoToBeAdded.setVideoURI(selectedVideo)
-            var mediaController = MediaController(context)
-            addVideoView.videoToBeAdded.setMediaController(mediaController)
-            mediaController.setAnchorView(addVideoView)
+            addVideoView!!.videoToBeAdded.setVideoURI(selectedVideo)
+//            var mediaController = MediaController(context)
+//            addVideoView.videoToBeAdded.setMediaController(mediaController)
+//            mediaController.setAnchorView(addVideoView)
             vidFlag = true
-            addVideoView.selectVideoButton.text = "Edit Video"
-            addVideoView.cancelVidSelectButton.text = "Done"
+//            addVideoView.selectVideoButton.text = "Edit Video"
+//            addVideoView.cancelVidSelectButton.text = "Done"
         }
 
         val mAlertDialog = builder.show()
-        addVideoView.selectVideoButton.setOnClickListener{
+        addVideoView!!.selectVideoButton.setOnClickListener{
             //now select a video
             val toGallery = Intent(
                 Intent.ACTION_GET_CONTENT).setType("video/*")
             startActivityForResult(toGallery,PICK_VIDEO)
              //do this last but before it make sure to change cancel button to done
+        }
+        addVideoView!!.videoPlayButton.setOnClickListener {
+            if(selectedVideo != null){
+                addVideoView!!.videoToBeAdded.visibility = View.VISIBLE
+                addVideoView!!.videoPlayButton.visibility = View.VISIBLE
+                addVideoView!!.videoPauseButton.visibility = View.VISIBLE
+                addVideoView!!.videoToBeAdded.start()
 
-
+            }
         }
 
-        addVideoView.cancelVidSelectButton.setOnClickListener {
+        addVideoView!!.videoPauseButton.setOnClickListener {
+            if(selectedVideo != null) {
+                addVideoView!!.videoToBeAdded.pause()
+            }
+        }
+
+
+        addVideoView!!.cancelVidSelectButton.setOnClickListener {
             mAlertDialog.dismiss()
         }
 
@@ -377,13 +403,16 @@ class AddTourCheckpoints: Fragment() {
             } else if (location == null) {
                 Toast.makeText(context, "Please choose a location", Toast.LENGTH_LONG).show()
             } else {
-
+            toUploadSelectedPic = selectedPic
+            toUploadSelectedVideo = selectedVideo
+            toUploadSelectedAudio = selectedAudio
+            uploadPicture()
                 val newCP = Checkpoint(name, location, description, imageUrl, audioUrl, videoUrl)
 
                 // need to add this checkpoint to tour arrayList
                 checkpoints.add(newCP)
                 //clearing data in dialogs for next checkPoint
-                //clearCheckpointMediaForNext()
+                clearCheckpointMediaForNext()
 
                 // TO display added checkpoints
                 //creating adapter using CheckpointAdapter
@@ -433,10 +462,10 @@ class AddTourCheckpoints: Fragment() {
                 if(data != null) {
                     selectedPic = data!!.data as Uri
                     //adds image to dialog
-                    addImageView.imageToBeAdded.setImageURI(selectedPic)
+                    addImageView!!.imageToBeAdded.setImageURI(selectedPic)
                     //changes button text
-                    addImageView.selectImageButton.text = "Edit Image"
-                    addImageView.cancelPicSelectButton.text = "Done"
+                    addImageView!!.selectImageButton.text = "Edit Image"
+                    addImageView!!.cancelPicSelectButton.text = "Done"
                 }
 
             }
@@ -444,13 +473,13 @@ class AddTourCheckpoints: Fragment() {
                 if(data != null) {
                     selectedVideo = data!!.data as Uri
                     //adds video to video view
-                    addVideoView.videoToBeAdded.setVideoURI(selectedVideo)
-                    var mediaController = MediaController(context)
-                    addVideoView.videoToBeAdded.setMediaController(mediaController)
-                    mediaController.setAnchorView(addVideoView.videoToBeAdded)
+                    addVideoView!!.videoToBeAdded.setVideoURI(selectedVideo)
+                    addVideoView!!.videoToBeAdded.visibility = View.VISIBLE
+                    addVideoView!!.videoPlayButton.visibility = View.VISIBLE
+                    addVideoView!!.videoPauseButton.visibility = View.VISIBLE
                     //changes button text
-                    addVideoView.selectVideoButton.text = "Edit Video"
-                    addVideoView.cancelVidSelectButton.text = "Done"
+                    addVideoView!!.selectVideoButton.text = "Edit Video"
+                    addVideoView!!.cancelVidSelectButton.text = "Done"
                     //sends video off to upload to data base
                 }
             }
@@ -458,15 +487,12 @@ class AddTourCheckpoints: Fragment() {
             PICK_AUDIO->{
                 if(data != null) {
                     selectedAudio = data!!.data as Uri
-                    addAudioView.selectAudioButton.text = "Edit Audio"
-                    addAudioView.cancelAudioSelectButton.text = "Done"
+                    addAudioView!!.pauseButton.visibility = View.VISIBLE
+                    addAudioView!!.playButton.visibility = View.VISIBLE
+                    addAudioView!!.selectAudioButton.text = "Edit Audio"
+                    addAudioView!!.cancelAudioSelectButton.text = "Done"
                     Log.i(TAG, "Uri is : "+ selectedAudio.toString())
-//                    audioPlayer = MediaPlayer()!!.apply {
-//                        setAudioStreamType(AudioManager.STREAM_MUSIC)
-//                        setDataSource(context!!, selectedAudio!!)
-//                        prepare()
-//                        start()
-//                    }
+                    //audioPlayer!!.setDataSource(context!!, selectedAudio!!)
                     //addAudioView.(selectedAudio) need to attribute the selected audio to a media player
                     //to play it in
 
@@ -478,14 +504,14 @@ class AddTourCheckpoints: Fragment() {
 
     //functions below will add media to database
     fun uploadPicture(){
-        if(selectedPic!= null) {
+        if(toUploadSelectedPic!= null) {
             userRef = storageRef.child("/checkpointPictures")
-                .child(selectedPic!!.lastPathSegment.toString() + LocalDateTime.now() + ".jpg")
+                .child(toUploadSelectedPic!!.lastPathSegment.toString() + LocalDateTime.now() + ".jpg")
 
-            val inputStream = context!!.contentResolver.openInputStream(selectedPic!!)
-            val yourDrawable = Drawable.createFromStream(inputStream, selectedPic.toString())
+            val inputStream = context!!.contentResolver.openInputStream(toUploadSelectedPic!!)
+            val yourDrawable = Drawable.createFromStream(inputStream, toUploadSelectedPic.toString())
 
-            val imageBitmap = (addImageView.imageToBeAdded.drawable as BitmapDrawable).bitmap
+            val imageBitmap = (addImageView!!.imageToBeAdded.drawable as BitmapDrawable).bitmap
             val baos = ByteArrayOutputStream()
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
@@ -516,11 +542,11 @@ class AddTourCheckpoints: Fragment() {
     }
 
      fun uploadAudio(){
-        if(selectedAudio!=null) {
+        if(toUploadSelectedAudio!=null) {
             Log.i(TAG, "Im in uploadAudio- selectedaudio!=null")
             userRef = storageRef.child("/checkpointAudio").
-                child(selectedAudio!!.lastPathSegment!!.toString() + LocalDateTime.now() + ".audio")
-            val uploadTask = userRef.putFile(selectedAudio!!)
+                child(toUploadSelectedAudio!!.lastPathSegment!!.toString() + LocalDateTime.now() + ".audio")
+            val uploadTask = userRef.putFile(toUploadSelectedAudio!!)
             val urlTask = uploadTask.continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let {
@@ -542,14 +568,15 @@ class AddTourCheckpoints: Fragment() {
             }
         } else {
             Log.i(TAG, "Im in uploadAudio- selectedaudio == null")
+            uploadVideo()
         }
     }
     fun uploadVideo(){
-        if(selectedVideo!=null) {
+        if(toUploadSelectedVideo!=null) {
             Log.i(TAG, "Im in uploadAudio- selectedVideo!=null")
             userRef = storageRef.child("/checkpointVideos").
-                child(selectedVideo!!.lastPathSegment!!.toString() + LocalDateTime.now() + ".audio")
-            val uploadTask = userRef.putFile(selectedVideo!!)
+                child(toUploadSelectedVideo!!.lastPathSegment!!.toString() + LocalDateTime.now() + ".audio")
+            val uploadTask = userRef.putFile(toUploadSelectedVideo!!)
             val urlTask = uploadTask.continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let {
@@ -573,20 +600,33 @@ class AddTourCheckpoints: Fragment() {
         }
 
     }
-//    private fun clearCheckpointMediaForNext(){
-//        urisOfSingleCheckpoint.clear()
-//        selectedPic = null
-//        addImageView.imageToBeAdded.setImageResource(0)
-//        addImageView.selectImageButton.text = "Add Image"
-//        addImageView.cancelPicSelectButton.text = "Cancel"
-//        selectedAudio = null
-//        addAudioView.selectAudioButton.text = "Add Audio"
-//        addAudioView.cancelAudioSelectButton.text = "Cancel"
-//        selectedVideo = null
-//        addVideoView.videoToBeAdded.setVideoURI(null)
-//        addVideoView.selectVideoButton.text = "Add Video"
-//        addVideoView.cancelVidSelectButton.text = "Cancel"
-//
-//    }
+    private fun clearCheckpointMediaForNext(){
+        //urisOfSingleCheckpoint.clear()
+        selectedPic = null
+        if(addImageView != null) {
+            addImageView!!.imageToBeAdded.visibility = View.INVISIBLE
+            addImageView!!.selectImageButton.text = "Add Image"
+            addImageView!!.cancelPicSelectButton.text = "Cancel"
+            addImageView = null
+        }
+        selectedAudio = null
+        if(addAudioView != null) {
+            addAudioView!!.pauseButton.visibility = View.INVISIBLE
+            addAudioView!!.playButton.visibility = View.INVISIBLE
+            addAudioView!!.selectAudioButton.text = "Add Audio"
+            addAudioView!!.cancelAudioSelectButton.text = "Cancel"
+            addAudioView = null
+        }
+
+        selectedVideo = null
+        if(addVideoView != null) {
+            addVideoView!!.videoToBeAdded.visibility = View.INVISIBLE
+            addVideoView!!.videoPlayButton.visibility = View.INVISIBLE
+            addVideoView!!.videoPauseButton.visibility = View.INVISIBLE
+            addVideoView!!.selectVideoButton.text = "Add Video"
+            addVideoView!!.cancelVidSelectButton.text = "Cancel"
+            addAudioView = null
+        }
+    }
 
 }

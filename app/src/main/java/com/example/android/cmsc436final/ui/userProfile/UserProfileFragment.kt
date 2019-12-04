@@ -29,8 +29,7 @@ class UserProfileFragment : Fragment() {
     private lateinit var profilePic: ImageView
     private lateinit var signOutButton: Button
     private lateinit var changeProfilePicButton: ImageButton
-    private lateinit var loadMoreTraveledToursButton: TextView
-    private lateinit var loadMoreCreatedToursButton: TextView
+    private lateinit var userName: TextView
     private lateinit var toursTraveledCount: TextView
     private lateinit var toursCreatedCount: TextView
     private lateinit var auth: FirebaseAuth
@@ -62,10 +61,9 @@ class UserProfileFragment : Fragment() {
         profilePic = root.findViewById(R.id.profilePictureView)
         signOutButton = root.findViewById(R.id.signOutButton)
         changeProfilePicButton = root.findViewById(R.id.changeProfilePicButton)
-        loadMoreTraveledToursButton = root.findViewById(R.id.loadMoreTraveledTours)
-        loadMoreCreatedToursButton = root.findViewById(R.id.loadMoreCreatedTours)
         toursTraveledCount = root.findViewById(R.id.numToursTraveled)
         toursCreatedCount = root.findViewById(R.id.numToursCreated)
+        userName = root.findViewById(R.id.usernameTextView)
 
         //for filling in data
         user = auth.currentUser as FirebaseUser
@@ -82,9 +80,11 @@ class UserProfileFragment : Fragment() {
 //                    val arrOfToursCreated = document["toursCreated"] as ArrayList<*>
                     val arrOfToursCompleted = document.get("toursCompleted") as ArrayList<*>
                     val arrOfToursCreated = document.get("toursCreated") as ArrayList<*>
+                    val username = document.get("name") as String
 
                     toursTraveledCount.setText(arrOfToursCompleted.size.toString())
                     toursCreatedCount.setText(arrOfToursCreated.size.toString())
+                    userName.text = username
 
 
 
@@ -111,16 +111,6 @@ class UserProfileFragment : Fragment() {
             changeProfilePic()
         }
 
-        //TODO: Populate tour list, and fix load more button
-        loadMoreTraveledToursButton.setOnClickListener {
-//            val toLoadTraveled = Intent(context, LoadMore::class.java)
-//            startActivityForResult(toLoadTraveled, LOAD_TRAVELED)
-
-        }
-        loadMoreCreatedToursButton.setOnClickListener{
-//            val toLoadCreated = Intent(context, LoadMore::class.java)
-//            startActivityForResult(toLoadCreated, LOAD_CREATED)
-        }
 
         //val textView: TextView = root.findViewById(R.id.ratingText)
         //userProfileViewModel.text.observe(this, Observer {
@@ -170,8 +160,6 @@ class UserProfileFragment : Fragment() {
                                 Toast.makeText(context, "Profile pic update successful!", Toast.LENGTH_LONG).show()
                                 Log.d(TAG, "DocumentSnapshot successfully updated!") }
                             .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
-
-
                     } else {
                         Toast.makeText(context, "Could not update pic", Toast.LENGTH_LONG).show()
                         // ...

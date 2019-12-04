@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:contentDescription="@string/add_photo"
-        android:ems="10" />
+        android:ems="10"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/selectImageButton"

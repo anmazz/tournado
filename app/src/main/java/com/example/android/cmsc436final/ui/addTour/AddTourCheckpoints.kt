@@ -227,6 +227,7 @@ class AddTourCheckpoints: Fragment() {
             }
 
             val mAlertDialog = builder.show()
+
             addImageView!!.selectImageButton.setOnClickListener{
                 //now select a picture
                 val toGallery = Intent(
@@ -290,6 +291,9 @@ class AddTourCheckpoints: Fragment() {
         }
 
         addAudioView!!.cancelAudioSelectButton.setOnClickListener {
+            if(audioPlayer != null){
+                audioPlayer!!.stop()
+            }
             mAlertDialog.dismiss()
         }
 
@@ -360,9 +364,8 @@ class AddTourCheckpoints: Fragment() {
         findNavController().navigate(R.id.action_add_tour2_to_add_tour3)
     }
 
-//    TODO fix this
     private fun navigateToHome(){
-        findNavController().navigate(R.id.action_add_tour3_to_navigation_home)
+        findNavController().navigate(R.id.action_navigation_add_tour2_to_navigation_home2)
     }
 
 
@@ -377,39 +380,27 @@ class AddTourCheckpoints: Fragment() {
             || description == null || description.equals("")) {
             Toast.makeText(context, "Please fill out these fields", Toast.LENGTH_LONG).show()
         } else {
-//        GlobalScope.launch(Dispatchers.Main) {
-//            withContext(Dispatchers.Default) { uploadPicture() }
-//        }
-
-//        lifecycleScope.launch {
-//            uploadAudio()
-//            uploadPicture()
-//            uploadVideo()
-//        }
-            Log.i(TAG, "imageURL is :" + imageUrl)
-//        sharedViewModel.setImageUrl("hi")
-//        sharedViewModel.getImageUrl().observe(this, Observer {
-//                url -> Log.i(TAG, url)
-//        })
-//
-//
-
-
             toUploadSelectedPic = selectedPic
             toUploadSelectedVideo = selectedVideo
             toUploadSelectedAudio = selectedAudio
 
-            if (toUploadSelectedPic == null) {
+            Log.i(TAG, "Uri is (in add checkpoint): "+ selectedPic)
+            uploadPicture()
+
+            if (imageUrl.compareTo("") == 0 ) {
+                Log.i(TAG, "Toasted, image url was null or empty")
                 Toast.makeText(context, "Image not selected or still uploading", Toast.LENGTH_LONG)
                     .show()
             } else {
-                uploadPicture()
-                val newCP = Checkpoint(name, location, description, imageUrl, audioUrl, videoUrl)
-
+                Log.i(TAG, "IN ELSE STATEMENT")
+                val imageUrlToSend =imageUrl
+                Log.i(TAG, "In add checkpoint, imageurl is "+ imageUrlToSend)
+                val newCP = Checkpoint(name, location, description, imageUrlToSend, audioUrl, videoUrl)
+                clearCheckpointMediaForNext()
+                imageUrl = ""
+                selectedPic = null
                 // need to add this checkpoint to tour arrayList
                 checkpoints.add(newCP)
-                //clearing data in dialogs for next checkPoint
-                clearCheckpointMediaForNext()
 
                 // TO display added checkpoints
                 //creating adapter using CheckpointAdapter
@@ -420,6 +411,8 @@ class AddTourCheckpoints: Fragment() {
 
                 checkptName.setText("")
                 checkptDesc.setText("")
+                //clearing data in dialogs for next checkPoint
+
             }
         }
     }
@@ -459,6 +452,7 @@ class AddTourCheckpoints: Fragment() {
                 if(data != null) {
                     selectedPic = data!!.data as Uri
                     //adds image to dialog
+                    Log.i(TAG, "in on activity result selected URI = " + selectedPic.toString())
                     addImageView!!.imageToBeAdded.setImageURI(selectedPic)
                     //changes button text
                     addImageView!!.selectImageButton.text = "Edit Image"
@@ -502,17 +496,22 @@ class AddTourCheckpoints: Fragment() {
     //functions below will add media to database
     fun uploadPicture(){
         if(toUploadSelectedPic!= null) {
-            userRef = storageRef.child("/checkpointPictures")
-                .child(toUploadSelectedPic!!.lastPathSegment.toString() + LocalDateTime.now() + ".jpg")
-
-            val inputStream = context!!.contentResolver.openInputStream(toUploadSelectedPic!!)
-            val yourDrawable = Drawable.createFromStream(inputStream, toUploadSelectedPic.toString())
-
-            val imageBitmap = (addImageView!!.imageToBeAdded.drawable as BitmapDrawable).bitmap
-            val baos = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val data = baos.toByteArray()
-            val uploadTask = userRef.putBytes(data)
+            Log.i(TAG, "Upload pic" + toUploadSelectedPic.toString())
+//            userRef = storageRef.child("/checkpointPictures")
+//                .child(selectedPic!!.lastPathSegment.toString() + LocalDateTime.now() + ".jpg")
+//
+//            val inputStream = context!!.contentResolver.openInputStream(selectedPic!!)
+//            val yourDrawable = Drawable.createFromStream(inputStream, selectedPic.toString())
+//
+//            val imageBitmap = (addImageView!!.imageToBeAdded.drawable as BitmapDrawable).bitmap
+//            val baos = ByteArrayOutputStream()
+//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//            val data = baos.toByteArray()
+//            val uploadTask = userRef.putBytes(data)
+            Log.i(TAG, "Im in uploadAudio- selectedaudio!=null")
+            userRef = storageRef.child("/checkpointPictures").
+                child(toUploadSelectedPic!!.lastPathSegment!!.toString() + LocalDateTime.now() + ".image")
+            val uploadTask = userRef.putFile(toUploadSelectedPic!!)
             val urlTask = uploadTask.continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let {
@@ -525,6 +524,7 @@ class AddTourCheckpoints: Fragment() {
                     Log.i(TAG, "task result for pic is:" + task.result.toString())
                     //actual url stored here
                     imageUrl = task.result.toString()
+                    Log.i(TAG, "Uploaded pic, url is: " + imageUrl)
                     Log.i(TAG, "uploaded pic to firebase")
                     uploadAudio()
                 } else {
@@ -572,7 +572,7 @@ class AddTourCheckpoints: Fragment() {
         if(toUploadSelectedVideo!=null) {
             Log.i(TAG, "Im in uploadAudio- selectedVideo!=null")
             userRef = storageRef.child("/checkpointVideos").
-                child(toUploadSelectedVideo!!.lastPathSegment!!.toString() + LocalDateTime.now() + ".audio")
+                child(toUploadSelectedVideo!!.lastPathSegment!!.toString() + LocalDateTime.now() + ".video")
             val uploadTask = userRef.putFile(toUploadSelectedVideo!!)
             val urlTask = uploadTask.continueWithTask { task ->
                 if (!task.isSuccessful) {
@@ -599,13 +599,19 @@ class AddTourCheckpoints: Fragment() {
     }
     private fun clearCheckpointMediaForNext(){
         //urisOfSingleCheckpoint.clear()
+        Log.i(TAG, "in clear checkpoint")
+        imageUrl = ""
         selectedPic = null
-        if(addImageView != null) {
-            addImageView!!.imageToBeAdded.visibility = View.INVISIBLE
+        if(addImageView!! != null) {
+            //addImageView!!.imageToBeAdded.visibility = View.INVISIBLE
+            addImageView!!.imageToBeAdded.setImageDrawable(null)
             addImageView!!.selectImageButton.text = "Add Image"
             addImageView!!.cancelPicSelectButton.text = "Cancel"
             addImageView = null
         }
+
+        Log.i(TAG,"Clear checkpoint: "+selectedPic.toString())
+
         selectedAudio = null
         if(addAudioView != null) {
             addAudioView!!.pauseButton.visibility = View.INVISIBLE

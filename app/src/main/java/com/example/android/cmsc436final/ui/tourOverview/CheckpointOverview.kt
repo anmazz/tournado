@@ -128,8 +128,12 @@ class CheckpointOverview: Fragment() {
             val db = FirebaseFirestore.getInstance()
 
             // need uid of currentUser to get specific document
+            // update count
+            // update user's list of completed
             val uid = FirebaseAuth.getInstance().currentUser!!.uid
             val dbUser = db.collection("users").document(uid)
+            val dbTour = db.collection("tour").document(tour.id)
+            dbTour.update("pplCompleted", tour.pplCompleted+1)
             dbUser!!.update("toursCompleted", FieldValue.arrayUnion(tour))
 
             mModel.reset()

@@ -178,6 +178,7 @@ class AddTourTags: Fragment() {
             val id = db.collection("tours").document().id
 
             tourToAdd.id = id
+            Log.i(TAG, tourToAdd.checkpoints!!.toString())
 
             // Add newTour obj to the database in the tours collection
             dbTours!!.document(id).set(tourToAdd)

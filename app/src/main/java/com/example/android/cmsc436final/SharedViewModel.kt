@@ -10,6 +10,7 @@ import com.example.android.cmsc436final.Data.LocationData.LocationLiveData
 import com.example.android.cmsc436final.model.Checkpoint
 import com.example.android.cmsc436final.model.Tour
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.tasks.await
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
@@ -20,8 +21,52 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private var checkpointToBeAdded = Checkpoint()
     private var currentCheckpointNum = 0
     private var currChkptNumStartTour = 0
-
+    private var checkpointList : ArrayList<Checkpoint> = ArrayList()
     private var dialogShown: Array<Boolean>? = null
+    private var location : GeoPoint? = null
+
+    private val liveImageHash = MutableLiveData<HashMap<String, String>>()
+    private var hash = HashMap<String, String>()
+
+    fun setLocation(geoPoint: GeoPoint){
+        location = geoPoint
+    }
+    fun getLocation(): GeoPoint? = location
+
+    fun updateCheckpointList(list : ArrayList<Checkpoint>){
+        checkpointList = list
+    }
+
+    fun getCheckpoinlist(): ArrayList<Checkpoint>{
+        return checkpointList
+    }
+
+    fun resetHash(){
+        hash = HashMap<String, String>()
+    }
+
+    fun setImageUrl(url: String) {
+        hash.set("image", url)
+        liveImageHash.value = hash
+    }
+
+    fun setVideoUrl(url: String){
+        hash.set("video", url)
+        liveImageHash.value = hash
+    }
+
+    fun setAudioUrl(url: String){
+        hash.set("audio", url)
+        liveImageHash.value = hash
+    }
+
+    fun getStaticHash() : HashMap<String, String> {
+        return hash
+    }
+
+    fun getHash() : LiveData<HashMap<String, String>> {
+        return liveImageHash
+    }
 
     fun reset(){
         dialogShown = null
@@ -42,10 +87,6 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         return imageurl
     }
 
-    fun setImageUrl(url : String) {
-        imageurl.value = url
-
-    }
 
     fun setCurrentTour(tour : Tour){
         currentTour = tour
@@ -98,8 +139,10 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         toBeAdded.description = descr
     }
 
-    fun addCheckpoints(cps: List<Checkpoint>) {
+    fun addCheckpoints(cps: ArrayList<Checkpoint>) {
+        Log.i("SharedViewModel", cps.toString())
         toBeAdded.checkpoints = cps
+        Log.i("SharedViewModel", toBeAdded.checkpoints.toString())
     }
 
     fun addUris(uris: MutableList<Array<Uri?>>) {

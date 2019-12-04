@@ -2,25 +2,16 @@ package com.example.android.cmsc436final.ui.tourOverview
 
 
 import android.app.AlertDialog
-import android.content.Intent
-import android.media.AudioManager
-import android.media.MediaPlayer
-import android.os.Bundle
-import android.provider.MediaStore
-
 import android.app.Dialog
-import android.location.Geocoder
-
-
+import android.media.MediaPlayer
+import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -28,13 +19,8 @@ import com.bumptech.glide.Glide
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
 import com.example.android.cmsc436final.model.Checkpoint
-import kotlinx.android.synthetic.main.add_image_dialogue.view.*
-import kotlinx.android.synthetic.main.play_audio_dialogue.view.*
-
-import com.example.android.cmsc436final.ui.startTour.StartTourFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.play_audio_dialogue.view.*
 
 
 
@@ -173,12 +159,34 @@ class CheckpointOverview: Fragment() {
 
     fun playVideo() {
         val url = currCheckpoint.video
-        val mediaPlayer: MediaPlayer? = MediaPlayer().apply {
-            setAudioStreamType(AudioManager.STREAM_MUSIC)
-            setDataSource(url)
-            prepare() // might take long! (for buffering, etc)
-            start()
+        Log.i("PlayVideo", "Url "+ url)
+        val uri = Uri.parse(url)
+        Log.i("PlayVideo", "Uri "+ uri)
+        val dialog = Dialog(activity!!)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.play_video_dialogue)
+        val videoViewLandscape = dialog.findViewById(R.id.videoToBeAdded) as VideoView
+
+        videoViewLandscape.setVideoURI(uri)
+        videoViewLandscape.requestFocus()
+        videoViewLandscape.start()
+
+
+//        val play = dialog.findViewById(R.id.videoPlayButton) as ImageButton
+//        play.setOnClickListener {
+//            videoViewLandscape.start()
+//        }
+//
+//        val pause = dialog.findViewById(R.id.videoPlayButton) as ImageButton
+//        pause.setOnClickListener {
+//            videoViewLandscape.pause()
+//        }
+        val done = dialog.findViewById(R.id.donePlayingVideoButton) as Button
+        done.setOnClickListener{
+            dialog.dismiss()
         }
+        dialog.show()
     }
 
 }

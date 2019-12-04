@@ -74,6 +74,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/primaryTextColor"
+        android:backgroundTint="@color/primaryTextColor"
+        android:textColorHint="@color/primaryTextColor"
         app:layout_constraintTop_toBottomOf="@+id/regSelectPhotobutton" />
 
     <EditText
@@ -90,6 +92,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/primaryTextColor"
+        android:backgroundTint="@color/primaryTextColor"
+        android:textColorHint="@color/primaryTextColor"
         app:layout_constraintTop_toBottomOf="@+id/regName" />
 
     <EditText
@@ -105,6 +109,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/primaryTextColor"
+        android:backgroundTint="@color/primaryTextColor"
+        android:textColorHint="@color/primaryTextColor"
         app:layout_constraintTop_toBottomOf="@+id/regUserEmail" />
 
     <com.google.android.material.button.MaterialButton
@@ -134,7 +140,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/primaryTextColor"
-
+        android:backgroundTint="@color/primaryTextColor"
+        android:textColorHint="@color/primaryTextColor"
         app:layout_constraintTop_toBottomOf="@+id/regPassword" />
 
     <com.google.android.material.button.MaterialButton

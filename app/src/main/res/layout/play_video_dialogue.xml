@@ -10,30 +10,33 @@
     <VideoView
         android:id="@+id/videoToBeAdded"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="188dp"
         android:contentDescription="@string/add_video"
+
         android:ems="10"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
-    <LinearLayout
-        android:layout_width="392dp"
-        android:layout_height="57dp"
-        android:orientation="horizontal">
+<!--    <LinearLayout-->
+<!--        android:layout_width="392dp"-->
+<!--        android:layout_height="57dp"-->
+<!--        android:orientation="horizontal">-->
 
-        <ImageButton
-            android:id="@+id/videoPauseButton"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:srcCompat="@android:drawable/ic_media_pause" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/videoPauseButton"-->
+<!--            android:layout_width="170dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="visible"-->
+<!--            android:layout_weight="1"-->
+<!--            app:srcCompat="@android:drawable/ic_media_pause" />-->
 
-        <ImageButton
-            android:id="@+id/videoPlayButton"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:srcCompat="@android:drawable/ic_media_play" />
-    </LinearLayout>
+<!--        <ImageButton-->
+<!--            android:id="@+id/videoPlayButton"-->
+<!--            android:layout_width="170dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="visible"-->
+<!--            android:layout_weight="1"-->
+<!--            app:srcCompat="@android:drawable/ic_media_play" />-->
+<!--    </LinearLayout>-->
 
     <Button
         android:id="@+id/donePlayingVideoButton"

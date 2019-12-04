@@ -48,9 +48,10 @@
             android:layout_marginTop="420dp"
             android:hint="@string/email_hint_string"
             android:importantForAutofill="no"
-
-            android:inputType="textEmailAddress"
             android:textColor="@color/primaryTextColor"
+            android:backgroundTint="@color/primaryTextColor"
+            android:textColorHint="@color/primaryTextColor"
+            android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.432"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +69,8 @@
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:textColor="@color/primaryTextColor"
-
+            android:backgroundTint="@color/primaryTextColor"
+            android:textColorHint="@color/primaryTextColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email" />
@@ -105,7 +107,6 @@
             android:layout_width="332dp"
             android:layout_height="40sp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/montserrat"
             android:text="TOURNADO"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"

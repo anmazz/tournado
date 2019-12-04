@@ -12,65 +12,10 @@
     app:layout_constraintStart_toStartOf="parent">
 
     <TextView
-        android:id="@+id/loadMoreCreatedTours"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="10dp"
-        android:clickable="true"
-        android:text="@string/load_more_tours"
-        android:textColor="#2196F3"
-        app:layout_constraintBottom_toTopOf="@+id/traveledToursList"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/traveledToursList"
-        android:layout_width="336dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createdToursText" />
-
-    <TextView
-        android:id="@+id/createdToursText"
-        android:layout_width="174dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="488dp"
-        android:layout_marginEnd="212dp"
-        android:clickable="false"
-        android:ems="10"
-        android:inputType="none"
-        android:text="@string/created_tours"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/traveledToursText"
-        android:layout_width="174dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="336dp"
-        android:layout_marginEnd="212dp"
-        android:clickable="false"
-        android:ems="10"
-        android:inputType="none"
-        android:text="@string/traveled_tours"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/toursTraveledText"
         android:layout_width="174dp"
         android:layout_height="30dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginBottom="427dp"
+        android:layout_marginTop="350dp"
         android:clickable="false"
         android:ems="10"
         android:inputType="none"
@@ -78,7 +23,6 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/toursCreatedText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,8 +32,7 @@
         android:id="@+id/toursCreatedText"
         android:layout_width="174dp"
         android:layout_height="30dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginBottom="427dp"
+        android:layout_marginTop="350dp"
         android:clickable="false"
         android:ems="10"
         android:inputType="none"
@@ -97,18 +40,31 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/toursTraveledText"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/numToursTraveled"
+        android:layout_width="107dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="24dp"
+        android:autofillHints="@string/number_input"
+        android:clickable="false"
+        android:ems="10"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toursTraveledText" />
+
+    <TextView
         android:id="@+id/numToursCreated"
         android:layout_width="107dp"
         android:layout_height="43dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="40dp"
         android:autofillHints="@string/number_input"
         android:clickable="false"
         android:ems="10"
@@ -119,34 +75,20 @@
 
     <Button
         android:id="@+id/signOutButton"
-        android:layout_width="84dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="190dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="552dp"
+        android:layout_marginEnd="108dp"
         android:text="@string/sign_out"
-        android:textSize="9sp"
+        android:textSize="20sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/numToursTraveled"
-        android:layout_width="107dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="24dp"
-        android:autofillHints="@string/number_input"
-        android:clickable="false"
-        android:ems="10"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toursTraveledText" />
-
     <ImageView
         android:id="@+id/profilePictureView"
-        android:layout_width="118dp"
-        android:layout_height="111dp"
+        android:layout_width="222dp"
+        android:layout_height="194dp"
         android:layout_marginTop="65dp"
         android:layout_marginBottom="504dp"
         android:contentDescription="@string/user_profile_pic"
@@ -160,40 +102,24 @@
         android:id="@+id/changeProfilePicButton"
         android:layout_width="39dp"
         android:layout_height="30dp"
-        android:layout_marginStart="218dp"
-        android:layout_marginTop="122dp"
-        android:layout_marginEnd="136dp"
-        android:layout_marginBottom="504dp"
+        android:layout_marginStart="183dp"
+        android:layout_marginTop="164dp"
         android:contentDescription="@string/change_pic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profilePictureView"
+        app:layout_constraintTop_toTopOf="@+id/profilePictureView"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/createdToursList"
-        android:layout_width="336dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/traveledToursText" />
-
     <TextView
-        android:id="@+id/loadMoreTraveledTours"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="10dp"
-        android:clickable="true"
-        android:text="@string/load_more_tours"
-        android:textColor="#2196F3"
-        app:layout_constraintBottom_toTopOf="@+id/createdToursList"
+        android:id="@+id/usernameTextView"
+        android:layout_width="258dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="263dp"
+        android:layout_marginEnd="77dp"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/traveledToursText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

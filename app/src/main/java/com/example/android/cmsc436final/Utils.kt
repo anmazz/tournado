@@ -67,7 +67,7 @@ class Utils {
         val bounds = builder.build()
         val width = context.resources.displayMetrics.widthPixels
         val height = context.resources.displayMetrics.heightPixels
-        val padding = (width * 0.30).toInt() // offset from edges of the map
+        val padding = (width * 0.40).toInt() // offset from edges of the map
 
         val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
 

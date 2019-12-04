@@ -80,7 +80,7 @@ open class TourAdapter(query: Query?, private val mListener: OnTourSelectedListe
 
             //Retrieve starting checkpoint location's city
             val geocoder = Geocoder(itemView.context)
-            Log.i("Adapter", tour.checkpoints!![0].location.toString())
+            Log.i("Adapter", "Location is: " + tour.checkpoints!![0].location.toString())
             val lat = tour.checkpoints!![0].location.latitude
             val long = tour.checkpoints!![0].location.longitude
             locationView.text = geocoder.getFromLocation(lat, long, 1)[0].locality

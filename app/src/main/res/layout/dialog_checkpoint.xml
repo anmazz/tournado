@@ -9,10 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
         <TextView
@@ -36,8 +36,8 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:clickable="true"
-            android:text="Yes"
-            android:textColor="#5DBCD2"
+            android:text="OK"
+            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
     </LinearLayout>

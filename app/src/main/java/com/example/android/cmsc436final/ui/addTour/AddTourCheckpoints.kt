@@ -374,6 +374,8 @@ class AddTourCheckpoints: Fragment() {
                 Toast.makeText(context, "Video still uploading", Toast.LENGTH_LONG).show()
             } else if (audFlag && (audioUrl == null || audioUrl.equals(""))) {
                 Toast.makeText(context, "Audio still uploading", Toast.LENGTH_LONG).show()
+            } else if (location == null) {
+                Toast.makeText(context, "Please choose a location", Toast.LENGTH_LONG).show()
             } else {
 
                 val newCP = Checkpoint(name, location, description, imageUrl, audioUrl, videoUrl)

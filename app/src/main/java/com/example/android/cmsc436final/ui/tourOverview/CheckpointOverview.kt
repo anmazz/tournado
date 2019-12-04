@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.android.cmsc436final.R
 import com.example.android.cmsc436final.SharedViewModel
 import com.example.android.cmsc436final.model.Checkpoint
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class CheckpointOverview: Fragment() {
@@ -29,7 +30,7 @@ class CheckpointOverview: Fragment() {
 
     private lateinit var audioButton: Button
     private lateinit var videoButton: Button
-    private lateinit var doneButton : Button
+    private lateinit var continueButton : FloatingActionButton
 
     private lateinit var currCheckpoint: Checkpoint
 
@@ -52,7 +53,7 @@ class CheckpointOverview: Fragment() {
 
         audioButton = root.findViewById(R.id.audio_button)
         videoButton = root.findViewById(R.id.video_button)
-        doneButton = root.findViewById(R.id.done_button)
+        continueButton = root.findViewById(R.id.continue_button)
         mModel = ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
         var tour = mModel.getCurrentTour()
         currCheckpoint = tour!!.checkpoints?.get(mModel.getCurrentCheckpointNum())!!

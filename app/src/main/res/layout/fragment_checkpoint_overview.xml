@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,10 +21,21 @@
             android:layout_width="match_parent"
             android:layout_height="240dp"
             android:background="@drawable/gradient_overlay" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/continue_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/checkpt_image"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="16dp"
+            android:backgroundTint="@color/secondaryLightColor"
+            android:src="@drawable/ic_near_me_white_24dp"
+            app:borderWidth="0dp" />
+
+
     </RelativeLayout>
-
-
-
 
     <FrameLayout
         android:id="@+id/info"
@@ -69,14 +81,16 @@
                 android:text="Location"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/quantum_black_100" />
+
         </LinearLayout>
     </FrameLayout>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/audio_button"
         android:layout_width="350dp"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-
+        android:layout_marginTop="20dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:text="Audio" />
@@ -90,11 +104,11 @@
         android:layout_gravity="center"
         android:text="Video" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/done_button"
-        android:layout_width="350dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:text="Done" />
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/done_button"-->
+<!--        android:layout_width="350dp"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:text="Done" />-->
 
 </LinearLayout>

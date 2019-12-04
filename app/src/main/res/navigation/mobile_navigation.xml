@@ -120,6 +120,12 @@
         android:label="Checkpoint Overview"
         android:name="com.example.android.cmsc436final.ui.tourOverview.CheckpointOverview"
         tools:layout="@layout/fragment_checkpoint_overview">
+        <action
+            android:id="@+id/action_checkpoint_overview_to_start_tour"
+            app:destination="@id/start_tour" />
+        <action
+            android:id="@+id/action_checkpoint_overview_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
 

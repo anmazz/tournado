@@ -394,6 +394,7 @@ class AddTourCheckpoints: Fragment() {
 //
 //
 
+
             toUploadSelectedPic = selectedPic
             toUploadSelectedVideo = selectedVideo
             toUploadSelectedAudio = selectedAudio

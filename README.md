@@ -1,2 +1,2 @@
-# CMSC436SemProj
-Semester Project for 436
+# Tournado: Android Tour Guide App
+Semester Project for CMSC436
